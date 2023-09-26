@@ -14,12 +14,28 @@ namespace smal
         static const long LENGTH = sizeof...(Rest) + 1;
 
     public:
+        /**
+         * @brief
+         */
         Tuple();
 
+        /**
+         * @brief
+         *
+         * @tparam Index
+         * @return auto&
+         */
         template <long Index>
         auto&
         get();
 
+        /**
+         * @brief
+         *
+         * @tparam Index
+         * 
+         * @return const auto&
+         */
         template <long Index>
         const auto&
         get() const;

@@ -1,17 +1,33 @@
 #include <stdio.h>
-#include <smal/Common/import.hpp>
+#include <smal/Memory/import.hpp>
+
+using namespace smal;
 
 int
 main(int argc, const char* argv[])
 {
-    smal::Tuple<int> t;
+    char      buffer[1024] = {0};
+    PageAlloc origin       = {buffer, 128, 32};
 
-    t.get<0>() = 10;
+    Page p0 = origin.reserve();
+    Page p1 = origin.reserve();
+    Page p2 = origin.reserve();
 
-    if ( t.get<0>() == 0 )
-        printf("t = <0>\n");
-    else
-        printf("t = <?>\n");
+    PageTable table = {
+        p0.get_memory(),
+        p0.get_length(),
+    };
+
+    table.insert(p1, 0);
+    table.insert(p2, 32);
+
+    for ( long i = 0; i < 65; i++ ) {
+        auto t = table.lookup(i);
+
+        printf("%p, %li\n",
+            t.get<0>(),
+            t.get<1>());
+    }
 
     return 0;
 }
