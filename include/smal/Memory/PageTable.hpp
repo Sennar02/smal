@@ -26,13 +26,13 @@ namespace smal
          * @brief
          *
          * @param page
-         * @param start
+         * @param offset
          *
          * @return true
          * @return false
          */
         bool
-        insert(Page& page, long start);
+        insert(Page& page, long offset);
 
         /**
          * @brief
@@ -56,17 +56,28 @@ namespace smal
         lookup(long index);
 
     private:
-        struct Record
+        /**
+         * @brief
+         *
+         * @param page
+         *
+         * @return long
+         */
+        long
+        search(Page& page);
+
+    public:
+        struct Entry
         {
             char* memory;
             long  length;
-            long  start;
+            long  offset;
         };
 
         /**
          * @brief
          */
-        Record* m_memory;
+        Entry* m_memory;
 
         /**
          * @brief

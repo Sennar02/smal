@@ -3,15 +3,15 @@
 namespace smal
 {
     Page::Page()
-        : m_memory {0}
+        : m_origin {0}
+        , m_memory {0}
         , m_length {0}
-        , m_origin {0}
     { }
 
     Page::Page(PageAlloc* origin, void* memory, long length)
-        : m_memory {memory}
+        : m_origin {origin}
+        , m_memory {memory}
         , m_length {length}
-        , m_origin {origin}
     { }
 
     bool
