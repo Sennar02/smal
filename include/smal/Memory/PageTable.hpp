@@ -19,8 +19,51 @@ namespace smal
          *
          * @param memory
          * @param length
+         * @param page
          */
-        PageTable(void* memory, long length);
+        PageTable(void* memory, long length, long page);
+
+        /**
+         * @brief
+         *
+         * @return long
+         */
+        long
+        get_length() const;
+
+        /**
+         * @brief
+         *
+         * @return long
+         */
+        long
+        get_size() const;
+
+        /**
+         * @brief
+         *
+         * @return long
+         */
+        long
+        get_page() const;
+
+        /**
+         * @brief
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        is_full() const;
+
+        /**
+         * @brief
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        is_empty() const;
 
         /**
          * @brief
@@ -32,7 +75,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(Page& page, long offset);
+        insert(const Page& page, word offset);
 
         /**
          * @brief
@@ -43,17 +86,18 @@ namespace smal
          * @return false
          */
         bool
-        remove(Page& page);
+        remove(const Page& page);
 
         /**
          * @brief
          *
          * @param index
+         * @param scale
          *
-         * @return Tuple<char*, long>
+         * @return char*
          */
-        Tuple<char*, long>
-        lookup(long index);
+        char*
+        lookup(long index, long scale = 1);
 
     private:
         /**
@@ -64,20 +108,19 @@ namespace smal
          * @return long
          */
         long
-        search(Page& page);
+        search(const Page& page);
 
     public:
-        struct Entry
+        struct Item
         {
             char* memory;
-            long  length;
-            long  offset;
+            word  offset;
         };
 
         /**
          * @brief
          */
-        Entry* m_memory;
+        Item* m_memory;
 
         /**
          * @brief
@@ -88,6 +131,11 @@ namespace smal
          * @brief
          */
         long m_size;
+
+        /**
+         * @brief
+         */
+        long m_page;
     };
 } // namespace smal
 

@@ -23,6 +23,7 @@ namespace smal
          * @brief
          *
          * @tparam Index
+         * 
          * @return auto&
          */
         template <long Index>
@@ -33,7 +34,7 @@ namespace smal
          * @brief
          *
          * @tparam Index
-         * 
+         *
          * @return const auto&
          */
         template <long Index>

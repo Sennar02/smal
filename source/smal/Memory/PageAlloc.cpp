@@ -94,7 +94,7 @@ namespace smal
     }
 
     bool
-    PageAlloc::reclaim(Page& page)
+    PageAlloc::reclaim(const Page& page)
     {
         Node* node = (Node*) page.get_memory();
 
@@ -107,8 +107,6 @@ namespace smal
             this->m_list = node;
             this->m_size += 1;
         }
-
-        page = {};
 
         return true;
     }

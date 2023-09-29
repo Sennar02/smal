@@ -83,7 +83,7 @@ namespace smal
          * @return false
          */
         bool
-        reclaim(Page& page);
+        reclaim(const Page& page);
 
     private:
         struct Node
