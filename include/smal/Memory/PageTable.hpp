@@ -80,13 +80,13 @@ namespace smal
         /**
          * @brief
          *
-         * @param page
+         * @param index
          *
          * @return true
          * @return false
          */
         bool
-        remove(const Page& page);
+        remove(long index = -1);
 
         /**
          * @brief
@@ -97,18 +97,7 @@ namespace smal
          * @return char*
          */
         char*
-        lookup(long index, long scale = 1);
-
-    private:
-        /**
-         * @brief
-         *
-         * @param page
-         *
-         * @return long
-         */
-        long
-        search(const Page& page);
+        lookup(long index, long scale = 1) const;
 
     public:
         struct Item

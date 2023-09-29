@@ -18,9 +18,15 @@ namespace smal
         /**
          * @brief
          *
-         * @param table
+         * @param origin
+         * @param ptable
          */
-        Vector(PageTable& table);
+        Vector(PageAlloc& origin, PageTable& ptable);
+
+        /**
+         * @brief
+         */
+        virtual ~Vector();
 
         /**
          * @brief
@@ -37,6 +43,28 @@ namespace smal
          */
         long
         get_size() const;
+
+        /**
+         * @brief
+         *
+         * @param pages
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        expand(long pages);
+
+        /**
+         * @brief
+         *
+         * @param pages
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        shrink(long pages);
 
         /**
          * @brief
@@ -62,7 +90,12 @@ namespace smal
         /**
          * @brief
          */
-        PageTable* m_table;
+        PageAlloc* m_origin;
+
+        /**
+         * @brief
+         */
+        PageTable* m_ptable;
 
         /**
          * @brief

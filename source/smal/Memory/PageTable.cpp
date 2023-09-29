@@ -71,30 +71,26 @@ namespace smal
     }
 
     bool
-    PageTable::remove(const Page& page)
+    PageTable::remove(long index)
     {
         if ( this->is_empty() ) return false;
 
-        if ( page.get_length() != this->m_page )
-            return false;
+        if ( index == -1 )
+            index = this->m_size - 1;
 
-        if ( page.is_null() == false ) {
-            long index = this->search(page);
+        if ( 0 <= index && index < this->m_size ) {
+            this->m_size -= 1;
 
-            if ( index != -1 ) {
-                this->m_size -= 1;
-
-                Common::swap(
-                    this->m_memory[this->m_size],
-                    this->m_memory[index]);
-            }
+            Common::swap(
+                this->m_memory[this->m_size],
+                this->m_memory[index]);
         }
 
         return true;
     }
 
     char*
-    PageTable::lookup(long index, long scale)
+    PageTable::lookup(long index, long scale) const
     {
         Item* item  = 0;
         long  start = 0;
@@ -112,21 +108,5 @@ namespace smal
         }
 
         return 0;
-    }
-
-    long
-    PageTable::search(const Page& page)
-    {
-        Item* item   = 0;
-        char* memory = page.get_memory();
-
-        for ( long i = 0; i < this->m_size; i++ ) {
-            item = &this->m_memory[i];
-
-            if ( item->memory == memory )
-                return i;
-        }
-
-        return -1;
     }
 } // namespace smal
