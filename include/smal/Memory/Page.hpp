@@ -25,6 +25,14 @@ namespace smal
         /**
          * @brief
          *
+         * @param memory
+         * @param length
+         */
+        Page(void* memory, long length);
+
+        /**
+         * @brief
+         *
          * @return true
          * @return false
          */

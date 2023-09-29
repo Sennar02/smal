@@ -70,43 +70,45 @@ namespace smal
         return true;
     }
 
-    bool
+    Page
     PageTable::remove(long index)
     {
-        if ( this->is_empty() ) return false;
+        Item* last = 0;
 
-        if ( index == -1 )
-            index = this->m_size - 1;
+        if ( this->is_empty() ) return {};
 
         if ( 0 <= index && index < this->m_size ) {
             this->m_size -= 1;
 
-            Common::swap(
+            last = &Common::swap(
                 this->m_memory[this->m_size],
                 this->m_memory[index]);
+
+            return {
+                last->memory,
+                this->m_page,
+            };
         }
 
-        return true;
+        return {};
     }
 
     char*
     PageTable::lookup(long index, long scale) const
     {
-        Item* item  = 0;
-        long  start = 0;
-        long  limit = 0;
-        long  byte  = index * scale;
+        long start = 0;
+        long limit = 0;
+        long byte  = index * scale;
 
         for ( long i = 0; i < this->m_size; i++ ) {
-            item = &this->m_memory[i];
-
-            start = this->m_page * item->offset;
+            start = this->m_page * this->m_memory[i].offset;
             limit = this->m_page + start;
 
             if ( start <= byte && byte < limit )
-                return item->memory + (byte - start);
+                return this->m_memory[i].memory + (byte - start);
         }
 
         return 0;
     }
+
 } // namespace smal

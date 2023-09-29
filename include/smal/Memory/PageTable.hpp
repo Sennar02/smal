@@ -85,8 +85,8 @@ namespace smal
          * @return true
          * @return false
          */
-        bool
-        remove(long index = -1);
+        Page
+        remove(long index);
 
         /**
          * @brief

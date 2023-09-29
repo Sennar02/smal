@@ -7,6 +7,8 @@ extern "C"
     #include <stddef.h>
     #include <stdint.h>
     #include <stdlib.h>
+
+    #include <stdio.h>
     // clang-format on
 }
 

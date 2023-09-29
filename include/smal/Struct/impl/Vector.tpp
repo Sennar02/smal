@@ -54,8 +54,16 @@ namespace smal
     bool
     Vector<T>::shrink(long pages)
     {
-        for ( long i = 0; i < pages; i++ ) {
-            bool oper = this->m_ptable->remove();
+        long start = this->m_ptable->get_size();
+
+        for ( long i = start - 1; i >= start - pages; i-- ) {
+            Page page = this->m_ptable->remove(i);
+
+            bool oper = this->m_origin->reclaim({
+                this->m_origin,
+                page.get_memory(),
+                page.get_length(),
+            });
 
             if ( oper == false )
                 return false;

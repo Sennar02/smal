@@ -1,7 +1,7 @@
 #include <smal/Struct/import.hpp>
 #include <stdio.h>
 
-static const long g_length = 8 * 1024 * 1024;
+static const long g_length = 64 * 6;
 static char*      g_memory = 0;
 
 int
@@ -22,24 +22,56 @@ main(int argc, const char* argv[])
 
     printf("Vector ( %3li ): [\n", vector.get_length());
 
-    for ( long i = 0; i < vector.get_length(); i++ )
-        printf("  %i\n", vector[i] = i);
+    for ( long i = 0; i < vector.get_length(); i++ ) {
+        if ( i % 16 == 0 )
+            printf("  ");
+
+        printf("%02i, ", vector[i] = (i + 100));
+
+        if ( (i + 1) % 16 == 0 )
+            printf("\n");
+    }
 
     vector.expand(2);
 
-    printf("]\nVector ( %3li ): [\n", vector.get_length());
+    printf("]\n\nVector ( %3li ): [\n", vector.get_length());
 
-    for ( long i = 0; i < vector.get_length(); i++ )
-        printf("  %i\n", vector[i] = i);
+    for ( long i = 0; i < vector.get_length(); i++ ) {
+        if ( i % 16 == 0 )
+            printf("  ");
+
+        printf("%02i, ", vector[i] = (i + 100));
+
+        if ( (i + 1) % 16 == 0 )
+            printf("\n");
+    }
 
     vector.shrink(1);
 
-    printf("]\nVector ( %3li ): [\n", vector.get_length());
+    printf("]\n\nVector ( %3li ): [\n", vector.get_length());
 
-    for ( long i = 0; i < vector.get_length(); i++ )
-        printf("  %i\n", vector[i]);
+    for ( long i = 0; i < vector.get_length(); i++ ) {
+        if ( i % 16 == 0 )
+            printf("  ");
 
-    printf("]\n");
+        printf("%02i, ", vector[i]);
+
+        if ( (i + 1) % 16 == 0 )
+            printf("\n");
+    }
+
+    printf("]\n\n");
+
+    for ( long i = 0; i < origin.get_length(); ) {
+        printf("%2hhx ", g_memory[i]);
+
+        i += 1;
+
+        if ( i % 4 == 0 )
+            printf("\t");
+        if ( i % 16 == 0 )
+            printf("\n");
+    }
 
     free(g_memory);
 
