@@ -28,7 +28,7 @@ namespace smal
          * @return long
          */
         long
-        get_length() const;
+        length() const;
 
         /**
          * @brief
@@ -36,7 +36,7 @@ namespace smal
          * @return long
          */
         long
-        get_size() const;
+        size() const;
 
         /**
          * @brief
@@ -44,7 +44,7 @@ namespace smal
          * @return long
          */
         long
-        get_page() const;
+        page() const;
 
         /**
          * @brief

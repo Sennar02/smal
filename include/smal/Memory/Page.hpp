@@ -16,6 +16,14 @@ namespace smal
         /**
          * @brief
          *
+         * @param memory
+         * @param length
+         */
+        Page(void* memory, long length);
+
+        /**
+         * @brief
+         *
          * @param origin
          * @param memory
          * @param length
@@ -25,19 +33,11 @@ namespace smal
         /**
          * @brief
          *
-         * @param memory
-         * @param length
-         */
-        Page(void* memory, long length);
-
-        /**
-         * @brief
-         *
          * @return true
          * @return false
          */
         bool
-        is_null() const;
+        isNull() const;
 
         /**
          * @brief
@@ -45,7 +45,7 @@ namespace smal
          * @return PageAlloc*
          */
         PageAlloc*
-        get_origin() const;
+        origin() const;
 
         /**
          * @brief
@@ -53,15 +53,7 @@ namespace smal
          * @return char*
          */
         char*
-        get_memory() const;
-
-        /**
-         * @brief
-         *
-         * @return char*
-         */
-        char*
-        get_finish() const;
+        memory() const;
 
         /**
          * @brief
@@ -69,7 +61,7 @@ namespace smal
          * @return long
          */
         long
-        get_length() const;
+        length() const;
 
     private:
         /**

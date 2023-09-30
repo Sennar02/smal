@@ -18,25 +18,25 @@ namespace smal
     { }
 
     long
-    PageTable::get_length() const
+    PageTable::length() const
     {
         return this->m_length;
     }
 
     long
-    PageTable::get_size() const
+    PageTable::size() const
     {
         return this->m_size;
     }
 
     long
-    PageTable::get_page() const
+    PageTable::page() const
     {
         return this->m_page;
     }
 
     bool
-    PageTable::is_full() const
+    PageTable::isFull() const
     {
         long length =
             this->m_size * sizeof(Item);
@@ -45,7 +45,7 @@ namespace smal
     }
 
     bool
-    PageTable::is_empty() const
+    PageTable::isEmpty() const
     {
         return this->m_size == 0;
     }
@@ -53,14 +53,14 @@ namespace smal
     bool
     PageTable::insert(const Page& page, word offset)
     {
-        if ( this->is_full() ) return false;
+        if ( this->isFull() ) return false;
 
-        if ( page.get_length() != this->m_page )
+        if ( page.length() != this->m_page )
             return false;
 
-        if ( page.is_null() == false ) {
+        if ( page.isNull() == false ) {
             this->m_memory[this->m_size] = {
-                .memory = page.get_memory(),
+                .memory = page.memory(),
                 .offset = offset,
             };
 
@@ -75,7 +75,7 @@ namespace smal
     {
         Item* last = 0;
 
-        if ( this->is_empty() ) return {};
+        if ( this->isEmpty() ) return {};
 
         if ( 0 <= index && index < this->m_size ) {
             this->m_size -= 1;

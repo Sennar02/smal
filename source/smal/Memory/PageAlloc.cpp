@@ -21,19 +21,19 @@ namespace smal
     }
 
     long
-    PageAlloc::get_length() const
+    PageAlloc::length() const
     {
         return this->m_length;
     }
 
     long
-    PageAlloc::get_size() const
+    PageAlloc::size() const
     {
         return this->m_size;
     }
 
     long
-    PageAlloc::get_page() const
+    PageAlloc::page() const
     {
         return this->m_page;
     }
@@ -85,8 +85,8 @@ namespace smal
             this->m_size -= 1;
 
             Memory::set(
-                page.get_memory(),
-                page.get_length(),
+                page.memory(),
+                page.length(),
                 0);
         }
 
@@ -96,12 +96,12 @@ namespace smal
     bool
     PageAlloc::reclaim(const Page& page)
     {
-        Node* node = (Node*) page.get_memory();
+        Node* node = (Node*) page.memory();
 
-        if ( page.get_origin() != this )
+        if ( page.origin() != this )
             return false;
 
-        if ( page.is_null() == false ) {
+        if ( page.isNull() == false ) {
             node->next = this->m_list;
 
             this->m_list = node;

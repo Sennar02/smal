@@ -21,7 +21,7 @@ namespace smal
     { }
 
     bool
-    Page::is_null() const
+    Page::isNull() const
     {
         return this->m_memory == 0 ||
                this->m_length == 0 ||
@@ -29,27 +29,20 @@ namespace smal
     }
 
     long
-    Page::get_length() const
+    Page::length() const
     {
         return this->m_length;
     }
 
     PageAlloc*
-    Page::get_origin() const
+    Page::origin() const
     {
         return this->m_origin;
     }
 
     char*
-    Page::get_memory() const
+    Page::memory() const
     {
         return (char*) this->m_memory;
-    }
-
-    char*
-    Page::get_finish() const
-    {
-        return (char*) this->m_memory +
-               this->m_length;
     }
 } // namespace smal

@@ -14,6 +14,53 @@ namespace smal
 
             return a / b;
         }
+
+        template <class Type>
+        Type
+        mod(Type a, Type b)
+        {
+            if ( b == 0 )
+                return b;
+
+            return a % b;
+        }
+
+        template <class Type>
+        Type
+        floor(Type a, Type b)
+        {
+            return div(a, b);
+        }
+
+        template <class Type>
+        Type
+        ceil(Type a, Type b)
+        {
+            if ( mod(a, b) != 0 )
+                return div(a, b) + 1;
+
+            return div(a, b);
+        }
+
+        template <class Type>
+        Type
+        min(Type a, Type b)
+        {
+            if ( a < b )
+                return a;
+
+            return b;
+        }
+
+        template <class Type>
+        Type
+        max(Type a, Type b)
+        {
+            if ( a < b )
+                return b;
+
+            return a;
+        }
     } // namespace Math
 
     namespace Common

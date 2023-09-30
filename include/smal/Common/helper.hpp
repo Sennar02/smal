@@ -18,6 +18,76 @@ namespace smal
         template <class Type>
         Type
         div(Type a, Type b);
+
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @param a
+         * @param b
+         *
+         * @return Type
+         */
+        template <class Type>
+        Type
+        mod(Type a, Type b);
+
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @param a
+         * @param b
+         *
+         * @return Type
+         */
+        template <class Type>
+        Type
+        floor(Type a, Type b);
+
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @param a
+         * @param b
+         *
+         * @return Type
+         */
+        template <class Type>
+        Type
+        ceil(Type a, Type b);
+
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @param a
+         * @param b
+         *
+         * @return Type
+         */
+        template <class Type>
+        Type
+        min(Type a, Type b);
+
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @param a
+         * @param b
+         *
+         * @return Type
+         */
+        template <class Type>
+        Type
+        max(Type a, Type b);
     } // namespace Math
 
     namespace Common

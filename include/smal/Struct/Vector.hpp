@@ -34,7 +34,7 @@ namespace smal
          * @return long
          */
         long
-        get_length() const;
+        length() const;
 
         /**
          * @brief
@@ -42,8 +42,93 @@ namespace smal
          * @return long
          */
         long
-        get_size() const;
+        size() const;
 
+        /**
+         * @brief
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        isFull() const;
+
+        /**
+         * @brief
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        isEmpty() const;
+
+        /**
+         * @brief
+         *
+         * @param length
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        resize(long length);
+
+        /**
+         * @brief
+         *
+         * @param item
+         * @param index
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        insert(const Type& item, long index = -1);
+
+        /**
+         * @brief
+         *
+         * @param item
+         * @param index
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        insert(Type&& item, long index = -1);
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        remove(long index = -1);
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return Type&
+         */
+        Type&
+        operator[](long index);
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return const Type&
+         */
+        const Type&
+        operator[](long index) const;
+
+    private:
         /**
          * @brief
          *
@@ -65,26 +150,6 @@ namespace smal
          */
         bool
         shrink(long pages);
-
-        /**
-         * @brief
-         *
-         * @param index
-         *
-         * @return Type&
-         */
-        Type&
-        operator[](long index);
-
-        /**
-         * @brief
-         *
-         * @param index
-         *
-         * @return const Type&
-         */
-        const Type&
-        operator[](long index) const;
 
     private:
         /**

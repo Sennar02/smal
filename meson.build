@@ -1,22 +1,22 @@
 project('smal', 'cpp',
-    version: '1.0.0'
-)
+    default_options: ['cpp_std=c++17'],
+    version:         '1.0.0',
+    license:         'MIT'
+    )
 
-include = include_directories('include')
-
+smal_header = include_directories('include')
 smal_memory = static_library('smal-memory',
-    'source/smal/Memory/define.cpp',
-    'source/smal/Memory/Page.cpp',
-    'source/smal/Memory/PageAlloc.cpp',
-    'source/smal/Memory/PageTable.cpp',
-    include_directories: include
+    sources: [
+        'source/smal/Memory/define.cpp',
+        'source/smal/Memory/Page.cpp',
+        'source/smal/Memory/PageAlloc.cpp',
+        'source/smal/Memory/PageTable.cpp'
+    ],
+    include_directories: smal_header
 )
 
-executable('smal',
-    'source/main.cpp',
-    include_directories: include,
+executable('smal', 'source/main.cpp',
+    include_directories: smal_header,
     link_with:           smal_memory,
-    override_options:    [
-        'cpp_std=c++17'
-    ]
+    link_args:           ''
 )
