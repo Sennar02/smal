@@ -18,6 +18,7 @@ namespace smal
 
     class Page;
     class PageAlloc;
+    class PageTable;
 } // namespace smal
 
 #endif // SMAL_MEMORY_DEFINE_HPP

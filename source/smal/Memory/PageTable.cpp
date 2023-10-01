@@ -15,12 +15,14 @@ namespace smal
         , m_length {length}
         , m_size {0}
         , m_page {page}
-    { }
+    {
+        this->m_length /= sizeof(Item);
+    }
 
     long
     PageTable::length() const
     {
-        return this->m_length;
+        return this->m_length * sizeof(Item);
     }
 
     long
@@ -38,10 +40,7 @@ namespace smal
     bool
     PageTable::isFull() const
     {
-        long length =
-            this->m_size * sizeof(Item);
-
-        return this->m_length == length;
+        return this->m_size == this->m_length;
     }
 
     bool
@@ -51,64 +50,48 @@ namespace smal
     }
 
     bool
-    PageTable::insert(const Page& page, word offset)
+    PageTable::insert(const Page& page, long offset)
     {
-        if ( this->isFull() ) return false;
+        if ( offset >= this->m_length ) return false;
 
-        if ( page.length() != this->m_page )
-            return false;
-
-        if ( page.isNull() == false ) {
-            this->m_memory[this->m_size] = {
-                .memory = page.memory(),
-                .offset = offset,
-            };
-
+        if ( this->m_memory[offset] == 0 ) {
+            this->m_memory[offset] = page.memory();
             this->m_size += 1;
+
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     Page
-    PageTable::remove(long index)
+    PageTable::remove(long offset)
     {
-        Item* last = 0;
+        char* memory = 0;
+        long  length = this->m_page;
 
-        if ( this->isEmpty() ) return {};
+        if ( offset < this->m_length ) {
+            memory = this->m_memory[offset];
 
-        if ( 0 <= index && index < this->m_size ) {
+            this->m_memory[offset] = 0;
             this->m_size -= 1;
-
-            last = &Common::swap(
-                this->m_memory[this->m_size],
-                this->m_memory[index]);
-
-            return {
-                last->memory,
-                this->m_page,
-            };
         }
 
-        return {};
+        return {memory, length};
     }
 
     char*
     PageTable::lookup(long index, long scale) const
     {
-        long start = 0;
-        long limit = 0;
-        long byte  = index * scale;
+        long byte = index * scale;
+        long page = Math::div(byte, this->m_page);
+        long dist = Math::mod(byte, this->m_page);
 
-        for ( long i = 0; i < this->m_size; i++ ) {
-            start = this->m_page * this->m_memory[i].offset;
-            limit = this->m_page + start;
-
-            if ( start <= byte && byte < limit )
-                return this->m_memory[i].memory + (byte - start);
+        if ( page < this->m_length ) {
+            if ( this->m_memory[page] != 0 )
+                return this->m_memory[page] + dist;
         }
 
         return 0;
     }
-
 } // namespace smal

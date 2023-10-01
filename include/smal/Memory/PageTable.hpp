@@ -75,18 +75,18 @@ namespace smal
          * @return false
          */
         bool
-        insert(const Page& page, word offset);
+        insert(const Page& page, long offset);
 
         /**
          * @brief
          *
-         * @param index
+         * @param offset
          *
          * @return true
          * @return false
          */
         Page
-        remove(long index);
+        remove(long offset);
 
         /**
          * @brief
@@ -100,11 +100,7 @@ namespace smal
         lookup(long index, long scale = 1) const;
 
     public:
-        struct Item
-        {
-            char* memory;
-            word  offset;
-        };
+        using Item = char*;
 
         /**
          * @brief

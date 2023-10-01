@@ -14,3 +14,7 @@ smal_memory = static_library('smal-memory',
     ],
     include_directories: smal_header
 )
+
+executable('smal', 'source/main.cpp',
+    include_directories: smal_header,
+    link_with:           smal_memory)

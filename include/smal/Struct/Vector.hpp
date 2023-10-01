@@ -11,12 +11,6 @@ namespace smal
     public:
         /**
          * @brief
-         */
-        static const long TYPE_SIZE = sizeof(Type);
-
-    public:
-        /**
-         * @brief
          *
          * @param origin
          * @param ptable

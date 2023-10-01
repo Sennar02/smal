@@ -20,7 +20,7 @@ namespace smal
          * @param length
          * @param page
          */
-        PageAlloc(void* memory, long length, long page = 0);
+        PageAlloc(void* memory, long length, long page);
 
         /**
          * @brief

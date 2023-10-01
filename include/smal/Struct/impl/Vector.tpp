@@ -20,7 +20,7 @@ namespace smal
         long page = this->m_ptable->page();
         long size = this->m_ptable->size();
 
-        return Math::floor(page, TYPE_SIZE) * size;
+        return Math::floor(page, (long) sizeof(Type)) * size;
     }
 
     template <class Type>
@@ -51,7 +51,7 @@ namespace smal
         long page = this->m_ptable->page();
         long size = this->m_ptable->size();
 
-        long pages = Math::ceil(length * TYPE_SIZE, page);
+        long pages = Math::ceil(length * (long) sizeof(Type), page);
 
         if ( pages > size )
             return this->expand(pages - size);
@@ -131,8 +131,8 @@ namespace smal
     Type&
     Vector<Type>::operator[](long index)
     {
-        char* addr = this->m_ptable->lookup(
-            index, TYPE_SIZE);
+        char* addr = this->m_ptable
+                         ->lookup(index, sizeof(Type));
 
         return *(Type*) addr;
     }
@@ -141,8 +141,8 @@ namespace smal
     const Type&
     Vector<Type>::operator[](long index) const
     {
-        char* addr = this->m_ptable->lookup(
-            index, TYPE_SIZE);
+        char* addr = this->m_ptable
+                         ->lookup(index, sizeof(Type));
 
         return *(Type*) addr;
     }
