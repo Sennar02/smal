@@ -2,102 +2,64 @@
 
 namespace smal
 {
-    template <class Type>
-    Vector<Type>::Vector(PageAlloc& origin, PageTable& ptable)
-        : m_origin {&origin}
-        , m_ptable {&ptable}
+    template <class Type, template <class> class Arr>
+    Vector<Type, Arr>::Vector()
+        : m_array {}
         , m_size {0}
     { }
 
-    template <class Type>
-    Vector<Type>::~Vector()
+    template <class Type, template <class> class Arr>
+    Vector<Type, Arr>::Vector(const Arr<Type>& array)
+        : m_array {Common::move(array)}
+        , m_size {0}
     { }
 
-    template <class Type>
-    long
-    Vector<Type>::length() const
-    {
-        long page = this->m_ptable->page();
-        long size = this->m_ptable->size();
+    template <class Type, template <class> class Arr>
+    Vector<Type, Arr>::~Vector()
+    { }
 
-        return Math::floor(page, (long) sizeof(Type)) * size;
+    template <class Type, template <class> class Arr>
+    long
+    Vector<Type, Arr>::length() const
+    {
+        return this->m_array.length();
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
     long
-    Vector<Type>::size() const
+    Vector<Type, Arr>::size() const
     {
         return this->m_size;
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
     bool
-    Vector<Type>::isFull() const
+    Vector<Type, Arr>::isFull() const
     {
         return this->m_size == this->length();
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
     bool
-    Vector<Type>::isEmpty() const
+    Vector<Type, Arr>::isEmpty() const
     {
         return this->m_size == 0;
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
     bool
-    Vector<Type>::resize(long length)
-    {
-        long page = this->m_ptable->page();
-        long size = this->m_ptable->size();
-
-        long pages = Math::ceil(length * (long) sizeof(Type), page);
-
-        if ( pages > size )
-            return this->expand(pages - size);
-
-        return this->shrink(size - pages);
-    }
-
-    template <class Type>
-    bool
-    Vector<Type>::insert(const Type& item, long index)
+    Vector<Type, Arr>::insert(const Type& value, long index)
     {
         auto& self = *this;
 
-        if ( index == -1 ) index = this->m_size;
+        if ( index == -1 )
+            index = this->m_size;
 
         if ( this->isFull() == false ) {
-            index = Math::min(index, this->m_size);
-
             for ( long i = this->m_size; i > index; i-- )
                 self[i] = Common::move(self[i - 1]);
 
-            this->m_size += 1;
-
-            Common::create(self[index], item);
-
-            return true;
-        }
-
-        return false;
-    }
-
-    template <class Type>
-    bool
-    Vector<Type>::insert(Type&& item, long index)
-    {
-        auto& self = *this;
-
-        if ( index == -1 ) index = this->m_size;
-
-        if ( this->isFull() == false ) {
-            index = Math::min(index, this->m_size);
-
-            for ( long i = this->m_size; i > index; i-- )
-                self[i] = Common::move(self[i - 1]);
-
-            Common::create(self[index], Common::move(item));
+            Common::create(self[index], value);
 
             this->m_size += 1;
             return true;
@@ -106,17 +68,38 @@ namespace smal
         return false;
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
     bool
-    Vector<Type>::remove(long index)
+    Vector<Type, Arr>::insert(Type&& value, long index)
     {
         auto& self = *this;
 
-        if ( index == -1 ) index = this->m_size - 1;
+        if ( index == -1 )
+            index = this->m_size;
+
+        if ( this->isFull() == false ) {
+            for ( long i = this->m_size; i > index; i-- )
+                self[i] = Common::move(self[i - 1]);
+
+            Common::create(self[index], Common::move(value));
+
+            this->m_size += 1;
+            return true;
+        }
+
+        return false;
+    }
+
+    template <class Type, template <class> class Arr>
+    bool
+    Vector<Type, Arr>::remove(long index)
+    {
+        auto& self = *this;
+
+        if ( index == -1 )
+            index = this->m_size - 1;
 
         if ( this->isEmpty() == false ) {
-            index = Math::min(index, this->m_size - 1);
-
             for ( long i = index; i < this->m_size - 1; i++ )
                 self[i] = Common::move(self[i + 1]);
 
@@ -127,65 +110,44 @@ namespace smal
         return false;
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
+    bool
+    Vector<Type, Arr>::resize(long length)
+    {
+        return this->m_array.resize(length);
+    }
+
+    template <class Type, template <class> class Arr>
     Type&
-    Vector<Type>::operator[](long index)
+    Vector<Type, Arr>::access(long index)
     {
-        char* addr = this->m_ptable
-                         ->lookup(index, sizeof(Type));
+        if ( index == -1 )
+            index = this->m_size - 1;
 
-        return *(Type*) addr;
+        return this->m_array[index];
     }
 
-    template <class Type>
+    template <class Type, template <class> class Arr>
     const Type&
-    Vector<Type>::operator[](long index) const
+    Vector<Type, Arr>::access(long index) const
     {
-        char* addr = this->m_ptable
-                         ->lookup(index, sizeof(Type));
+        if ( index == -1 )
+            index = this->m_size - 1;
 
-        return *(Type*) addr;
+        return this->m_array[index];
     }
 
-    template <class Type>
-    bool
-    Vector<Type>::expand(long pages)
+    template <class Type, template <class> class Arr>
+    Type&
+    Vector<Type, Arr>::operator[](long index)
     {
-        long start = this->m_ptable->size();
-
-        for ( long i = start; i < start + pages; i++ ) {
-            Page page = this->m_origin->reserve();
-            bool oper = this->m_ptable->insert(page, i);
-
-            if ( oper == false ) {
-                this->m_origin->reclaim(page);
-
-                return false;
-            }
-        }
-
-        return true;
+        return this->m_array[index];
     }
 
-    template <class Type>
-    bool
-    Vector<Type>::shrink(long pages)
+    template <class Type, template <class> class Arr>
+    const Type&
+    Vector<Type, Arr>::operator[](long index) const
     {
-        long start = this->m_ptable->size();
-
-        for ( long i = start - 1; i >= start - pages; i-- ) {
-            Page page = this->m_ptable->remove(i);
-
-            bool oper = this->m_origin->reclaim({
-                this->m_origin,
-                page.memory(),
-                page.length(),
-            });
-
-            if ( oper == false )
-                return false;
-        }
-
-        return true;
+        return this->m_array[index];
     }
 } // namespace smal

@@ -64,11 +64,10 @@ namespace smal
         return false;
     }
 
-    Page
+    char*
     PageTable::remove(long offset)
     {
         char* memory = 0;
-        long  length = this->m_page;
 
         if ( offset < this->m_length ) {
             memory = this->m_memory[offset];
@@ -77,11 +76,11 @@ namespace smal
             this->m_size -= 1;
         }
 
-        return {memory, length};
+        return memory;
     }
 
     char*
-    PageTable::lookup(long index, long scale) const
+    PageTable::search(long index, long scale) const
     {
         long byte = index * scale;
         long page = Math::div(byte, this->m_page);

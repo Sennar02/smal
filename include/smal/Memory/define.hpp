@@ -3,22 +3,15 @@
 
 namespace smal
 {
-    namespace Memory
-    {
-        /**
-         * @brief
-         *
-         * @param memory
-         * @param length
-         * @param byte
-         */
-        void
-        set(void* memory, long length, char byte);
-    }; // namespace Memory
-
     class Page;
     class PageAlloc;
     class PageTable;
+
+    template <class Type>
+    class Array;
+
+    template <class Type>
+    class PagedArray;
 } // namespace smal
 
 #endif // SMAL_MEMORY_DEFINE_HPP

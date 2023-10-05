@@ -5,17 +5,21 @@
 
 namespace smal
 {
-    template <class Type>
+    template <class Type, template <class> class Arr = Array>
     class Vector
     {
     public:
         /**
          * @brief
-         *
-         * @param origin
-         * @param ptable
          */
-        Vector(PageAlloc& origin, PageTable& ptable);
+        Vector();
+
+        /**
+         * @brief
+         *
+         * @param array
+         */
+        Vector(const Arr<Type>& array);
 
         /**
          * @brief
@@ -59,37 +63,26 @@ namespace smal
         /**
          * @brief
          *
-         * @param length
-         *
-         * @return true
-         * @return false
-         */
-        bool
-        resize(long length);
-
-        /**
-         * @brief
-         *
-         * @param item
+         * @param value
          * @param index
          *
          * @return true
          * @return false
          */
         bool
-        insert(const Type& item, long index = -1);
+        insert(const Type& value, long index = -1);
 
         /**
          * @brief
          *
-         * @param item
+         * @param value
          * @param index
          *
          * @return true
          * @return false
          */
         bool
-        insert(Type&& item, long index = -1);
+        insert(Type&& value, long index = -1);
 
         /**
          * @brief
@@ -101,6 +94,37 @@ namespace smal
          */
         bool
         remove(long index = -1);
+
+        /**
+         * @brief
+         *
+         * @param length
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        resize(long length);
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return Type&
+         */
+        Type&
+        access(long index = -1);
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return const Type&
+         */
+        const Type&
+        access(long index = -1) const;
 
         /**
          * @brief
@@ -125,36 +149,8 @@ namespace smal
     private:
         /**
          * @brief
-         *
-         * @param pages
-         *
-         * @return true
-         * @return false
          */
-        bool
-        expand(long pages);
-
-        /**
-         * @brief
-         *
-         * @param pages
-         *
-         * @return true
-         * @return false
-         */
-        bool
-        shrink(long pages);
-
-    private:
-        /**
-         * @brief
-         */
-        PageAlloc* m_origin;
-
-        /**
-         * @brief
-         */
-        PageTable* m_ptable;
+        Arr<Type> m_array;
 
         /**
          * @brief

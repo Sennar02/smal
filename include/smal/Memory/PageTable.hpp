@@ -82,10 +82,9 @@ namespace smal
          *
          * @param offset
          *
-         * @return true
-         * @return false
+         * @return char*
          */
-        Page
+        char*
         remove(long offset);
 
         /**
@@ -97,7 +96,7 @@ namespace smal
          * @return char*
          */
         char*
-        lookup(long index, long scale = 1) const;
+        search(long index, long scale = 1) const;
 
     public:
         using Item = char*;
