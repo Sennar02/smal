@@ -12,9 +12,14 @@ smal_memory = static_library('smal-memory',
         'source/smal/Memory/PageAlloc.cpp',
         'source/smal/Memory/PageTable.cpp'
     ],
-    include_directories: smal_header
+    include_directories: [smal_header]
 )
 
+smal_depend = [
+    dependency('sfml-graphics', static: true)
+]
+
 executable('smal', 'source/main.cpp',
-    include_directories: smal_header,
-    link_with:           smal_memory)
+    include_directories: [smal_header],
+    link_with:           [smal_memory],
+    dependencies:        [smal_depend])

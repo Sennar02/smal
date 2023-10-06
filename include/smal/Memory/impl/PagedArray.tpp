@@ -3,7 +3,7 @@
 namespace smal
 {
     template <class Type>
-    PagedArray<Type>::PagedArray(PageAlloc& origin)
+    PagedArray<Type>::PagedArray(PageAlloc& origin, long length)
         : m_table {}
         , m_origin {&origin}
     {
@@ -13,13 +13,19 @@ namespace smal
             page.memory(),
             page.length(),
             page.length());
+
+        if ( length != 0 )
+            this->resize(length);
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PageAlloc& origin, PageTable& table)
+    PagedArray<Type>::PagedArray(PageAlloc& origin, PageTable& table, long length)
         : m_table {Common::move(table)}
         , m_origin {&origin}
-    { }
+    {
+        if ( length != 0 )
+            this->resize(length);
+    }
 
     template <class Type>
     PagedArray<Type>::PagedArray(PageAlloc& origin, void* memory, long length)
@@ -57,7 +63,7 @@ namespace smal
         long size = this->m_table.size();
 
         // Length in pages.
-        length = Math::ceil(length * SIZE, page);
+        length = Math::ceil(length, Math::floor(page, SIZE));
 
         if ( length > size )
             return this->attach(length - size);

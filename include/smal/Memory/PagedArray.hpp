@@ -17,16 +17,18 @@ namespace smal
          * @brief
          *
          * @param origin
+         * @param length
          */
-        PagedArray(PageAlloc& origin);
+        PagedArray(PageAlloc& origin, long length = 0);
 
         /**
          * @brief
          *
          * @param origin
          * @param table
+         * @param length
          */
-        PagedArray(PageAlloc& origin, PageTable& table);
+        PagedArray(PageAlloc& origin, PageTable& table, long length = 0);
 
         /**
          * @brief

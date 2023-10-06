@@ -36,10 +36,12 @@ namespace smal
         Type
         ceil(Type a, Type b)
         {
-            if ( mod(a, b) != 0 )
-                return div(a, b) + 1;
+            Type res = div(a, b);
 
-            return div(a, b);
+            if ( mod(a, b) != 0 )
+                return res + 1;
+
+            return res;
         }
 
         template <class Type>
