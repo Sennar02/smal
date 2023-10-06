@@ -116,7 +116,7 @@ namespace smal
     PagedArray<Type>::operator[](long index)
     {
         char* addr = this->m_table
-                         .search(index, SIZE);
+                         .lookup(index, SIZE);
 
         return *(Type*) addr;
     }
@@ -126,7 +126,7 @@ namespace smal
     PagedArray<Type>::operator[](long index) const
     {
         char* addr = this->m_table
-                         .search(index, SIZE);
+                         .lookup(index, SIZE);
 
         return *(Type*) addr;
     }

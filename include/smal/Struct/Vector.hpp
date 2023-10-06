@@ -5,7 +5,7 @@
 
 namespace smal
 {
-    template <class Type, template <class> class Arr = Array>
+    template <class Type, template <class> class Array = FixedArray>
     class Vector
     {
     public:
@@ -19,7 +19,7 @@ namespace smal
          *
          * @param array
          */
-        Vector(const Arr<Type>& array);
+        Vector(const Array<Type>& array);
 
         /**
          * @brief
@@ -150,7 +150,7 @@ namespace smal
         /**
          * @brief
          */
-        Arr<Type> m_array;
+        Array<Type> m_array;
 
         /**
          * @brief

@@ -9,6 +9,7 @@ extern "C"
     #include <stdlib.h>
 
     #include <stdio.h>
+    #include <math.h>
     // clang-format on
 }
 

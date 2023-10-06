@@ -8,7 +8,7 @@
 #include <smal/Memory/PageAlloc.hpp>
 #include <smal/Memory/PageTable.hpp>
 
-#include <smal/Memory/Array.hpp>
+#include <smal/Memory/FixedArray.hpp>
 #include <smal/Memory/PagedArray.hpp>
 
 #endif // SMAL_MEMORY_IMPORT_HPP

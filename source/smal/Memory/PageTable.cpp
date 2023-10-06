@@ -80,7 +80,7 @@ namespace smal
     }
 
     char*
-    PageTable::search(long index, long scale) const
+    PageTable::lookup(long index, long scale) const
     {
         long byte = index * scale;
         long page = Math::div(byte, this->m_page);

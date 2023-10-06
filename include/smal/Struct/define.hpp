@@ -3,7 +3,7 @@
 
 namespace smal
 {
-    template <class Type, template <class> class Arr>
+    template <class Type, template <class> class Array>
     class Vector;
 } // namespace smal
 

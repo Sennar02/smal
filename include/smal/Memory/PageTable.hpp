@@ -96,7 +96,7 @@ namespace smal
          * @return char*
          */
         char*
-        search(long index, long scale = 1) const;
+        lookup(long index, long scale = 1) const;
 
     public:
         using Item = char*;

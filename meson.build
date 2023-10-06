@@ -22,4 +22,5 @@ smal_depend = [
 executable('smal', 'source/main.cpp',
     include_directories: [smal_header],
     link_with:           [smal_memory],
+    link_args:           '-lm',
     dependencies:        [smal_depend])

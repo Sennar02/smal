@@ -13,10 +13,10 @@ main(int argc, const char* argv[])
     };
 
     vec.resize(16);
-    vec.insert(0);
+    vec.insert(1);
 
-    for ( long i = 0; i < vec.length(); i++ )
-        printf("%i\n", vec.access(i));
+    for ( long i = 0; i < vec.size(); i++ )
+        printf("%i\n", vec[i]);
 
     return 0;
 }

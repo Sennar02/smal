@@ -5,5 +5,6 @@
 #include <smal/Struct/define.hpp>
 
 #include <smal/Struct/Vector.hpp>
+#include <smal/Struct/SparseMap.hpp>
 
 #endif // SMAL_STRUCT_IMPORT_HPP

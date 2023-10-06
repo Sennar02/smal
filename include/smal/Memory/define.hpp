@@ -8,7 +8,7 @@ namespace smal
     class PageTable;
 
     template <class Type>
-    class Array;
+    class FixedArray;
 
     template <class Type>
     class PagedArray;

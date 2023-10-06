@@ -4,7 +4,7 @@
 namespace smal
 {
     template <class Type>
-    class Array
+    class FixedArray
     {
     public:
         static const long SIZE = sizeof(Type);
@@ -16,12 +16,12 @@ namespace smal
          * @param memory
          * @param length
          */
-        Array(void* memory, long length);
+        FixedArray(void* memory, long length);
 
         /**
          * @brief
          */
-        virtual ~Array();
+        virtual ~FixedArray();
 
         /**
          * @brief
@@ -75,6 +75,6 @@ namespace smal
     };
 } // namespace smal
 
-#include <smal/Memory/impl/Array.tpp>
+#include <smal/Memory/impl/FixedArray.tpp>
 
 #endif // SMAL_MEMORY_ARRAY_HPP
