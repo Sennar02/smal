@@ -1,30 +1,30 @@
-#ifndef SMAL_STRUCT_VECTOR_HPP
-#define SMAL_STRUCT_VECTOR_HPP
+#ifndef SMAL_STRUCT_SPARSE_SET_HPP
+#define SMAL_STRUCT_SPARSE_SET_HPP
 
 #include <smal/Struct/define.hpp>
 
 namespace smal
 {
     template <class Type, template <class> class Array = PagedArray>
-    class Vector
+    class SparseSet
     {
     public:
         /**
          * @brief
          */
-        Vector();
+        SparseSet();
 
         /**
          * @brief
          *
+         * @param sparse
+         * @param packed
          * @param values
          */
-        Vector(const Array<Type>& values);
-
-        /**
-         * @brief
-         */
-        virtual ~Vector();
+        SparseSet(
+            const PagedArray<long>& sparse,
+            const Array<long>&      packed,
+            const Array<Type>&      values);
 
         /**
          * @brief
@@ -63,6 +63,38 @@ namespace smal
         /**
          * @brief
          *
+         * @return PagedArray<long>&
+         */
+        PagedArray<long>&
+        sparse();
+
+        /**
+         * @brief
+         *
+         * @return const PagedArray<long>&
+         */
+        const PagedArray<long>&
+        sparse() const;
+
+        /**
+         * @brief
+         *
+         * @return Array<long>&
+         */
+        Array<long>&
+        packed();
+
+        /**
+         * @brief
+         *
+         * @return const Array<long>&
+         */
+        const Array<long>&
+        packed() const;
+
+        /**
+         * @brief
+         *
          * @return Array<Type>&
          */
         Array<Type>&
@@ -79,48 +111,60 @@ namespace smal
         /**
          * @brief
          *
+         * @param item
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        contains(long item) const;
+
+        /**
+         * @brief
+         *
+         * @param item
          * @param value
-         * @param index
          *
          * @return true
          * @return false
          */
         bool
-        insert(const Type& value, long index = -1);
+        insert(long item, const Type& value);
 
         /**
          * @brief
          *
+         * @param item
          * @param value
-         * @param index
          *
          * @return true
          * @return false
          */
         bool
-        insert(Type&& value, long index = -1);
+        insert(long item, Type&& value);
 
         /**
          * @brief
          *
-         * @param index
+         * @param item
          *
          * @return true
          * @return false
          */
         bool
-        remove(long index = -1);
+        remove(long item);
 
         /**
          * @brief
          *
-         * @param length
+         * @param sparse
+         * @param packed
          *
          * @return true
          * @return false
          */
         bool
-        resize(long length);
+        resize(long sparse, long packed);
 
         /**
          * @brief
@@ -146,6 +190,16 @@ namespace smal
         /**
          * @brief
          */
+        PagedArray<long> m_sparse;
+
+        /**
+         * @brief
+         */
+        Array<long> m_packed;
+
+        /**
+         * @brief
+         */
         Array<Type> m_array;
 
         /**
@@ -155,6 +209,6 @@ namespace smal
     };
 } // namespace smal
 
-#include <smal/Struct/impl/Vector.tpp>
+#include <smal/Struct/impl/SparseSet.tpp>
 
-#endif // SMAL_STRUCT_VECTOR_HPP
+#endif // SMAL_STRUCT_SPARSE_SET_HPP

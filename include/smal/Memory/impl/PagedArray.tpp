@@ -124,7 +124,7 @@ namespace smal
         auto item =
             this->m_table.lookup(index, SIZE);
 
-        return (Type&) *item;
+        return *(Type*) item;
     }
 
     template <class Type>
@@ -134,6 +134,6 @@ namespace smal
         auto item =
             this->m_table.lookup(index, SIZE);
 
-        return (const Type&) *item;
+        return *(const Type*) item;
     }
 } // namespace smal

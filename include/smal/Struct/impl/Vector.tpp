@@ -49,13 +49,24 @@ namespace smal
     }
 
     template <class Type, template <class> class Array>
+    Array<Type>&
+    Vector<Type, Array>::values()
+    {
+        return this->m_array;
+    }
+
+    template <class Type, template <class> class Array>
+    const Array<Type>&
+    Vector<Type, Array>::values() const
+    {
+        return this->m_array;
+    }
+
+    template <class Type, template <class> class Array>
     bool
     Vector<Type, Array>::insert(const Type& value, long index)
     {
         auto& self = *this;
-
-        if ( this->isFull() )
-            this->resize((this->length() + 10) * 1.5f);
 
         if ( index < 0 ) index = this->m_size;
 
@@ -78,9 +89,6 @@ namespace smal
     Vector<Type, Array>::insert(Type&& value, long index)
     {
         auto& self = *this;
-
-        if ( this->isFull() )
-            this->resize((this->length() + 10) * 1.5f);
 
         if ( index < 0 ) index = this->m_size;
 
@@ -128,28 +136,11 @@ namespace smal
 
     template <class Type, template <class> class Array>
     Type&
-    Vector<Type, Array>::access(long index)
-    {
-        if ( index < 0 )
-            index = this->m_size + index;
-
-        return this->m_array[index];
-    }
-
-    template <class Type, template <class> class Array>
-    const Type&
-    Vector<Type, Array>::access(long index) const
-    {
-        if ( index < 0 )
-            index = this->m_size + index;
-
-        return this->m_array[index];
-    }
-
-    template <class Type, template <class> class Array>
-    Type&
     Vector<Type, Array>::operator[](long index)
     {
+        if ( index < 0 )
+            index = this->m_size + index;
+
         return this->m_array[index];
     }
 
@@ -157,6 +148,9 @@ namespace smal
     const Type&
     Vector<Type, Array>::operator[](long index) const
     {
+        if ( index < 0 )
+            index = this->m_size + index;
+
         return this->m_array[index];
     }
 } // namespace smal

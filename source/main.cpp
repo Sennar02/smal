@@ -1,5 +1,11 @@
 #include <smal/Struct/import.hpp>
 
+struct Pos
+{
+    float x;
+    float y;
+};
+
 int
 main(int argc, const char* argv[])
 {
@@ -8,12 +14,19 @@ main(int argc, const char* argv[])
 
     smal::PageAlloc origin = {malloc(mem), mem, pag};
 
-    smal::Vector<void*> vec;
+    smal::SparseSet<Pos, smal::PagedArray> set = {
+        {origin},
+        {origin},
+        {origin},
+    };
 
-    vec = smal::PagedArray<void*> {origin, 32};
+    set.resize(1, 1);
+    set.insert(0, {0, 0});
 
-    for ( long i = 0; i < vec.length(); i++ )
-        printf("%p\n", vec[i]);
+    for ( long i = 0; i < set.size(); i++ )
+        printf("%f, %f\n",
+            set[i].x,
+            set[i].y);
 
     return 0;
 }
