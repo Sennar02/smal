@@ -2,6 +2,8 @@
 
 namespace smal
 {
+    using namespace Common;
+
     template <class Type, template <class> class Array>
     Vector<Type, Array>::Vector()
         : m_array {}
@@ -10,7 +12,7 @@ namespace smal
 
     template <class Type, template <class> class Array>
     Vector<Type, Array>::Vector(const Array<Type>& array)
-        : m_array {Common::move(array)}
+        : m_array {move(array)}
         , m_size {0}
     { }
 
@@ -61,9 +63,9 @@ namespace smal
             this->m_size += 1;
 
             for ( long i = this->m_size; i > index; i-- )
-                self[i] = Common::move(self[i - 1]);
+                self[i] = move(self[i - 1]);
 
-            Common::create(self[index], value);
+            create(self[index], value);
 
             return true;
         }
@@ -86,9 +88,9 @@ namespace smal
             this->m_size += 1;
 
             for ( long i = this->m_size; i > index; i-- )
-                self[i] = Common::move(self[i - 1]);
+                self[i] = move(self[i - 1]);
 
-            Common::create(self[index], Common::move(value));
+            create(self[index], move(value));
 
             return true;
         }
@@ -109,7 +111,7 @@ namespace smal
             this->m_size -= 1;
 
             for ( long i = index; i < this->m_size - 1; i++ )
-                self[i] = Common::move(self[i + 1]);
+                self[i] = move(self[i + 1]);
 
             return true;
         }

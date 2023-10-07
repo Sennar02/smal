@@ -3,6 +3,12 @@
 namespace smal
 {
     template <class Type>
+    FixedArray<Type>::FixedArray()
+        : m_memory {0}
+        , m_length {0}
+    { }
+
+    template <class Type>
     FixedArray<Type>::FixedArray(void* memory, long length)
         : m_memory {(Type*) memory}
         , m_length {length}

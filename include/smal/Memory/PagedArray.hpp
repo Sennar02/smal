@@ -15,6 +15,11 @@ namespace smal
     public:
         /**
          * @brief
+         */
+        PagedArray();
+
+        /**
+         * @brief
          *
          * @param origin
          * @param length

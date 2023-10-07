@@ -5,7 +5,7 @@
 
 namespace smal
 {
-    template <class Type, template <class> class Array = FixedArray>
+    template <class Type, template <class> class Array = PagedArray>
     class Vector
     {
     public:

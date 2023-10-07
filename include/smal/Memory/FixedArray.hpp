@@ -12,6 +12,11 @@ namespace smal
     public:
         /**
          * @brief
+         */
+        FixedArray();
+
+        /**
+         * @brief
          *
          * @param memory
          * @param length

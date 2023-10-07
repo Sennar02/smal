@@ -2,6 +2,14 @@
 
 namespace smal
 {
+    using namespace Common;
+
+    template <class Type>
+    PagedArray<Type>::PagedArray()
+        : m_table {}
+        , m_origin {0}
+    { }
+
     template <class Type>
     PagedArray<Type>::PagedArray(PageAlloc& origin, long length)
         : m_table {}
@@ -9,22 +17,20 @@ namespace smal
     {
         Page page = origin.reserve();
 
-        Common::create(this->m_table,
+        this->m_table = create(this->m_table,
             page.memory(),
             page.length(),
             page.length());
 
-        if ( length != 0 )
-            this->resize(length);
+        this->resize(length);
     }
 
     template <class Type>
     PagedArray<Type>::PagedArray(PageAlloc& origin, PageTable& table, long length)
-        : m_table {Common::move(table)}
+        : m_table {move(table)}
         , m_origin {&origin}
     {
-        if ( length != 0 )
-            this->resize(length);
+        this->resize(length);
     }
 
     template <class Type>
@@ -34,7 +40,7 @@ namespace smal
     {
         long page = origin.page();
 
-        Common::create(this->m_table,
+        this->m_table = create(this->m_table,
             memory,
             length,
             page);
@@ -50,9 +56,9 @@ namespace smal
     {
         long page = this->m_table.page();
         long size = this->m_table.size();
+        long fact = Math::floor(page, SIZE); // items per page.
 
-        // Length in values.
-        return Math::floor(page, SIZE) * size;
+        return fact * size;
     }
 
     template <class Type>
@@ -61,9 +67,9 @@ namespace smal
     {
         long page = this->m_table.page();
         long size = this->m_table.size();
+        long fact = Math::floor(page, SIZE); // items per page.
 
-        // Length in pages.
-        length = Math::ceil(length, Math::floor(page, SIZE));
+        length = Math::ceil(length, fact);
 
         if ( length > size )
             return this->attach(length - size);
@@ -76,16 +82,16 @@ namespace smal
     PagedArray<Type>::attach(long pages)
     {
         long start = this->m_table.size();
-        Page page;
 
         for ( long i = start; i < start + pages; i++ ) {
-            page = this->m_origin->reserve();
+            Page page = this->m_origin->reserve();
 
-            if ( this->m_table.insert(page, i) == false ) {
-                this->m_origin->reclaim(page);
+            if ( this->m_table.insert(page, i) )
+                continue;
 
-                return false;
-            }
+            this->m_origin->reclaim(page);
+
+            return false;
         }
 
         return true;
@@ -96,13 +102,13 @@ namespace smal
     PagedArray<Type>::detach(long pages)
     {
         long start = this->m_table.size();
-        Page page;
 
         for ( long i = start - 1; i >= start - pages; i-- ) {
-            Common::create(page,
+            Page page = {
                 this->m_origin,
                 this->m_table.remove(i),
-                this->m_table.page());
+                this->m_table.page(),
+            };
 
             if ( this->m_origin->reclaim(page) == false )
                 return false;
@@ -115,19 +121,19 @@ namespace smal
     Type&
     PagedArray<Type>::operator[](long index)
     {
-        char* addr = this->m_table
-                         .lookup(index, SIZE);
+        auto item =
+            this->m_table.lookup(index, SIZE);
 
-        return *(Type*) addr;
+        return (Type&) *item;
     }
 
     template <class Type>
     const Type&
     PagedArray<Type>::operator[](long index) const
     {
-        char* addr = this->m_table
-                         .lookup(index, SIZE);
+        auto item =
+            this->m_table.lookup(index, SIZE);
 
-        return *(Type*) addr;
+        return (const Type&) *item;
     }
 } // namespace smal
