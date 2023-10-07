@@ -1,7 +1,7 @@
 #ifndef SMAL_STRUCT_VECTOR_HPP
 #define SMAL_STRUCT_VECTOR_HPP
 
-#include <smal/Struct/depend.hpp>
+#include <smal/Struct/define.hpp>
 
 namespace smal
 {

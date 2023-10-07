@@ -1,6 +1,8 @@
 #ifndef SMAL_MEMORY_HELPER_HPP
 #define SMAL_MEMORY_HELPER_HPP
 
+#include <smal/Memory/define.hpp>
+
 namespace smal::Memory
 {
     /**

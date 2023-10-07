@@ -1,7 +1,7 @@
 #ifndef SMAL_STRUCT_SPARSE_SET_HPP
 #define SMAL_STRUCT_SPARSE_SET_HPP
 
-#include <smal/Struct/depend.hpp>
+#include <smal/Struct/define.hpp>
 
 namespace smal
 {
@@ -12,6 +12,8 @@ namespace smal
         SparseMap();
 
         SparseMap(const PagedArray<long>& table, const PagedArray<long>& dense, const Array<Type>& array);
+
+        SparseMap(PageAlloc& origin, const Array<Type>& array);
 
         long
         length() const;
@@ -39,12 +41,6 @@ namespace smal
 
         bool
         resize(long keys, long vals);
-
-        long
-        keyOf(long index) const;
-
-        long
-        indexOf(long key) const;
 
         Type&
         access(long index = -1);

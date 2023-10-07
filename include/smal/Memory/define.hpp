@@ -1,6 +1,8 @@
 #ifndef SMAL_MEMORY_DEFINE_HPP
 #define SMAL_MEMORY_DEFINE_HPP
 
+#include <smal/Memory/depend.hpp>
+
 namespace smal
 {
     class Page;

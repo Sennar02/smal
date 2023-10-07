@@ -18,6 +18,14 @@ namespace smal
     { }
 
     template <class Type, template <class> class Array>
+    SparseMap<Type, Array>::SparseMap(PageAlloc& origin, const Array<Type>& array)
+        : m_table {origin}
+        , m_dense {origin}
+        , m_array {Common::move(array)}
+        , m_size {0}
+    { }
+
+    template <class Type, template <class> class Array>
     long
     SparseMap<Type, Array>::length() const
     {
@@ -51,17 +59,23 @@ namespace smal
     {
         long idx = this->m_size;
 
-        if ( this->isFull() ) return false;
+        if ( this->isFull() ) {
+            this->m_table.resize((this->m_table.length() + 10) * 1.5f);
+            this->m_dense.resize((this->m_dense.length() + 10) * 1.5f);
+            this->m_array.resize((this->m_array.length() + 10) * 1.5f);
+        }
 
-        if ( this->contains(key) == false ) {
-            this->m_size += 1;
+        if ( this->isFull() == false ) {
+            if ( this->contains(key) == false ) {
+                this->m_size += 1;
 
-            this->m_table[key] = idx;
-            this->m_dense[idx] = key;
+                this->m_table[key] = idx;
+                this->m_dense[idx] = key;
 
-            Common::create(this->m_array[idx], item);
+                Common::create(this->m_array[idx], item);
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -73,17 +87,23 @@ namespace smal
     {
         long idx = this->m_size;
 
-        if ( this->isFull() ) return false;
+        if ( this->isFull() ) {
+            this->m_table.resize((this->m_table.length() + 10) * 1.5f);
+            this->m_dense.resize((this->m_dense.length() + 10) * 1.5f);
+            this->m_array.resize((this->m_array.length() + 10) * 1.5f);
+        }
 
-        if ( this->contains(key) == false ) {
-            this->m_size += 1;
+        if ( this->isFull() == false ) {
+            if ( this->contains(key) == false ) {
+                this->m_size += 1;
 
-            this->m_table[key] = idx;
-            this->m_dense[idx] = key;
+                this->m_table[key] = idx;
+                this->m_dense[idx] = key;
 
-            Common::create(this->m_array[idx], Common::move(item));
+                Common::create(this->m_array[idx], Common::move(item));
 
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -135,20 +155,6 @@ namespace smal
         this->m_dense.resize(len2);
 
         return this->m_array.resize(len2);
-    }
-
-    template <class Type, template <class> class Array>
-    long
-    SparseMap<Type, Array>::keyOf(long index) const
-    {
-        return this->m_dense[index];
-    }
-
-    template <class Type, template <class> class Array>
-    long
-    SparseMap<Type, Array>::indexOf(long key) const
-    {
-        return this->m_table[key];
     }
 
     template <class Type, template <class> class Array>

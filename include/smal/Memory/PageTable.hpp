@@ -1,7 +1,6 @@
 #ifndef SMAL_MEMORY_PAGE_TABLE_HPP
 #define SMAL_MEMORY_PAGE_TABLE_HPP
 
-#include <smal/Memory/depend.hpp>
 #include <smal/Memory/Page.hpp>
 
 namespace smal

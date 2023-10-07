@@ -14,12 +14,6 @@ namespace smal
         , m_length {length}
     { }
 
-    Page::Page(void* memory, long length)
-        : m_origin {0}
-        , m_memory {memory}
-        , m_length {length}
-    { }
-
     bool
     Page::isNull() const
     {
