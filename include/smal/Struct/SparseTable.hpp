@@ -1,18 +1,19 @@
 #ifndef SMAL_STRUCT_SPARSE_SET_HPP
 #define SMAL_STRUCT_SPARSE_SET_HPP
 
-#include <smal/Struct/define.hpp>
+#include <smal/Struct/ITable.hpp>
 
 namespace smal
 {
     template <class Type, template <class> class Array = PagedArray>
-    class SparseSet
+    class SparseTable
+        : public ITable<long, Type>
     {
     public:
         /**
          * @brief
          */
-        SparseSet();
+        SparseTable();
 
         /**
          * @brief
@@ -21,7 +22,7 @@ namespace smal
          * @param packed
          * @param values
          */
-        SparseSet(
+        SparseTable(
             const PagedArray<long>& sparse,
             const Array<long>&      packed,
             const Array<Type>&      values);
@@ -111,48 +112,48 @@ namespace smal
         /**
          * @brief
          *
-         * @param item
+         * @param key
          *
          * @return true
          * @return false
          */
         bool
-        contains(long item) const;
+        contains(const long& key) const;
 
         /**
          * @brief
          *
-         * @param item
+         * @param key
          * @param value
          *
          * @return true
          * @return false
          */
         bool
-        insert(long item, const Type& value);
+        insert(const long& key, const Type& value);
 
         /**
          * @brief
          *
-         * @param item
+         * @param key
          * @param value
          *
          * @return true
          * @return false
          */
         bool
-        insert(long item, Type&& value);
+        insert(const long& key, Type&& value);
 
         /**
          * @brief
          *
-         * @param item
+         * @param key
          *
          * @return true
          * @return false
          */
         bool
-        remove(long item);
+        remove(const long& key);
 
         /**
          * @brief
@@ -174,7 +175,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        operator[](long index);
+        operator[](const long& index);
 
         /**
          * @brief
@@ -184,7 +185,7 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        operator[](long index) const;
+        operator[](const long& index) const;
 
     private:
         /**
@@ -209,6 +210,6 @@ namespace smal
     };
 } // namespace smal
 
-#include <smal/Struct/impl/SparseSet.tpp>
+#include <smal/Struct/impl/SparseTable.tpp>
 
 #endif // SMAL_STRUCT_SPARSE_SET_HPP

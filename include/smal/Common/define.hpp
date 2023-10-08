@@ -19,6 +19,9 @@ namespace smal
     using f64 = double;
 
     using word = size_t;
+
+    using Address = void*;
+    using Pointer = char*;
 } // namespace smal
 
 #endif // SMAL_COMMON_DEFINE_HPP

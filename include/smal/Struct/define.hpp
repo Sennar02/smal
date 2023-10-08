@@ -5,8 +5,14 @@
 
 namespace smal
 {
+    template <class Type, class Value>
+    class ITable;
+
     template <class Type, template <class> class Array>
     class Vector;
+
+    template <class Type, template <class> class Array>
+    class SparseTable;
 } // namespace smal
 
 #endif // SMAL_STRUCT_DEFINE_HPP
