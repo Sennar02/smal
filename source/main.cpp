@@ -20,36 +20,35 @@ main(int argc, const char* argv[])
     long mem = 1024 * 1024l;
     long pag = 1024 * 2l;
 
-    smal::PageAlloc origin = {malloc(mem), mem, pag};
+    smal::PageAlloc  origin = {malloc(mem), mem, pag};
+    smal::CmpHolder managr = {origin};
 
-    smal::CompHolder       holder = {origin};
-    smal::SparseTable<Pos> spos   = {{origin}, {origin}, {origin}};
-    smal::SparseTable<Vel> svel   = {{origin}, {origin}, {origin}};
+    smal::SparseTable<Pos> spos = {{origin}, {origin}, {origin}};
+    smal::SparseTable<Vel> svel = {{origin}, {origin}, {origin}};
 
     spos.resize(32, 32);
     svel.resize(32, 32);
 
-    holder.pools().resize(32);
-    holder.pools()[holder.number<Pos>()] = &spos;
-    holder.pools()[holder.number<Vel>()] = &svel;
+    managr.pools().resize(32);
+    managr.pools()[managr.number<Pos>()] = &spos;
+    managr.pools()[managr.number<Vel>()] = &svel;
 
-    holder.give<Vel, Pos>(0,
+    managr.give<Vel, Pos>(0,
         {0, 0, 0, 0},
         {0, 0});
 
-    if ( holder.has<Pos, Vel>(10) )
-        printf("Entity { 10 } has pos and vel\nn");
-    else {
-        if ( holder.has<Pos>(10) ) {
-            auto& pos = holder.get<Pos>(10);
+    if ( managr.has<Pos, Vel>(10) ) {
+        auto& pos = managr.get<Pos>(10);
+        auto& vel = managr.get<Vel>(10);
 
-            printf("Entity { 10 } has pos = {%f, %f}\n",
-                pos.x,
-                pos.y);
+        printf("Entity { 10 }:\n");
+        printf("- Pos { %.3f, %.3f }\n", pos.x, pos.y);
+        printf("- Vel { %.3f, %.3f }\n", vel.x, vel.y);
 
-            holder.take<Pos>(10);
-        }
+        managr.take<Pos>(10);
     }
+
+    printf("%i\n", managr.has<Vel>(0));
 
     return 0;
 }

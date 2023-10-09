@@ -1,17 +1,17 @@
-#include <smal/Entity/CompHolder.hpp>
+#include <smal/Entity/CmpHolder.hpp>
 
 namespace smal
 {
     using namespace Common;
 
-    CompHolder::CompHolder(PageAlloc& origin)
+    CmpHolder::CmpHolder(PageAlloc& origin)
         : m_pools {origin}
         , m_origin {&origin}
     { }
 
     template <class Type>
     ITable<long, Type>*
-    CompHolder::pool()
+    CmpHolder::pool()
     {
         auto index = this->number<Type>();
         auto pool  = this->m_pools[index];
@@ -21,7 +21,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    CompHolder::give(long entity, const Type& comp, const Rest&... rest)
+    CmpHolder::give(long entity, const Type& comp, const Rest&... rest)
     {
         auto pool = this->pool<Type>();
         bool oper = true;
@@ -38,7 +38,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    CompHolder::give(long entity, Type&& comp, Rest&&... rest)
+    CmpHolder::give(long entity, Type&& comp, Rest&&... rest)
     {
         auto pool = this->pool<Type>();
         bool oper = true;
@@ -55,7 +55,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    CompHolder::take(long entity)
+    CmpHolder::take(long entity)
     {
         auto pool = this->pool<Type>();
         bool oper = true;
@@ -72,7 +72,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    CompHolder::has(long entity)
+    CmpHolder::has(long entity)
     {
         auto pool = this->pool<Type>();
         bool oper = true;
@@ -89,7 +89,7 @@ namespace smal
 
     template <class Type>
     Type&
-    CompHolder::get(long entity)
+    CmpHolder::get(long entity)
     {
         auto pool = this->pool<Type>();
 
@@ -98,7 +98,7 @@ namespace smal
 
     template <class Type>
     const Type&
-    CompHolder::get(long entity) const
+    CmpHolder::get(long entity) const
     {
         auto pool = this->pool<Type>();
 
@@ -106,20 +106,20 @@ namespace smal
     }
 
     Vector<Address>&
-    CompHolder::pools()
+    CmpHolder::pools()
     {
         return this->m_pools;
     }
 
     const Vector<Address>&
-    CompHolder::pools() const
+    CmpHolder::pools() const
     {
         return this->m_pools;
     }
 
     template <class Type>
     word
-    CompHolder::number()
+    CmpHolder::number()
     {
         static word next =
             g_number++;

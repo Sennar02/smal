@@ -4,6 +4,6 @@
 #include <smal/Entity/depend.hpp>
 #include <smal/Entity/define.hpp>
 
-#include <smal/Entity/CompHolder.hpp>
+#include <smal/Entity/CmpHolder.hpp>
 
 #endif // SMAL_ENTITY_IMPORT_HPP

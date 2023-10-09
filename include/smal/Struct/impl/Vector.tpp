@@ -70,6 +70,9 @@ namespace smal
 
         if ( index < 0 ) index = this->m_size;
 
+        if ( this->isFull() )
+            this->resize(this->size() * 1.5f + 10);
+
         if ( this->isFull() == false ) {
             this->m_size += 1;
 
@@ -91,6 +94,9 @@ namespace smal
         auto& self = *this;
 
         if ( index < 0 ) index = this->m_size;
+
+        if ( this->isFull() )
+            this->resize(this->size() * 1.5f + 10);
 
         if ( this->isFull() == false ) {
             this->m_size += 1;

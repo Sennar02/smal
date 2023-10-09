@@ -1,11 +1,11 @@
-#ifndef SMAL_ENTITY_COMP_HOLDER_HPP
-#define SMAL_ENTITY_COMP_HOLDER_HPP
+#ifndef SMAL_ENTITY_CMP_HOLDER_HPP
+#define SMAL_ENTITY_CMP_HOLDER_HPP
 
 #include <smal/Entity/define.hpp>
 
 namespace smal
 {
-    class CompHolder
+    class CmpHolder
     {
     public:
         /**
@@ -13,7 +13,7 @@ namespace smal
          *
          * @param origin
          */
-        CompHolder(PageAlloc& origin);
+        CmpHolder(PageAlloc& origin);
 
         /**
          * @brief
@@ -162,6 +162,6 @@ namespace smal
     };
 } // namespace smal
 
-#include <smal/Entity/impl/CompHolder.tpp>
+#include <smal/Entity/impl/CmpHolder.tpp>
 
-#endif // SMAL_ENTITY_COMP_HOLDER_HPP
+#endif // SMAL_ENTITY_CMP_HOLDER_HPP

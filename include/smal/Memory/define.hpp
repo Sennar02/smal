@@ -14,6 +14,9 @@ namespace smal
 
     template <class Type>
     class PagedArray;
+
+    template <long Len>
+    class Buffer;
 } // namespace smal
 
 #endif // SMAL_MEMORY_DEFINE_HPP

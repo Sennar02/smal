@@ -11,4 +11,6 @@
 #include <smal/Memory/FixedArray.hpp>
 #include <smal/Memory/PagedArray.hpp>
 
+#include <smal/Memory/Buffer.hpp>
+
 #endif // SMAL_MEMORY_IMPORT_HPP

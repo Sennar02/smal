@@ -99,6 +99,9 @@ namespace smal
     {
         long idx = this->m_size;
 
+        if ( this->isFull() )
+            this->resize(idx * 1.5f + 10, idx * 1.5f + 10);
+
         if ( this->isFull() == false ) {
             if ( this->contains(key) == false ) {
                 this->m_size += 1;
@@ -120,6 +123,9 @@ namespace smal
     SparseTable<Type, Array>::insert(const long& key, Type&& value)
     {
         long idx = this->m_size;
+
+        if ( this->isFull() )
+            this->resize(idx * 1.5f + 10, idx * 1.5f + 10);
 
         if ( this->isFull() == false ) {
             if ( this->contains(key) == false ) {
@@ -146,10 +152,10 @@ namespace smal
         if ( this->isEmpty() == true ) return false;
 
         if ( this->contains(key) == true ) {
+            this->m_size -= 1;
+
             idx  = this->m_sparse[key];
             last = this->m_packed[this->m_size];
-
-            this->m_size -= 1;
 
             this->m_packed[last] = idx;
             this->m_sparse[idx]  = last;
