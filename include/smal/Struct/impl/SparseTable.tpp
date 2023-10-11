@@ -99,20 +99,23 @@ namespace smal
     {
         long idx = this->m_size;
 
-        if ( this->isFull() )
-            this->resize(idx * 1.5f + 10, idx * 1.5f + 10);
+        if ( this->contains(key) == true ) return false;
+
+        if ( this->isFull() == true )
+            this->resize(1.0f, 1.5f);
 
         if ( this->isFull() == false ) {
-            if ( this->contains(key) == false ) {
-                this->m_size += 1;
+            if ( this->m_sparse.length() <= key )
+                this->resize(Math::max(1l, key), -1);
 
-                this->m_sparse[key] = idx;
-                this->m_packed[idx] = key;
+            this->m_size += 1;
 
-                create(this->m_array[idx], value);
+            this->m_sparse[key] = idx;
+            this->m_packed[idx] = key;
 
-                return true;
-            }
+            create(this->m_array[idx], value);
+
+            return true;
         }
 
         return false;
@@ -124,20 +127,23 @@ namespace smal
     {
         long idx = this->m_size;
 
-        if ( this->isFull() )
-            this->resize(idx * 1.5f + 10, idx * 1.5f + 10);
+        if ( this->contains(key) == true ) return false;
+
+        if ( this->isFull() == true )
+            this->resize(1.0f, 1.5f);
 
         if ( this->isFull() == false ) {
-            if ( this->contains(key) == false ) {
-                this->m_size += 1;
+            if ( this->m_sparse.length() <= key )
+                this->resize(Math::max(1l, key), -1);
 
-                this->m_sparse[key] = idx;
-                this->m_packed[idx] = key;
+            this->m_size += 1;
 
-                create(this->m_array[idx], move(value));
+            this->m_sparse[key] = idx;
+            this->m_packed[idx] = key;
 
-                return true;
-            }
+            create(this->m_array[idx], move(value));
+
+            return true;
         }
 
         return false;
@@ -149,8 +155,6 @@ namespace smal
     {
         long idx = 0, last = 0;
 
-        if ( this->isEmpty() == true ) return false;
-
         if ( this->contains(key) == true ) {
             this->m_size -= 1;
 
@@ -160,8 +164,7 @@ namespace smal
             this->m_packed[last] = idx;
             this->m_sparse[idx]  = last;
 
-            swap(this->m_array[idx],
-                this->m_array[last]);
+            swap(this->m_array[idx], this->m_array[last]);
 
             return true;
         }
@@ -173,7 +176,12 @@ namespace smal
     bool
     SparseTable<Type, Array>::contains(const long& key) const
     {
-        long idx = this->m_sparse[key];
+        long idx = this->m_size;
+
+        if ( this->m_sparse.length() <= key )
+            return false;
+
+        idx = this->m_sparse[key];
 
         if ( idx < this->m_size ) {
             if ( this->m_packed[idx] == key )
@@ -187,18 +195,49 @@ namespace smal
     bool
     SparseTable<Type, Array>::resize(long sparse, long packed)
     {
-        return this->m_sparse.resize(sparse) &&
-               this->m_packed.resize(packed) &&
-               this->m_array.resize(packed);
+        bool oper = true;
+
+        if ( sparse != -1 )
+            oper &= this->m_sparse.resize(sparse);
+
+        if ( packed != -1 ) {
+            oper &= this->m_packed.resize(packed);
+            oper &= this->m_array.resize(packed);
+        }
+
+        return oper;
+    }
+
+    template <class Type, template <class> class Array>
+    bool
+    SparseTable<Type, Array>::resize(float sparse, float packed)
+    {
+        long length1 = Math::max(16l, this->m_sparse.length());
+        long length2 = Math::max(16l, this->m_packed.length());
+
+        return this->resize(
+            (long) sparse * length1,
+            (long) packed * length2);
+    }
+
+    template <class Type, template <class> class Array>
+    Type&
+    SparseTable<Type, Array>::valueOf(const long& key)
+    {
+        return this->m_array[this->m_sparse[key]];
+    }
+
+    template <class Type, template <class> class Array>
+    const Type&
+    SparseTable<Type, Array>::valueOf(const long& key) const
+    {
+        return this->m_array[this->m_sparse[key]];
     }
 
     template <class Type, template <class> class Array>
     Type&
     SparseTable<Type, Array>::operator[](const long& index)
     {
-        if ( index < 0 )
-            return this->m_array[this->m_size + index];
-
         return this->m_array[index];
     }
 
@@ -206,9 +245,6 @@ namespace smal
     const Type&
     SparseTable<Type, Array>::operator[](const long& index) const
     {
-        if ( index < 0 )
-            return this->m_array[this->m_size + index];
-
         return this->m_array[index];
     }
 } // namespace smal

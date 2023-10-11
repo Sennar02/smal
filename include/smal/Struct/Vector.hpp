@@ -125,6 +125,17 @@ namespace smal
         /**
          * @brief
          *
+         * @param factor
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        resize(float factor);
+
+        /**
+         * @brief
+         *
          * @param index
          *
          * @return Type&

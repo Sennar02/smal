@@ -1,13 +1,12 @@
 #ifndef SMAL_STRUCT_SPARSE_SET_HPP
 #define SMAL_STRUCT_SPARSE_SET_HPP
 
-#include <smal/Struct/ITable.hpp>
+#include <smal/Struct/define.hpp>
 
 namespace smal
 {
     template <class Type, template <class> class Array = PagedArray>
     class SparseTable
-        : public ITable<long, Type>
     {
     public:
         /**
@@ -166,6 +165,38 @@ namespace smal
          */
         bool
         resize(long sparse, long packed);
+
+        /**
+         * @brief
+         *
+         * @param sparse
+         * @param packed
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        resize(float sparse, float packed);
+
+        /**
+         * @brief
+         *
+         * @param key
+         *
+         * @return Type&
+         */
+        Type&
+        valueOf(const long& key);
+
+        /**
+         * @brief
+         *
+         * @param key
+         *
+         * @return const Type&
+         */
+        const Type&
+        valueOf(const long& key) const;
 
         /**
          * @brief

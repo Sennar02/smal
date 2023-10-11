@@ -5,7 +5,6 @@
 
 namespace smal
 {
-    class CmpHolder;
 } // namespace smal
 
 #endif // SMAL_ENTITY_DEFINE_HPP

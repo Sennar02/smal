@@ -48,7 +48,9 @@ namespace smal
 
     template <class Type>
     PagedArray<Type>::~PagedArray()
-    { }
+    {
+        this->resize(0l);
+    }
 
     template <class Type>
     long

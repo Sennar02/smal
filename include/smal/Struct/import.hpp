@@ -4,9 +4,7 @@
 #include <smal/Struct/depend.hpp>
 #include <smal/Struct/define.hpp>
 
-#include <smal/Struct/ITable.hpp>
 #include <smal/Struct/SparseTable.hpp>
-
 #include <smal/Struct/Vector.hpp>
 
 #endif // SMAL_STRUCT_IMPORT_HPP

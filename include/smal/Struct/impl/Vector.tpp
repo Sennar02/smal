@@ -68,12 +68,12 @@ namespace smal
     {
         auto& self = *this;
 
-        if ( index < 0 ) index = this->m_size;
-
-        if ( this->isFull() )
-            this->resize(this->size() * 1.5f + 10);
+        if ( this->isFull() == true )
+            this->resize(1.5f);
 
         if ( this->isFull() == false ) {
+            index = Math::min(index, this->m_size);
+
             this->m_size += 1;
 
             for ( long i = this->m_size; i > index; i-- )
@@ -93,12 +93,12 @@ namespace smal
     {
         auto& self = *this;
 
-        if ( index < 0 ) index = this->m_size;
-
-        if ( this->isFull() )
-            this->resize(this->size() * 1.5f + 10);
+        if ( this->isFull() == true )
+            this->resize(1.5f);
 
         if ( this->isFull() == false ) {
+            index = Math::min(index, this->m_size);
+
             this->m_size += 1;
 
             for ( long i = this->m_size; i > index; i-- )
@@ -118,10 +118,9 @@ namespace smal
     {
         auto& self = *this;
 
-        if ( index < 0 )
-            index = this->m_size + index;
-
         if ( this->isEmpty() == false ) {
+            index = Math::max(index, this->m_size - 1);
+
             this->m_size -= 1;
 
             for ( long i = index; i < this->m_size - 1; i++ )
@@ -141,12 +140,19 @@ namespace smal
     }
 
     template <class Type, template <class> class Array>
+    bool
+    Vector<Type, Array>::resize(float factor)
+    {
+        long length = Math::max(16l, this->length());
+
+        return this->resize(
+            (long) factor * length);
+    }
+
+    template <class Type, template <class> class Array>
     Type&
     Vector<Type, Array>::operator[](long index)
     {
-        if ( index < 0 )
-            index = this->m_size + index;
-
         return this->m_array[index];
     }
 
@@ -154,9 +160,6 @@ namespace smal
     const Type&
     Vector<Type, Array>::operator[](long index) const
     {
-        if ( index < 0 )
-            index = this->m_size + index;
-
         return this->m_array[index];
     }
 } // namespace smal
