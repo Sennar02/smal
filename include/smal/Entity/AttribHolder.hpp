@@ -5,7 +5,6 @@
 
 namespace smal
 {
-    template <template <class> class Table>
     class AttribHolder
     {
     public:
@@ -17,18 +16,18 @@ namespace smal
 
         template <class Type>
         bool
-        insert(Table<Type>* pool);
+        insert(SparseTable<Type>* pool);
 
         template <class Type>
         bool
         remove();
 
         template <class Type>
-        Table<Type>&
+        SparseTable<Type>*
         find();
 
         template <class Type>
-        const Table<Type>&
+        const SparseTable<Type>*
         find() const;
 
     private:

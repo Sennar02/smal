@@ -3,15 +3,13 @@
 
 namespace smal
 {
-    template <template <class> class Table>
-    AttribHolder<Table>::AttribHolder(PageAlloc& origin)
+    AttribHolder::AttribHolder(PageAlloc& origin)
         : m_vector {origin}
     { }
 
-    template <template <class> class Table>
     template <class Type>
     bool
-    AttribHolder<Table>::contains() const
+    AttribHolder::contains() const
     {
         long code = AttribCode::of<Type>;
 
@@ -21,10 +19,9 @@ namespace smal
         return this->m_vector[code] != 0;
     }
 
-    template <template <class> class Table>
     template <class Type>
     bool
-    AttribHolder<Table>::insert(Table<Type>* pool)
+    AttribHolder::insert(SparseTable<Type>* pool)
     {
         long code = AttribCode::of<Type>;
 
@@ -34,10 +31,9 @@ namespace smal
         return false;
     }
 
-    template <template <class> class Table>
     template <class Type>
     bool
-    AttribHolder<Table>::remove()
+    AttribHolder::remove()
     {
         long code = AttribCode::of<Type>;
 
@@ -47,25 +43,23 @@ namespace smal
         return false;
     }
 
-    template <template <class> class Table>
     template <class Type>
-    Table<Type>&
-    AttribHolder<Table>::find()
+    SparseTable<Type>*
+    AttribHolder::find()
     {
         long  code = AttribCode::of<Type>;
         void* addr = this->m_vector[code];
 
-        return *(Table<Type>*) addr;
+        return (SparseTable<Type>*) addr;
     }
 
-    template <template <class> class Table>
     template <class Type>
-    const Table<Type>&
-    AttribHolder<Table>::find() const
+    const SparseTable<Type>*
+    AttribHolder::find() const
     {
         long  code = AttribCode::of<Type>;
         void* addr = this->m_vector[code];
 
-        return *(Table<Type>*) addr;
+        return (SparseTable<Type>*) addr;
     }
 } // namespace smal

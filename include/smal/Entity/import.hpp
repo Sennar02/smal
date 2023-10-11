@@ -6,5 +6,6 @@
 
 #include <smal/Entity/AttribCode.hpp>
 #include <smal/Entity/AttribHolder.hpp>
+#include <smal/Entity/Attributes.hpp>
 
 #endif // SMAL_ENTITY_IMPORT_HPP

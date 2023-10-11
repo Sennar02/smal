@@ -90,33 +90,31 @@ namespace smal
         max(Type a, Type b);
     } // namespace Math
 
-    namespace Common
+    namespace impl
     {
-        namespace impl
+        template <class Type>
+        struct RemoveRef
         {
-            template <class Type>
-            struct RemoveRef
-            {
-                using Result = Type;
-            };
-
-            template <class Type>
-            struct RemoveRef<Type&>
-            {
-                using Result = Type;
-            };
-
-            template <class Type>
-            struct RemoveRef<Type&&>
-            {
-                using Result = Type;
-            };
-        } // namespace impl
+            using Result = Type;
+        };
 
         template <class Type>
-        using RemoveRef = typename impl::RemoveRef<Type>::Result;
+        struct RemoveRef<Type&>
+        {
+            using Result = Type;
+        };
 
-        /**
+        template <class Type>
+        struct RemoveRef<Type&&>
+        {
+            using Result = Type;
+        };
+    } // namespace impl
+
+    template <class Type>
+    using RemoveRef = typename impl::RemoveRef<Type>::Result;
+
+    /**
          * @brief
          *
          * @tparam Type
@@ -125,11 +123,11 @@ namespace smal
          *
          * @return RemoveRef<Type>&&
          */
-        template <class Type>
-        RemoveRef<Type>&&
-        move(Type&& value);
+    template <class Type>
+    RemoveRef<Type>&&
+    move(Type&& value);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -138,11 +136,11 @@ namespace smal
          *
          * @return Type&&
          */
-        template <class Type>
-        Type&&
-        forw(RemoveRef<Type>& value);
+    template <class Type>
+    Type&&
+    forw(RemoveRef<Type>& value);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -151,11 +149,11 @@ namespace smal
          *
          * @return Type&&
          */
-        template <class Type>
-        Type&&
-        forw(RemoveRef<Type>&& value);
+    template <class Type>
+    Type&&
+    forw(RemoveRef<Type>&& value);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -165,11 +163,11 @@ namespace smal
          *
          * @return Type&
          */
-        template <class Type>
-        Type&
-        swap(Type& value, Type& other);
+    template <class Type>
+    Type&
+    swap(Type& value, Type& other);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -179,11 +177,11 @@ namespace smal
          *
          * @return Type
          */
-        template <class Type>
-        Type
-        exch(Type& value, Type&& other);
+    template <class Type>
+    Type
+    exch(Type& value, Type&& other);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -192,11 +190,11 @@ namespace smal
          *
          * @return Type&
          */
-        template <class Type>
-        Type&
-        create(Type& value);
+    template <class Type>
+    Type&
+    create(Type& value);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -207,11 +205,11 @@ namespace smal
          *
          * @return Type&
          */
-        template <class Type, class... Args>
-        Type&
-        create(Type& value, Args&&... args);
+    template <class Type, class... Args>
+    Type&
+    create(Type& value, Args&&... args);
 
-        /**
+    /**
          * @brief
          *
          * @tparam Type
@@ -220,10 +218,9 @@ namespace smal
 
          * @return Type&
          */
-        template <class Type>
-        Type&
-        destroy(Type& value);
-    } // namespace Common
+    template <class Type>
+    Type&
+    destroy(Type& value);
 } // namespace smal
 
 #include <smal/Common/impl/helper.tpp>

@@ -2,8 +2,6 @@
 
 namespace smal
 {
-    using namespace Common;
-
     template <class Type, template <class> class Array>
     SparseTable<Type, Array>::SparseTable()
         : m_sparse {}

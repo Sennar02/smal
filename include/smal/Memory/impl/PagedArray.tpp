@@ -2,8 +2,6 @@
 
 namespace smal
 {
-    using namespace Common;
-
     template <class Type>
     PagedArray<Type>::PagedArray()
         : m_table {}
