@@ -13,7 +13,7 @@ namespace smal
         : m_table {}
         , m_origin {&origin}
     {
-        Page page = origin.reserve();
+        Part page = origin.reserve();
 
         this->m_table = create(this->m_table,
             page.memory(),
@@ -84,7 +84,7 @@ namespace smal
         long start = this->m_table.size();
 
         for ( long i = start; i < start + pages; i++ ) {
-            Page page = this->m_origin->reserve();
+            Part page = this->m_origin->reserve();
 
             if ( this->m_table.insert(page, i) )
                 continue;
@@ -104,7 +104,7 @@ namespace smal
         long start = this->m_table.size();
 
         for ( long i = start - 1; i >= start - pages; i-- ) {
-            Page page = {
+            Part page = {
                 this->m_origin,
                 this->m_table.remove(i),
                 this->m_table.page(),

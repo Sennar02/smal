@@ -1,21 +1,21 @@
-#include <smal/Memory/Page.hpp>
+#include <smal/Memory/Part.hpp>
 
 namespace smal
 {
-    Page::Page()
+    Part::Part()
         : m_origin {0}
         , m_memory {0}
         , m_length {0}
     { }
 
-    Page::Page(PageAlloc* origin, void* memory, long length)
+    Part::Part(void* origin, void* memory, long length)
         : m_origin {origin}
         , m_memory {memory}
         , m_length {length}
     { }
 
     bool
-    Page::isNull() const
+    Part::isNull() const
     {
         return this->m_memory == 0 ||
                this->m_length == 0 ||
@@ -23,19 +23,19 @@ namespace smal
     }
 
     long
-    Page::length() const
+    Part::length() const
     {
         return this->m_length;
     }
 
-    PageAlloc*
-    Page::origin() const
+    void*
+    Part::origin() const
     {
         return this->m_origin;
     }
 
     char*
-    Page::memory() const
+    Part::memory() const
     {
         return (char*) this->m_memory;
     }

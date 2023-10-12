@@ -5,13 +5,13 @@
 
 namespace smal
 {
-    class Page
+    class Part
     {
     public:
         /**
          * @brief
          */
-        Page();
+        Part();
 
         /**
          * @brief
@@ -20,7 +20,7 @@ namespace smal
          * @param memory
          * @param length
          */
-        Page(PageAlloc* origin, void* memory, long length);
+        Part(void* origin, void* memory, long length);
 
         /**
          * @brief
@@ -34,9 +34,9 @@ namespace smal
         /**
          * @brief
          *
-         * @return PageAlloc*
+         * @return void*
          */
-        PageAlloc*
+        void*
         origin() const;
 
         /**
@@ -59,7 +59,7 @@ namespace smal
         /**
          * @brief
          */
-        PageAlloc* m_origin;
+        void* m_origin;
 
         /**
          * @brief

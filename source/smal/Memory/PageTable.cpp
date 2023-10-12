@@ -50,7 +50,7 @@ namespace smal
     }
 
     bool
-    PageTable::insert(const Page& page, long offset)
+    PageTable::insert(const Part& page, long offset)
     {
         if ( offset >= this->m_length ) return false;
 
@@ -83,14 +83,10 @@ namespace smal
     PageTable::lookup(long index, long scale) const
     {
         long byte = index * scale;
+
         long page = Math::div(byte, this->m_page);
         long dist = Math::mod(byte, this->m_page);
 
-        if ( page < this->m_length ) {
-            if ( this->m_memory[page] != 0 )
-                return this->m_memory[page] + dist;
-        }
-
-        return 0;
+        return this->m_memory[page] + dist;
     }
 } // namespace smal

@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_PAGE_TABLE_HPP
 #define SMAL_MEMORY_PAGE_TABLE_HPP
 
-#include <smal/Memory/Page.hpp>
+#include <smal/Memory/Part.hpp>
 
 namespace smal
 {
@@ -74,7 +74,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(const Page& page, long offset);
+        insert(const Part& page, long offset);
 
         /**
          * @brief

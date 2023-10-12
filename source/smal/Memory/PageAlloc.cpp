@@ -75,10 +75,10 @@ namespace smal
         return this->prepare();
     }
 
-    Page
+    Part
     PageAlloc::reserve()
     {
-        Page page = {this, this->m_list, this->m_page};
+        Part page = {this, this->m_list, this->m_page};
 
         if ( this->m_list != 0 ) {
             this->m_list = this->m_list->next;
@@ -94,11 +94,11 @@ namespace smal
     }
 
     bool
-    PageAlloc::reclaim(const Page& page)
+    PageAlloc::reclaim(const Part& page)
     {
         Node* node = (Node*) page.memory();
 
-        if ( page.origin() != this )
+        if ( page.origin() != this && page.origin() != 0 )
             return false;
 
         if ( page.isNull() == false ) {

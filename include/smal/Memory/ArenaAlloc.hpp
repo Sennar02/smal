@@ -1,26 +1,25 @@
-#ifndef SMAL_MEMORY_PAGE_ALLOC_HPP
-#define SMAL_MEMORY_PAGE_ALLOC_HPP
+#ifndef SMAL_MEMORY_STACK_ALLOC_HPP
+#define SMAL_MEMORY_STACK_ALLOC_HPP
 
 #include <smal/Memory/Part.hpp>
 
 namespace smal
 {
-    class PageAlloc
+    class ArenaAlloc
     {
     public:
         /**
          * @brief
          */
-        PageAlloc();
+        ArenaAlloc();
 
         /**
          * @brief
          *
          * @param memory
          * @param length
-         * @param page
          */
-        PageAlloc(void* memory, long length, long page);
+        ArenaAlloc(void* memory, long length);
 
         /**
          * @brief
@@ -41,14 +40,6 @@ namespace smal
         /**
          * @brief
          *
-         * @return long
-         */
-        long
-        page() const;
-
-        /**
-         * @brief
-         *
          * @return true
          * @return false
          */
@@ -58,39 +49,25 @@ namespace smal
         /**
          * @brief
          *
-         * @param page
-         *
-         * @return true
-         * @return false
-         */
-        bool
-        prepare(long page);
-
-        /**
-         * @brief
+         * @param length
          *
          * @return Part
          */
         Part
-        reserve();
+        reserve(long length);
 
         /**
          * @brief
          *
-         * @param page
+         * @param part
          *
          * @return true
          * @return false
          */
         bool
-        reclaim(const Part& page);
+        reclaim(const Part& part);
 
     private:
-        struct Node
-        {
-            Node* next;
-        };
-
         /**
          * @brief
          */
@@ -104,18 +81,8 @@ namespace smal
         /**
          * @brief
          */
-        Node* m_list;
-
-        /**
-         * @brief
-         */
-        long m_size;
-
-        /**
-         * @brief
-         */
-        long m_page;
+        char* m_next;
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_PAGE_ALLOC_HPP
+#endif // SMAL_MEMORY_STACK_ALLOC_HPP

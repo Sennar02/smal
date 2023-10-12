@@ -4,9 +4,10 @@
 #include <smal/Memory/depend.hpp>
 #include <smal/Memory/define.hpp>
 
-#include <smal/Memory/Page.hpp>
+#include <smal/Memory/Part.hpp>
 #include <smal/Memory/PageAlloc.hpp>
 #include <smal/Memory/PageTable.hpp>
+#include <smal/Memory/ArenaAlloc.hpp>
 
 #include <smal/Memory/FixedArray.hpp>
 #include <smal/Memory/PagedArray.hpp>

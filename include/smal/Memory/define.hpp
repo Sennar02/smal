@@ -5,9 +5,12 @@
 
 namespace smal
 {
-    class Page;
+    class Part;
+
     class PageAlloc;
     class PageTable;
+
+    class ArenaAlloc;
 
     template <class Type>
     class FixedArray;
