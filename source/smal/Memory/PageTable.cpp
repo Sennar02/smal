@@ -87,6 +87,9 @@ namespace smal
         long page = Math::div(byte, this->m_page);
         long dist = Math::mod(byte, this->m_page);
 
-        return this->m_memory[page] + dist;
+        if ( page < this->m_length && this->m_memory[page] != 0 )
+            return this->m_memory[page] + dist;
+
+        return 0;
     }
 } // namespace smal

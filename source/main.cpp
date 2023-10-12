@@ -1,4 +1,5 @@
-#include <smal/Struct/import.hpp>
+#include <smal/Entity/import.hpp>
+#include "game/App.hpp"
 
 static const long memlen = 1024 * 1024 * 1024l;
 static const long paglen = 1024 * 8l;
@@ -6,18 +7,21 @@ static const long paglen = 1024 * 8l;
 int
 main(int argc, const char* argv[])
 {
-    void* memptr = calloc(1, memlen);
+    char* memptr = (char*) calloc(1, memlen);
 
     {
-        smal::PageAlloc   origin = {memptr, memlen, paglen};
-        smal::Vector<int> vector = {origin};
+        smal::PageAlloc  origin = {memptr + paglen, memlen - paglen, paglen};
+        smal::ArenaAlloc buffer = {memptr, paglen};
 
-        vector.resize(1'000'000l);
+        smal::Attributes attrib = {origin, buffer};
 
-        printf("%li\n", vector.length());
+        App engine = {attrib};
 
-        for ( long i = 0; i < vector.length(); i++ )
-            vector[i] = i;
+        sf::RenderWindow window = {
+            {1280, 720}, "App"
+        };
+
+        engine.loop(window);
     }
 
     free(memptr);

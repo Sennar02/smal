@@ -2,9 +2,10 @@
 
 namespace smal
 {
-    Attributes::Attributes(PageAlloc& origin)
+    Attributes::Attributes(PageAlloc& origin, ArenaAlloc& buffer)
         : m_holder {origin}
         , m_origin {&origin}
+        , m_buffer {&buffer}
     { }
 
     template <class Type, class... Rest>
@@ -145,11 +146,15 @@ namespace smal
     void
     Attributes::provide()
     {
-        auto table = new SparseTable<Type> {
-            {*this->m_origin},
-            {*this->m_origin},
-            {*this->m_origin},
-        };
+        long size = sizeof(SparseTable<Type>);
+        Part part = this->m_buffer->reserve(size);
+
+        auto* table = (SparseTable<Type>*) part.memory();
+
+        create(*table,
+            *this->m_origin,
+            *this->m_origin,
+            *this->m_origin);
 
         this->m_holder.template insert<Type>(table);
     }

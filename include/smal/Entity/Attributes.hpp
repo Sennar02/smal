@@ -12,8 +12,9 @@ namespace smal
          * @brief
          *
          * @param origin
+         * @param buffer
          */
-        Attributes(PageAlloc& origin);
+        Attributes(PageAlloc& origin, ArenaAlloc& buffer);
 
         /**
          * @brief
@@ -105,14 +106,37 @@ namespace smal
         const Type&
         get(long entity) const;
 
+        /**
+         * @brief
+         *
+         * @tparam Type
+         * @tparam Rest
+         *
+         * @return true
+         * @return false
+         */
         template <class Type, class... Rest>
         bool
         has() const;
 
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @return SparseTable<Type>&
+         */
         template <class Type>
         SparseTable<Type>&
         get();
 
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @return const SparseTable<Type>&
+         */
         template <class Type>
         const SparseTable<Type>&
         get() const;
@@ -145,6 +169,11 @@ namespace smal
          * @brief
          */
         PageAlloc* m_origin;
+
+        /**
+         * @brief
+         */
+        ArenaAlloc* m_buffer;
     };
 } // namespace smal
 
