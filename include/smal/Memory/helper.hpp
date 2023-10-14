@@ -13,7 +13,7 @@ namespace smal::Memory
      * @param byte
      */
     void
-    set(void* memory, long length, char byte);
+    set(void* memory, usize length, char byte);
 } // namespace smal::Memory
 
 #endif // SMAL_MEMORY_HELPER_HPP

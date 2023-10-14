@@ -19,14 +19,14 @@ namespace smal
     { }
 
     template <class Type, template <class> class Array>
-    long
+    usize
     Vector<Type, Array>::length() const
     {
         return this->m_array.length();
     }
 
     template <class Type, template <class> class Array>
-    long
+    usize
     Vector<Type, Array>::size() const
     {
         return this->m_size;
@@ -62,19 +62,19 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    Vector<Type, Array>::insert(const Type& value, long index)
+    Vector<Type, Array>::insert(const Type& value, usize index)
     {
         auto& self = *this;
 
         if ( this->isFull() == true )
-            this->resize(1.5f);
+            this->resize(this->length() * 1.5f + 1);
 
         if ( this->isFull() == false ) {
             index = Math::min(index, this->m_size);
 
             this->m_size += 1;
 
-            for ( long i = this->m_size; i > index; i-- )
+            for ( usize i = this->m_size; i > index; i-- )
                 self[i] = move(self[i - 1]);
 
             create(self[index], value);
@@ -87,19 +87,19 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    Vector<Type, Array>::insert(Type&& value, long index)
+    Vector<Type, Array>::insert(Type&& value, usize index)
     {
         auto& self = *this;
 
         if ( this->isFull() == true )
-            this->resize(1.5f);
+            this->resize(this->m_size * 1.5f + 1);
 
         if ( this->isFull() == false ) {
             index = Math::min(index, this->m_size);
 
             this->m_size += 1;
 
-            for ( long i = this->m_size; i > index; i-- )
+            for ( usize i = this->m_size; i > index; i-- )
                 self[i] = move(self[i - 1]);
 
             create(self[index], move(value));
@@ -112,7 +112,7 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    Vector<Type, Array>::remove(long index)
+    Vector<Type, Array>::remove(usize index)
     {
         auto& self = *this;
 
@@ -121,7 +121,7 @@ namespace smal
 
             this->m_size -= 1;
 
-            for ( long i = index; i < this->m_size - 1; i++ )
+            for ( usize i = index; i < this->m_size - 1; i++ )
                 self[i] = move(self[i + 1]);
 
             return true;
@@ -132,31 +132,21 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    Vector<Type, Array>::resize(long length)
+    Vector<Type, Array>::resize(usize length)
     {
         return this->m_array.resize(length);
     }
 
     template <class Type, template <class> class Array>
-    bool
-    Vector<Type, Array>::resize(float factor)
-    {
-        long length = Math::max(16l, this->length());
-
-        return this->resize(
-            (long) factor * length);
-    }
-
-    template <class Type, template <class> class Array>
     Type&
-    Vector<Type, Array>::operator[](long index)
+    Vector<Type, Array>::operator[](usize index)
     {
         return this->m_array[index];
     }
 
     template <class Type, template <class> class Array>
     const Type&
-    Vector<Type, Array>::operator[](long index) const
+    Vector<Type, Array>::operator[](usize index) const
     {
         return this->m_array[index];
     }

@@ -10,7 +10,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    Attributes::give(long entity, const Type& comp, const Rest&... rest)
+    Attributes::give(usize entity, const Type& comp, const Rest&... rest)
     {
         if ( this->m_holder.template contains<Type>() == false )
             this->template provide<Type>();
@@ -30,7 +30,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    Attributes::give(long entity, Type&& comp, Rest&&... rest)
+    Attributes::give(usize entity, Type&& comp, Rest&&... rest)
     {
         if ( this->m_holder.template contains<Type>() == false )
             this->template provide<Type>();
@@ -50,7 +50,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    Attributes::take(long entity)
+    Attributes::take(usize entity)
     {
         if ( this->m_holder.template contains<Type>() == false )
             return false;
@@ -70,7 +70,7 @@ namespace smal
 
     template <class Type, class... Rest>
     bool
-    Attributes::has(long entity) const
+    Attributes::has(usize entity) const
     {
         if ( this->m_holder.template contains<Type>() == false )
             return false;
@@ -90,7 +90,7 @@ namespace smal
 
     template <class Type>
     Type&
-    Attributes::get(long entity)
+    Attributes::get(usize entity)
     {
         auto pool = this->m_holder.template find<Type>();
 
@@ -99,7 +99,7 @@ namespace smal
 
     template <class Type>
     const Type&
-    Attributes::get(long entity) const
+    Attributes::get(usize entity) const
     {
         auto pool = this->m_holder.template find<Type>();
 
@@ -146,7 +146,7 @@ namespace smal
     void
     Attributes::provide()
     {
-        long size = sizeof(SparseTable<Type>);
+        usize size = sizeof(SparseTable<Type>);
         Part part = this->m_buffer->reserve(size);
 
         auto* table = (SparseTable<Type>*) part.memory();

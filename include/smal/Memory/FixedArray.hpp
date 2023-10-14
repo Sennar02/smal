@@ -7,7 +7,7 @@ namespace smal
     class FixedArray
     {
     public:
-        static const long SIZE = sizeof(Type);
+        static const usize SIZE = sizeof(Type);
 
     public:
         /**
@@ -18,10 +18,18 @@ namespace smal
         /**
          * @brief
          *
+         * @param origin
+         * @param length
+         */
+        FixedArray(PageAlloc& origin, usize length = 0);
+
+        /**
+         * @brief
+         *
          * @param memory
          * @param length
          */
-        FixedArray(void* memory, long length);
+        FixedArray(void* memory, usize length);
 
         /**
          * @brief
@@ -31,9 +39,9 @@ namespace smal
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
@@ -45,7 +53,7 @@ namespace smal
          * @return false
          */
         bool
-        resize(long length);
+        resize(usize length);
 
         /**
          * @brief
@@ -55,7 +63,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        operator[](long index);
+        operator[](usize index);
 
         /**
          * @brief
@@ -65,18 +73,18 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        operator[](long index) const;
+        operator[](usize index) const;
 
     private:
         /**
          * @brief
          */
-        Type* m_memory;
+        char* m_memory;
 
         /**
          * @brief
          */
-        long m_length;
+        usize m_length;
     };
 } // namespace smal
 

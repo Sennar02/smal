@@ -11,7 +11,7 @@ namespace smal
     bool
     AttribHolder::contains() const
     {
-        long code = AttribCode::of<Type>;
+        usize code = AttribCode::of<Type>;
 
         if ( this->m_vector.size() <= code )
             return false;
@@ -23,7 +23,7 @@ namespace smal
     bool
     AttribHolder::insert(SparseTable<Type>* pool)
     {
-        long code = AttribCode::of<Type>;
+        usize code = AttribCode::of<Type>;
 
         if ( this->contains<Type>() == false )
             return this->m_vector.insert(pool, code);
@@ -35,7 +35,7 @@ namespace smal
     bool
     AttribHolder::remove()
     {
-        long code = AttribCode::of<Type>;
+        usize code = AttribCode::of<Type>;
 
         if ( this->contains<Type>() == true )
             return this->m_vector.remove(code);
@@ -47,7 +47,7 @@ namespace smal
     SparseTable<Type>*
     AttribHolder::find()
     {
-        long  code = AttribCode::of<Type>;
+        usize  code = AttribCode::of<Type>;
         void* addr = this->m_vector[code];
 
         return (SparseTable<Type>*) addr;
@@ -57,7 +57,7 @@ namespace smal
     const SparseTable<Type>*
     AttribHolder::find() const
     {
-        long  code = AttribCode::of<Type>;
+        usize  code = AttribCode::of<Type>;
         void* addr = this->m_vector[code];
 
         return (SparseTable<Type>*) addr;

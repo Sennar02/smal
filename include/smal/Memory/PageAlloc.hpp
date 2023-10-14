@@ -20,30 +20,30 @@ namespace smal
          * @param length
          * @param page
          */
-        PageAlloc(void* memory, long length, long page);
+        PageAlloc(void* memory, usize length, usize page);
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         size() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         page() const;
 
         /**
@@ -64,7 +64,7 @@ namespace smal
          * @return false
          */
         bool
-        prepare(long page);
+        prepare(usize page);
 
         /**
          * @brief
@@ -99,7 +99,7 @@ namespace smal
         /**
          * @brief
          */
-        long m_length;
+        usize m_length;
 
         /**
          * @brief
@@ -109,12 +109,12 @@ namespace smal
         /**
          * @brief
          */
-        long m_size;
+        usize m_size;
 
         /**
          * @brief
          */
-        long m_page;
+        usize m_page;
     };
 } // namespace smal
 

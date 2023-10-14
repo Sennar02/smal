@@ -11,10 +11,18 @@ namespace smal
     { }
 
     template <class Type, template <class> class Array>
+    SparseTable<Type, Array>::SparseTable(PageAlloc& origin, usize length)
+        : m_sparse {origin, length}
+        , m_packed {origin, length}
+        , m_array {origin, length}
+        , m_size {0}
+    { }
+
+    template <class Type, template <class> class Array>
     SparseTable<Type, Array>::SparseTable(
-        const PagedArray<long>& sparse,
-        const Array<long>&      packed,
-        const Array<Type>&      array)
+        const PagedArray<usize>& sparse,
+        const PagedArray<usize>& packed,
+        const Array<Type>&       array)
         : m_sparse {move(sparse)}
         , m_packed {move(packed)}
         , m_array {move(array)}
@@ -22,14 +30,17 @@ namespace smal
     { }
 
     template <class Type, template <class> class Array>
-    long
+    usize
     SparseTable<Type, Array>::length() const
     {
-        return this->m_packed.length();
+        usize packed = this->m_array.length();
+        usize values = this->m_array.length();
+
+        return Math::min(packed, values);
     }
 
     template <class Type, template <class> class Array>
-    long
+    usize
     SparseTable<Type, Array>::size() const
     {
         return this->m_size;
@@ -39,7 +50,7 @@ namespace smal
     bool
     SparseTable<Type, Array>::isFull() const
     {
-        return this->m_size == this->m_packed.length();
+        return this->m_size == this->length();
     }
 
     template <class Type, template <class> class Array>
@@ -50,28 +61,28 @@ namespace smal
     }
 
     template <class Type, template <class> class Array>
-    PagedArray<long>&
+    PagedArray<usize>&
     SparseTable<Type, Array>::sparse()
     {
         return this->m_sparse;
     }
 
     template <class Type, template <class> class Array>
-    const PagedArray<long>&
+    const PagedArray<usize>&
     SparseTable<Type, Array>::sparse() const
     {
         return this->m_sparse;
     }
 
     template <class Type, template <class> class Array>
-    Array<long>&
+    PagedArray<usize>&
     SparseTable<Type, Array>::packed()
     {
         return this->m_packed;
     }
 
     template <class Type, template <class> class Array>
-    const Array<long>&
+    const PagedArray<usize>&
     SparseTable<Type, Array>::packed() const
     {
         return this->m_packed;
@@ -93,27 +104,24 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    SparseTable<Type, Array>::insert(const long& key, const Type& value)
+    SparseTable<Type, Array>::insert(const usize& key, const Type& value)
     {
-        long idx = this->m_size;
+        usize idx = this->m_size;
 
-        if ( this->contains(key) == true ) return false;
+        if ( this->contains(key) == true )
+            return false;
 
-        if ( this->isFull() == true )
-            this->resize(1.0f, 1.5f);
+        if ( this->resize(key) == true ) {
+            if ( this->isFull() == false ) {
+                this->m_size += 1;
 
-        if ( this->isFull() == false ) {
-            if ( this->m_sparse.length() <= key )
-                this->resize(Math::max(1l, key), -1);
+                this->m_sparse[key] = idx;
+                this->m_packed[idx] = key;
 
-            this->m_size += 1;
+                create(this->m_array[idx], value);
 
-            this->m_sparse[key] = idx;
-            this->m_packed[idx] = key;
-
-            create(this->m_array[idx], value);
-
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -121,27 +129,24 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    SparseTable<Type, Array>::insert(const long& key, Type&& value)
+    SparseTable<Type, Array>::insert(const usize& key, Type&& value)
     {
-        long idx = this->m_size;
+        usize idx = this->m_size;
 
-        if ( this->contains(key) == true ) return false;
+        if ( this->contains(key) == true )
+            return false;
 
-        if ( this->isFull() == true )
-            this->resize(1.0f, 1.5f);
+        if ( this->resize(key) == true ) {
+            if ( this->isFull() == false ) {
+                this->m_size += 1;
 
-        if ( this->isFull() == false ) {
-            if ( this->m_sparse.length() <= key )
-                this->resize(Math::max(1l, key), -1);
+                this->m_sparse[key] = idx;
+                this->m_packed[idx] = key;
 
-            this->m_size += 1;
+                create(this->m_array[idx], move(value));
 
-            this->m_sparse[key] = idx;
-            this->m_packed[idx] = key;
-
-            create(this->m_array[idx], move(value));
-
-            return true;
+                return true;
+            }
         }
 
         return false;
@@ -149,9 +154,9 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    SparseTable<Type, Array>::remove(const long& key)
+    SparseTable<Type, Array>::remove(const usize& key)
     {
-        long idx = 0, last = 0;
+        usize idx = 0, last = 0;
 
         if ( this->contains(key) == true ) {
             this->m_size -= 1;
@@ -172,9 +177,9 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    SparseTable<Type, Array>::contains(const long& key) const
+    SparseTable<Type, Array>::contains(const usize& key) const
     {
-        long idx = this->m_size;
+        usize idx = 0;
 
         if ( this->m_sparse.length() <= key )
             return false;
@@ -191,57 +196,101 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    SparseTable<Type, Array>::resize(long sparse, long packed)
+    SparseTable<Type, Array>::resize(usize sparse, usize packed, usize values)
     {
-        bool oper = true;
+        bool s = this->m_sparse.resize(sparse);
+        bool p = this->m_sparse.resize(sparse);
+        bool v = this->m_sparse.resize(sparse);
 
-        if ( sparse != -1 )
-            oper &= this->m_sparse.resize(sparse);
-
-        if ( packed != -1 ) {
-            oper &= this->m_packed.resize(packed);
-            oper &= this->m_array.resize(packed);
-        }
-
-        return oper;
+        return s && p && v;
     }
 
     template <class Type, template <class> class Array>
     bool
-    SparseTable<Type, Array>::resize(float sparse, float packed)
+    SparseTable<Type, Array>::resize(const usize& key)
     {
-        long length1 = Math::max(16l, this->m_sparse.length());
-        long length2 = Math::max(16l, this->m_packed.length());
+        usize size = 0;
 
-        return this->resize(
-            (long) sparse * length1,
-            (long) packed * length2);
+        while ( this->m_sparse.length() <= key ) {
+            size = this->m_sparse.length() + 1;
+
+            if ( this->m_sparse.resize(size) == false )
+                return false;
+        }
+
+        if ( this->m_size == this->m_packed.length() ) {
+            if ( this->m_packed.resize(this->m_size * 1.5f + 1) == false )
+                return false;
+        }
+
+        if ( this->m_size == this->m_array.length() ) {
+            if ( this->m_array.resize(this->m_size * 1.5f + 1) == false )
+                return false;
+        }
+
+        return true;
+    }
+
+    template <class Type, template <class> class Array>
+    usize
+    SparseTable<Type, Array>::indexOf(const usize& key) const
+    {
+        return key;
+    }
+
+    template <class Type, template <class> class Array>
+    usize
+    SparseTable<Type, Array>::keyOf(const usize& index) const
+    {
+        return this->m_sparse[index];
     }
 
     template <class Type, template <class> class Array>
     Type&
-    SparseTable<Type, Array>::valueOf(const long& key)
+    SparseTable<Type, Array>::valueOf(const usize& key)
     {
         return this->m_array[this->m_sparse[key]];
     }
 
     template <class Type, template <class> class Array>
     const Type&
-    SparseTable<Type, Array>::valueOf(const long& key) const
+    SparseTable<Type, Array>::valueOf(const usize& key) const
     {
         return this->m_array[this->m_sparse[key]];
     }
 
+    // template <class Type, template <class> class Array>
+    // void
+    // SparseTable<Type, Array>::sort(bool (*func)(const usize& value, const usize& other))
+    // {
+    //     QuickSort::sort(this->m_packed, func, 0, this->m_size);
+
+    //     for ( usize pos = 0; pos < this->m_size; pos++ ) {
+    //         usize curr = pos;
+    //         usize next = this->m_sparse[this->m_packed[curr]];
+
+    //         while ( curr != next ) {
+    //             swap(this->m_array[this->m_sparse[this->m_packed[curr]]],
+    //                 this->m_array[this->m_sparse[this->m_packed[next]]]);
+
+    //             this->m_sparse[this->m_packed[curr]] = curr;
+
+    //             curr = next;
+    //             next = this->m_sparse[this->m_packed[curr]];
+    //         }
+    //     }
+    // }
+
     template <class Type, template <class> class Array>
     Type&
-    SparseTable<Type, Array>::operator[](const long& index)
+    SparseTable<Type, Array>::operator[](const usize& index)
     {
         return this->m_array[index];
     }
 
     template <class Type, template <class> class Array>
     const Type&
-    SparseTable<Type, Array>::operator[](const long& index) const
+    SparseTable<Type, Array>::operator[](const usize& index) const
     {
         return this->m_array[index];
     }

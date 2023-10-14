@@ -5,26 +5,30 @@
 #include "Attrib.hpp"
 #include "Engine.hpp"
 
+static const float scale  = 1;
+static const usize side   = 16 * scale;
+static const usize width  = 1280 / side;
+static const usize height = 720 / side;
+
 class App
     : public Engine
 {
 public:
-    App(const smal::Attributes& attrib)
+    App(smal::Attributes& holder)
         : Engine(120, 120)
-        , m_attrib {smal::move(attrib)}
+        , m_holder {&holder}
         , m_textur {}
         , m_sprite {}
     {
         if ( this->m_textur.loadFromFile("player.png") == false )
             this->m_active = false;
-
+        // PLAYER
         this->m_sprite.setTexture(this->m_textur);
         this->m_sprite.setTextureRect({0, 0, 48, 48});
         this->m_sprite.setPosition({0, 0});
-        this->m_sprite.setScale({2.f, 2.f});
 
-        this->m_attrib.give<Vel>(0, {0, 0, 5, 15, 0, 250});
-        this->m_attrib.give<Spr>(0, this->m_sprite);
+        this->m_holder->give<Velocity>(0, {0, 0, 20, 20, 3});
+        this->m_holder->give<Sprite>(0, this->m_sprite);
     }
 
     void
@@ -42,46 +46,45 @@ public:
     void
     update(float delta)
     {
-        auto& velp = this->m_attrib.get<Vel>();
-        auto& sprp = this->m_attrib.get<Spr>();
+        auto& velocity = this->m_holder->get<Velocity>();
+        auto& sprite   = this->m_holder->get<Sprite>();
 
-        long size = smal::Math::min(velp.size(), sprp.size());
+        Vec2f inp = {0, 0};
 
         // Input system.
-        for ( long i = 0; i < velp.size(); i++ ) {
-            bool  frc = false;
-            auto& vel = this->m_attrib.get<Vel>(i);
+        if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W) )
+            inp.y -= 1;
+        if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) )
+            inp.x -= 1;
+        if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) )
+            inp.y += 1;
+        if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) )
+            inp.x += 1;
 
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::W) )
-                vel.y -= 1, frc = true;
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::A) )
-                vel.x -= 1, frc = true;
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::S) )
-                vel.y += 1, frc = true;
-            if ( sf::Keyboard::isKeyPressed(sf::Keyboard::D) )
-                vel.x += 1, frc = true;
-
-            if ( frc == true )
-                vel.mag = smal::Math::min(vel.max, vel.mag + vel.acc);
-
-            frc = false;
-
-            vel.nrm();
-        }
+        inp.nrm();
 
         // Movement system.
-        for ( long i = 0; i < size; i++ ) {
-            auto& vel = this->m_attrib.get<Vel>(i);
-            auto& spr = this->m_attrib.get<Spr>(i);
-            auto  pos = spr.getPosition();
+        auto& vel = velocity.valueOf(0);
+        auto& spr = sprite.valueOf(0);
+        auto  pos = spr.getPosition();
 
-            pos.x += vel.x * vel.mag * delta;
-            pos.y += vel.y * vel.mag * delta;
+        if ( (inp.x == inp.y) && (inp.x == 0) ) {
+            if ( vel.len() > vel.frc * delta ) {
+                vel.x -= vel.x * vel.frc * delta;
+                vel.y -= vel.y * vel.frc * delta;
+            } else
+                vel.x = vel.y = 0;
+        } else {
+            vel.x += inp.x * vel.acc * delta;
+            vel.y += inp.y * vel.acc * delta;
 
-            vel.mag = smal::Math::max(0.f, vel.mag - vel.frc);
-
-            spr.setPosition(pos);
+            vel.lim(vel.mag);
         }
+
+        pos.x += vel.x;
+        pos.y += vel.y;
+
+        spr.setPosition(pos);
     }
 
     void
@@ -89,19 +92,19 @@ public:
     {
         window.clear(sf::Color {192, 192, 192});
 
-        auto& sprp = this->m_attrib.get<Spr>();
+        auto& sprite = this->m_holder->get<Sprite>();
 
         // Rendering system.
-        for ( long i = 0; i < sprp.size(); i++ )
-            window.draw(this->m_attrib.get<Spr>(i));
+        for ( usize i = 0; i < sprite.size(); i++ )
+            window.draw(sprite[i]);
 
         window.display();
     }
 
 private:
-    smal::Attributes m_attrib;
-    sf::Texture      m_textur;
-    sf::Sprite       m_sprite;
+    smal::Attributes* m_holder;
+    sf::Texture       m_textur;
+    sf::Sprite        m_sprite;
 };
 
 #endif // APP_HPP

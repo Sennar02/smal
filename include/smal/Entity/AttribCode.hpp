@@ -6,11 +6,11 @@ namespace smal
     class AttribCode
     {
     private:
-        inline static long next = 0;
+        inline static usize next = 0;
 
     public:
         template <class Type>
-        inline static const long of =
+        inline static const usize of =
             next++;
     };
 } // namespace smal

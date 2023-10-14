@@ -2,11 +2,12 @@
 #define ENGINE_HPP
 
 #include <SFML/Graphics.hpp>
+#include <smal/Common/import.hpp>
 
 class Engine
 {
 public:
-    Engine(long frames, long fskips = 1)
+    Engine(usize frames, usize fskips = 1)
         : m_active {true}
         , m_frames {frames}
         , m_fskips {fskips}
@@ -20,26 +21,31 @@ public:
         sf::Time  delta;
         sf::Event event;
 
+        bool change = false;
+
         while ( this->m_active ) {
             delta += this->m_clock.restart();
 
-            printf("%f | %f\n",
-                delta.asSeconds(),
-                slice.asSeconds());
+            printf("%f\n", delta.asSeconds());
 
             while ( window.pollEvent(event) )
                 this->handle(event);
 
-            for ( long s = 0; s < this->m_fskips; s++ ) {
+            for ( usize s = 0; s < this->m_fskips; s++ ) {
                 if ( slice < delta )
                     delta -= slice;
                 else
                     break;
 
                 this->update(slice.asSeconds());
+                change = true;
             }
 
-            this->render(window);
+            if ( change == true ) {
+                this->render(window);
+
+                change = false;
+            }
         }
     }
 
@@ -57,8 +63,8 @@ protected:
     bool m_active;
 
 private:
-    long      m_frames;
-    long      m_fskips;
+    usize     m_frames;
+    usize     m_fskips;
     sf::Clock m_clock;
 };
 

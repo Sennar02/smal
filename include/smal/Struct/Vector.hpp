@@ -29,17 +29,17 @@ namespace smal
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         size() const;
 
         /**
@@ -86,7 +86,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(const Type& value, long index = -1);
+        insert(const Type& value, usize index = -1);
 
         /**
          * @brief
@@ -98,7 +98,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(Type&& value, long index = -1);
+        insert(Type&& value, usize index = -1);
 
         /**
          * @brief
@@ -109,7 +109,7 @@ namespace smal
          * @return false
          */
         bool
-        remove(long index = -1);
+        remove(usize index = -1);
 
         /**
          * @brief
@@ -120,18 +120,7 @@ namespace smal
          * @return false
          */
         bool
-        resize(long length);
-
-        /**
-         * @brief
-         *
-         * @param factor
-         *
-         * @return true
-         * @return false
-         */
-        bool
-        resize(float factor);
+        resize(usize length);
 
         /**
          * @brief
@@ -141,7 +130,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        operator[](long index);
+        operator[](usize index);
 
         /**
          * @brief
@@ -151,7 +140,7 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        operator[](long index) const;
+        operator[](usize index) const;
 
     private:
         /**
@@ -162,7 +151,7 @@ namespace smal
         /**
          * @brief
          */
-        long m_size;
+        usize m_size;
     };
 } // namespace smal
 

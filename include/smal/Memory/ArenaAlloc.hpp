@@ -19,22 +19,22 @@ namespace smal
          * @param memory
          * @param length
          */
-        ArenaAlloc(void* memory, long length);
+        ArenaAlloc(void* memory, usize length);
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         size() const;
 
         /**
@@ -54,7 +54,7 @@ namespace smal
          * @return Part
          */
         Part
-        reserve(long length);
+        reserve(usize length);
 
         /**
          * @brief
@@ -76,7 +76,7 @@ namespace smal
         /**
          * @brief
          */
-        long m_length;
+        usize m_length;
 
         /**
          * @brief

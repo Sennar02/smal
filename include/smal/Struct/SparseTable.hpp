@@ -17,29 +17,37 @@ namespace smal
         /**
          * @brief
          *
+         * @param origin
+         * @param length
+         */
+        SparseTable(PageAlloc& origin, usize length = 0);
+
+        /**
+         * @brief
+         *
          * @param sparse
          * @param packed
          * @param values
          */
         SparseTable(
-            const PagedArray<long>& sparse,
-            const Array<long>&      packed,
-            const Array<Type>&      values);
+            const PagedArray<usize>& sparse,
+            const PagedArray<usize>& packed,
+            const Array<Type>&       values);
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         size() const;
 
         /**
@@ -63,33 +71,33 @@ namespace smal
         /**
          * @brief
          *
-         * @return PagedArray<long>&
+         * @return PagedArray<usize>&
          */
-        PagedArray<long>&
+        PagedArray<usize>&
         sparse();
 
         /**
          * @brief
          *
-         * @return const PagedArray<long>&
+         * @return const PagedArray<usize>&
          */
-        const PagedArray<long>&
+        const PagedArray<usize>&
         sparse() const;
 
         /**
          * @brief
          *
-         * @return Array<long>&
+         * @return PagedArray<usize>&
          */
-        Array<long>&
+        PagedArray<usize>&
         packed();
 
         /**
          * @brief
          *
-         * @return const Array<long>&
+         * @return const PagedArray<usize>&
          */
-        const Array<long>&
+        const PagedArray<usize>&
         packed() const;
 
         /**
@@ -117,7 +125,7 @@ namespace smal
          * @return false
          */
         bool
-        contains(const long& key) const;
+        contains(const usize& key) const;
 
         /**
          * @brief
@@ -129,7 +137,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(const long& key, const Type& value);
+        insert(const usize& key, const Type& value);
 
         /**
          * @brief
@@ -141,7 +149,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(const long& key, Type&& value);
+        insert(const usize& key, Type&& value);
 
         /**
          * @brief
@@ -152,31 +160,40 @@ namespace smal
          * @return false
          */
         bool
-        remove(const long& key);
+        remove(const usize& key);
 
         /**
          * @brief
          *
          * @param sparse
          * @param packed
+         * @param values
          *
          * @return true
          * @return false
          */
         bool
-        resize(long sparse, long packed);
+        resize(usize sparse, usize packed, usize values);
 
         /**
          * @brief
          *
-         * @param sparse
-         * @param packed
+         * @param key
          *
-         * @return true
-         * @return false
+         * @return Type&
          */
-        bool
-        resize(float sparse, float packed);
+        usize
+        indexOf(const usize& key) const;
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return usize
+         */
+        usize
+        keyOf(const usize& index) const;
 
         /**
          * @brief
@@ -186,7 +203,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        valueOf(const long& key);
+        valueOf(const usize& key);
 
         /**
          * @brief
@@ -196,7 +213,18 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        valueOf(const long& key) const;
+        valueOf(const usize& key) const;
+
+        // /**
+        //  * @brief
+        //  *
+        //  * @param func
+        //  *
+        //  * @return true
+        //  * @return false
+        //  */
+        // void
+        // sort(bool (*func)(const usize& value, const usize& other));
 
         /**
          * @brief
@@ -206,7 +234,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        operator[](const long& index);
+        operator[](const usize& index);
 
         /**
          * @brief
@@ -216,18 +244,30 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        operator[](const long& index) const;
+        operator[](const usize& index) const;
+
+    private:
+        /**
+         * @brief
+         *
+         * @param key
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        resize(const usize& key);
 
     private:
         /**
          * @brief
          */
-        PagedArray<long> m_sparse;
+        PagedArray<usize> m_sparse;
 
         /**
          * @brief
          */
-        Array<long> m_packed;
+        PagedArray<usize> m_packed;
 
         /**
          * @brief
@@ -237,7 +277,7 @@ namespace smal
         /**
          * @brief
          */
-        long m_size;
+        usize m_size;
     };
 } // namespace smal
 

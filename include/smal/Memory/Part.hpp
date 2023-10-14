@@ -20,7 +20,7 @@ namespace smal
          * @param memory
          * @param length
          */
-        Part(void* origin, void* memory, long length);
+        Part(void* origin, void* memory, usize length);
 
         /**
          * @brief
@@ -50,9 +50,9 @@ namespace smal
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
     private:
@@ -69,7 +69,7 @@ namespace smal
         /**
          * @brief
          */
-        long m_length;
+        usize m_length;
     };
 } // namespace smal
 

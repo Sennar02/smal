@@ -3,11 +3,11 @@
 namespace smal::Memory
 {
     void
-    set(void* memory, long length, char byte)
+    set(void* memory, usize length, char byte)
     {
         char* dst = (char*) memory;
 
-        for ( long i = 0; i < length; i++ )
+        for ( usize i = 0; i < length; i++ )
             dst[i] = byte;
     }
 } // namespace smal::Memory

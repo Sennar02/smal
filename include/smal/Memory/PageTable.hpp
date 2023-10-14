@@ -20,30 +20,30 @@ namespace smal
          * @param length
          * @param page
          */
-        PageTable(void* memory, long length, long page);
+        PageTable(void* memory, usize length, usize page);
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         size() const;
 
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         page() const;
 
         /**
@@ -74,7 +74,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(const Part& page, long offset);
+        insert(const Part& page, usize offset);
 
         /**
          * @brief
@@ -84,7 +84,7 @@ namespace smal
          * @return char*
          */
         char*
-        remove(long offset);
+        remove(usize offset);
 
         /**
          * @brief
@@ -95,7 +95,7 @@ namespace smal
          * @return char*
          */
         char*
-        lookup(long index, long scale = 1) const;
+        lookup(usize index, usize scale = 1) const;
 
     public:
         using Item = char*;
@@ -108,17 +108,17 @@ namespace smal
         /**
          * @brief
          */
-        long m_length;
+        usize m_length;
 
         /**
          * @brief
          */
-        long m_size;
+        usize m_size;
 
         /**
          * @brief
          */
-        long m_page;
+        usize m_page;
     };
 } // namespace smal
 

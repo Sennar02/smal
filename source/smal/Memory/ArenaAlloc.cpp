@@ -9,22 +9,22 @@ namespace smal
         , m_next {0}
     { }
 
-    ArenaAlloc::ArenaAlloc(void* memory, long length)
+    ArenaAlloc::ArenaAlloc(void* memory, usize length)
         : m_memory {(char*) memory}
         , m_length {length}
         , m_next {m_memory}
     { }
 
-    long
+    usize
     ArenaAlloc::length() const
     {
         return this->m_length;
     }
 
-    long
+    usize
     ArenaAlloc::size() const
     {
-        long diff =
+        usize diff =
             this->m_next - this->m_memory;
 
         return this->m_length - diff;
@@ -40,7 +40,7 @@ namespace smal
     }
 
     Part
-    ArenaAlloc::reserve(long length)
+    ArenaAlloc::reserve(usize length)
     {
         Part part = {this, this->m_next, length};
 

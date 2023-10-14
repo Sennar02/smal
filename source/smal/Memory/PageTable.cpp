@@ -10,7 +10,7 @@ namespace smal
         , m_page {0}
     { }
 
-    PageTable::PageTable(void* memory, long length, long page)
+    PageTable::PageTable(void* memory, usize length, usize page)
         : m_memory {(Item*) memory}
         , m_length {length}
         , m_size {0}
@@ -19,19 +19,19 @@ namespace smal
         this->m_length /= sizeof(Item);
     }
 
-    long
+    usize
     PageTable::length() const
     {
         return this->m_length * sizeof(Item);
     }
 
-    long
+    usize
     PageTable::size() const
     {
         return this->m_size;
     }
 
-    long
+    usize
     PageTable::page() const
     {
         return this->m_page;
@@ -50,11 +50,15 @@ namespace smal
     }
 
     bool
-    PageTable::insert(const Part& page, long offset)
+    PageTable::insert(const Part& page, usize offset)
     {
-        if ( offset >= this->m_length ) return false;
+        if ( offset >= this->m_length )
+            return false;
 
-        if ( this->m_memory[offset] == 0 ) {
+        if ( page.isNull() == false ) {
+            if ( this->m_memory[offset] != 0 )
+                return false;
+
             this->m_memory[offset] = page.memory();
             this->m_size += 1;
 
@@ -65,7 +69,7 @@ namespace smal
     }
 
     char*
-    PageTable::remove(long offset)
+    PageTable::remove(usize offset)
     {
         char* memory = 0;
 
@@ -80,12 +84,12 @@ namespace smal
     }
 
     char*
-    PageTable::lookup(long index, long scale) const
+    PageTable::lookup(usize index, usize scale) const
     {
-        long byte = index * scale;
+        usize byte = index * scale;
 
-        long page = Math::div(byte, this->m_page);
-        long dist = Math::mod(byte, this->m_page);
+        usize page = Math::div(byte, this->m_page);
+        usize dist = Math::mod(byte, this->m_page);
 
         if ( page < this->m_length && this->m_memory[page] != 0 )
             return this->m_memory[page] + dist;

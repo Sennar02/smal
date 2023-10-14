@@ -31,7 +31,7 @@ namespace smal
          */
         template <class Type, class... Rest>
         bool
-        give(long entity, const Type& comp, const Rest&... rest);
+        give(usize entity, const Type& comp, const Rest&... rest);
 
         /**
          * @brief
@@ -48,7 +48,7 @@ namespace smal
          */
         template <class Type, class... Rest>
         bool
-        give(long entity, Type&& comp, Rest&&... rest);
+        give(usize entity, Type&& comp, Rest&&... rest);
 
         /**
          * @brief
@@ -63,7 +63,7 @@ namespace smal
          */
         template <class Type, class... Rest>
         bool
-        take(long entity);
+        take(usize entity);
 
         /**
          * @brief
@@ -78,7 +78,7 @@ namespace smal
          */
         template <class Type, class... Rest>
         bool
-        has(long entity) const;
+        has(usize entity) const;
 
         /**
          * @brief
@@ -91,7 +91,7 @@ namespace smal
          */
         template <class Type>
         Type&
-        get(long entity);
+        get(usize entity);
 
         /**
          * @brief
@@ -104,7 +104,7 @@ namespace smal
          */
         template <class Type>
         const Type&
-        get(long entity) const;
+        get(usize entity) const;
 
         /**
          * @brief

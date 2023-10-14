@@ -10,7 +10,7 @@ namespace smal
     class PagedArray
     {
     public:
-        static const long SIZE = sizeof(Type);
+        static const usize SIZE = sizeof(Type);
 
     public:
         /**
@@ -24,7 +24,7 @@ namespace smal
          * @param origin
          * @param length
          */
-        PagedArray(PageAlloc& origin, long length = 0);
+        PagedArray(PageAlloc& origin, usize length = 0);
 
         /**
          * @brief
@@ -33,7 +33,7 @@ namespace smal
          * @param table
          * @param length
          */
-        PagedArray(PageAlloc& origin, PageTable& table, long length = 0);
+        PagedArray(PageAlloc& origin, PageTable& table, usize length = 0);
 
         /**
          * @brief
@@ -42,7 +42,7 @@ namespace smal
          * @param memory
          * @param length
          */
-        PagedArray(PageAlloc& origin, void* memory, long length);
+        PagedArray(PageAlloc& origin, void* memory, usize length);
 
         /**
          * @brief
@@ -52,9 +52,9 @@ namespace smal
         /**
          * @brief
          *
-         * @return long
+         * @return usize
          */
-        long
+        usize
         length() const;
 
         /**
@@ -66,7 +66,7 @@ namespace smal
          * @return false
          */
         bool
-        resize(long length);
+        resize(usize length);
 
         /**
          * @brief
@@ -77,7 +77,7 @@ namespace smal
          * @return false
          */
         bool
-        attach(long pages);
+        attach(usize pages);
 
         /**
          * @brief
@@ -88,7 +88,7 @@ namespace smal
          * @return false
          */
         bool
-        detach(long pages);
+        detach(usize pages);
 
         /**
          * @brief
@@ -98,7 +98,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        operator[](long index);
+        operator[](usize index);
 
         /**
          * @brief
@@ -108,9 +108,9 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        operator[](long index) const;
+        operator[](usize index) const;
 
-    private:
+    public:
         /**
          * @brief
          */

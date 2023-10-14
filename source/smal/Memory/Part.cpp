@@ -8,7 +8,7 @@ namespace smal
         , m_length {0}
     { }
 
-    Part::Part(void* origin, void* memory, long length)
+    Part::Part(void* origin, void* memory, usize length)
         : m_origin {origin}
         , m_memory {memory}
         , m_length {length}
@@ -22,7 +22,7 @@ namespace smal
                this->m_origin == 0;
     }
 
-    long
+    usize
     Part::length() const
     {
         return this->m_length;

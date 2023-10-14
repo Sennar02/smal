@@ -10,7 +10,7 @@ namespace smal
         , m_size {0}
     { }
 
-    PageAlloc::PageAlloc(void* memory, long length, long page)
+    PageAlloc::PageAlloc(void* memory, usize length, usize page)
         : m_memory {(char*) memory}
         , m_length {length}
         , m_list {0}
@@ -20,19 +20,19 @@ namespace smal
         this->prepare(page);
     }
 
-    long
+    usize
     PageAlloc::length() const
     {
         return this->m_length;
     }
 
-    long
+    usize
     PageAlloc::size() const
     {
         return this->m_size;
     }
 
-    long
+    usize
     PageAlloc::page() const
     {
         return this->m_page;
@@ -51,7 +51,7 @@ namespace smal
             if ( this->m_size != 0 ) {
                 this->m_list = node;
 
-                for ( long i = 0; i < this->m_size; i++ ) {
+                for ( usize i = 0; i < this->m_size; i++ ) {
                     addr = (char*) node + this->m_page;
                     next = (Node*) addr;
 
@@ -67,7 +67,7 @@ namespace smal
     }
 
     bool
-    PageAlloc::prepare(long page)
+    PageAlloc::prepare(usize page)
     {
         if ( page > 0 )
             this->m_page = page;
@@ -80,7 +80,7 @@ namespace smal
     {
         Part page = {this, this->m_list, this->m_page};
 
-        if ( this->m_list != 0 ) {
+        if ( this->m_size != 0 ) {
             this->m_list = this->m_list->next;
             this->m_size -= 1;
 
@@ -88,9 +88,11 @@ namespace smal
                 page.memory(),
                 page.length(),
                 0);
+
+            return page;
         }
 
-        return page;
+        return {};
     }
 
     bool
