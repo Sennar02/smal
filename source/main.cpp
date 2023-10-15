@@ -1,4 +1,4 @@
-#include <smal/Memory/import.hpp>
+#include <smal/Struct/import.hpp>
 
 static const usize g_zone = 1024 * 1024 * 8;
 static const usize g_pool = 1024 * 1024 * 1016;
@@ -19,20 +19,16 @@ main(int argc, const char* argv[])
         smal::PoolOrigin  pool = {memory, g_pool, g_page};
         smal::StackOrigin zone = {memory + g_pool, g_zone};
 
-        smal::PagedArray<Position> array = {&pool};
+        smal::ArrayList<Position> list = {&pool};
 
-        array.attach(1);
+        list.insert({0.4, 11.5}, 0);
 
-        for ( usize i = 0; i < array.length(); i++ ) {
-            array[i] = {
-                (f32) i,
-                (f32) i,
-            };
+        bool b = list.contains({0.4, 11.5}, [](auto& a, auto& b) {
+            return a.x == b.x &&
+                   a.y == b.y;
+        });
 
-            printf("%.3f, %.3f\n",
-                array[i].x,
-                array[i].y);
-        }
+        printf("%i\n", b);
     }
 
     free(memory);
