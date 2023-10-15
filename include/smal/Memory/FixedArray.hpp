@@ -21,7 +21,7 @@ namespace smal
          * @param origin
          * @param length
          */
-        FixedArray(PageAlloc& origin, usize length = 0);
+        FixedArray(PoolOrigin& origin, usize length = 0);
 
         /**
          * @brief

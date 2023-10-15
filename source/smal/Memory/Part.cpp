@@ -8,35 +8,39 @@ namespace smal
         , m_length {0}
     { }
 
-    Part::Part(void* origin, void* memory, usize length)
+    Part::Part(BaseOrigin* origin, void* memory, usize length)
         : m_origin {origin}
-        , m_memory {memory}
+        , m_memory {(char*) memory}
         , m_length {length}
     { }
 
     bool
     Part::isNull() const
     {
-        return this->m_memory == 0 ||
-               this->m_length == 0 ||
-               this->m_origin == 0;
+        return this->m_memory == 0;
     }
 
-    usize
-    Part::length() const
-    {
-        return this->m_length;
-    }
-
-    void*
+    const BaseOrigin*
     Part::origin() const
     {
         return this->m_origin;
     }
 
     char*
+    Part::memory()
+    {
+        return this->m_memory;
+    }
+
+    const char*
     Part::memory() const
     {
-        return (char*) this->m_memory;
+        return this->m_memory;
+    }
+
+    usize
+    Part::length() const
+    {
+        return this->m_length;
     }
 } // namespace smal

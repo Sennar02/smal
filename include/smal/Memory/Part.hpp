@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_PAGE_HPP
-#define SMAL_MEMORY_PAGE_HPP
+#ifndef SMAL_MEMORY_PART_HPP
+#define SMAL_MEMORY_PART_HPP
 
 #include <smal/Memory/define.hpp>
 
@@ -20,7 +20,7 @@ namespace smal
          * @param memory
          * @param length
          */
-        Part(void* origin, void* memory, usize length);
+        Part(BaseOrigin* origin, void* memory, usize length);
 
         /**
          * @brief
@@ -34,9 +34,9 @@ namespace smal
         /**
          * @brief
          *
-         * @return void*
+         * @return const BaseOrigin&
          */
-        void*
+        const BaseOrigin*
         origin() const;
 
         /**
@@ -45,6 +45,14 @@ namespace smal
          * @return char*
          */
         char*
+        memory();
+
+        /**
+         * @brief
+         *
+         * @return const char*
+         */
+        const char*
         memory() const;
 
         /**
@@ -59,12 +67,12 @@ namespace smal
         /**
          * @brief
          */
-        void* m_origin;
+        BaseOrigin* m_origin;
 
         /**
          * @brief
          */
-        void* m_memory;
+        char* m_memory;
 
         /**
          * @brief
@@ -73,4 +81,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_PAGE_HPP
+#endif // SMAL_MEMORY_PART_HPP

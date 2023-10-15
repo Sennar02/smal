@@ -9,7 +9,7 @@ namespace smal
     { }
 
     template <class Type>
-    FixedArray<Type>::FixedArray(PageAlloc& origin, usize length)
+    FixedArray<Type>::FixedArray(PoolOrigin& origin, usize length)
         : m_memory {0}
         , m_length {0}
     {

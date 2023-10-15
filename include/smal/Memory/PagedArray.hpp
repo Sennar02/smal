@@ -1,8 +1,8 @@
 #ifndef SMAL_MEMORY_PAGE_ARRAY_HPP
 #define SMAL_MEMORY_PAGE_ARRAY_HPP
 
-#include <smal/Memory/PageAlloc.hpp>
-#include <smal/Memory/PageTable.hpp>
+#include <smal/Memory/Origin/PoolOrigin.hpp>
+#include <smal/Memory/PartTable.hpp>
 
 namespace smal
 {
@@ -24,7 +24,7 @@ namespace smal
          * @param origin
          * @param length
          */
-        PagedArray(PageAlloc& origin, usize length = 0);
+        PagedArray(PoolOrigin& origin, usize length = 0);
 
         /**
          * @brief
@@ -33,7 +33,7 @@ namespace smal
          * @param table
          * @param length
          */
-        PagedArray(PageAlloc& origin, PageTable& table, usize length = 0);
+        PagedArray(PoolOrigin& origin, PartTable& table, usize length = 0);
 
         /**
          * @brief
@@ -42,7 +42,7 @@ namespace smal
          * @param memory
          * @param length
          */
-        PagedArray(PageAlloc& origin, void* memory, usize length);
+        PagedArray(PoolOrigin& origin, void* memory, usize length);
 
         /**
          * @brief
@@ -114,12 +114,12 @@ namespace smal
         /**
          * @brief
          */
-        PageTable m_table;
+        PartTable m_table;
 
         /**
          * @brief
          */
-        PageAlloc* m_origin;
+        PoolOrigin* m_origin;
     };
 } // namespace smal
 

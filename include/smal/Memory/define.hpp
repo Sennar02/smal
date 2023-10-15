@@ -6,11 +6,14 @@
 namespace smal
 {
     class Part;
+    class PartTable;
 
-    class PageAlloc;
-    class PageTable;
+    class BaseOrigin;
+    class PoolOrigin;
+    class StackOrigin;
 
-    class ArenaAlloc;
+    template <class Type>
+    class Creator;
 
     template <class Type>
     class FixedArray;

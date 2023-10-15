@@ -1,28 +1,28 @@
-#include <smal/Memory/ArenaAlloc.hpp>
+#include <smal/Memory/Origin/StackOrigin.hpp>
 #include <smal/Memory/helper.hpp>
 
 namespace smal
 {
-    ArenaAlloc::ArenaAlloc()
+    StackOrigin::StackOrigin()
         : m_memory {0}
         , m_length {0}
         , m_next {0}
     { }
 
-    ArenaAlloc::ArenaAlloc(void* memory, usize length)
+    StackOrigin::StackOrigin(void* memory, usize length)
         : m_memory {(char*) memory}
         , m_length {length}
         , m_next {m_memory}
     { }
 
     usize
-    ArenaAlloc::length() const
+    StackOrigin::length() const
     {
         return this->m_length;
     }
 
     usize
-    ArenaAlloc::size() const
+    StackOrigin::size() const
     {
         usize diff =
             this->m_next - this->m_memory;
@@ -31,7 +31,7 @@ namespace smal
     }
 
     bool
-    ArenaAlloc::prepare()
+    StackOrigin::prepare()
     {
         this->m_next =
             this->m_memory;
@@ -40,7 +40,7 @@ namespace smal
     }
 
     Part
-    ArenaAlloc::reserve(usize length)
+    StackOrigin::reserve(usize length)
     {
         Part part = {this, this->m_next, length};
 
@@ -59,10 +59,28 @@ namespace smal
     }
 
     bool
-    ArenaAlloc::reclaim(const Part& part)
+    StackOrigin::reclaim(Part& part)
     {
-        char* finish = part.memory() +
-                       part.length();
+        char* finish = part.memory() + part.length();
+
+        if ( part.origin() != this && part.origin() != 0 )
+            return false;
+
+        if ( this->m_next == finish ) {
+            if ( part.isNull() == false )
+                this->m_next -= part.length();
+
+            part = {};
+        } else
+            return part.isNull();
+
+        return true;
+    }
+
+    bool
+    StackOrigin::reclaim(Part&& part)
+    {
+        char* finish = part.memory() + part.length();
 
         if ( part.origin() != this && part.origin() != 0 )
             return false;

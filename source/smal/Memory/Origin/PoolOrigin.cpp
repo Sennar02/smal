@@ -1,45 +1,45 @@
-#include <smal/Memory/PageAlloc.hpp>
+#include <smal/Memory/Origin/PoolOrigin.hpp>
 #include <smal/Memory/helper.hpp>
 
 namespace smal
 {
-    PageAlloc::PageAlloc()
+    PoolOrigin::PoolOrigin()
         : m_memory {0}
         , m_length {0}
         , m_list {0}
         , m_size {0}
     { }
 
-    PageAlloc::PageAlloc(void* memory, usize length, usize page)
+    PoolOrigin::PoolOrigin(void* memory, usize length, usize page)
         : m_memory {(char*) memory}
         , m_length {length}
         , m_list {0}
         , m_size {0}
         , m_page {0}
     {
-        this->prepare(page);
+        this->prepare(Math::max(page, 8lu));
     }
 
     usize
-    PageAlloc::length() const
+    PoolOrigin::length() const
     {
         return this->m_length;
     }
 
     usize
-    PageAlloc::size() const
+    PoolOrigin::size() const
     {
         return this->m_size;
     }
 
     usize
-    PageAlloc::page() const
+    PoolOrigin::page() const
     {
         return this->m_page;
     }
 
     bool
-    PageAlloc::prepare()
+    PoolOrigin::prepare()
     {
         Node* node = (Node*) this->m_memory;
         Node* next = 0;
@@ -67,22 +67,25 @@ namespace smal
     }
 
     bool
-    PageAlloc::prepare(usize page)
+    PoolOrigin::prepare(usize page)
     {
-        if ( page > 0 )
+        if ( page >= sizeof(void*) )
             this->m_page = page;
 
         return this->prepare();
     }
 
     Part
-    PageAlloc::reserve()
+    PoolOrigin::reserve(usize length)
     {
         Part page = {this, this->m_list, this->m_page};
 
+        if ( length > this->m_page )
+            return {};
+
         if ( this->m_size != 0 ) {
-            this->m_list = this->m_list->next;
             this->m_size -= 1;
+            this->m_list = this->m_list->next;
 
             Memory::set(
                 page.memory(),
@@ -96,7 +99,27 @@ namespace smal
     }
 
     bool
-    PageAlloc::reclaim(const Part& page)
+    PoolOrigin::reclaim(Part& page)
+    {
+        Node* node = (Node*) page.memory();
+
+        if ( page.origin() != this && page.origin() != 0 )
+            return false;
+
+        if ( page.isNull() == false ) {
+            node->next = this->m_list;
+
+            page = {};
+
+            this->m_list = node;
+            this->m_size += 1;
+        }
+
+        return true;
+    }
+
+    bool
+    PoolOrigin::reclaim(Part&& page)
     {
         Node* node = (Node*) page.memory();
 

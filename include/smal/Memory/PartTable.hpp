@@ -1,17 +1,17 @@
-#ifndef SMAL_MEMORY_PAGE_ALLOC_HPP
-#define SMAL_MEMORY_PAGE_ALLOC_HPP
+#ifndef SMAL_MEMORY_PAGE_TABLE_HPP
+#define SMAL_MEMORY_PAGE_TABLE_HPP
 
 #include <smal/Memory/Part.hpp>
 
 namespace smal
 {
-    class PageAlloc
+    class PartTable
     {
     public:
         /**
          * @brief
          */
-        PageAlloc();
+        PartTable();
 
         /**
          * @brief
@@ -20,7 +20,7 @@ namespace smal
          * @param length
          * @param page
          */
-        PageAlloc(void* memory, usize length, usize page);
+        PartTable(void* memory, usize length, usize page);
 
         /**
          * @brief
@@ -53,58 +53,60 @@ namespace smal
          * @return false
          */
         bool
-        prepare();
+        isFull() const;
 
         /**
          * @brief
-         *
-         * @param page
          *
          * @return true
          * @return false
          */
         bool
-        prepare(usize page);
-
-        /**
-         * @brief
-         *
-         * @return Part
-         */
-        Part
-        reserve();
+        isEmpty() const;
 
         /**
          * @brief
          *
          * @param page
+         * @param index
          *
          * @return true
          * @return false
          */
         bool
-        reclaim(const Part& page);
-
-    private:
-        struct Node
-        {
-            Node* next;
-        };
+        insert(const Part& page, usize index);
 
         /**
          * @brief
+         *
+         * @param index
+         *
+         * @return char*
          */
-        char* m_memory;
+        char*
+        remove(usize index);
+
+        /**
+         * @brief
+         *
+         * @param index
+         * @param scale
+         *
+         * @return char*
+         */
+        char*
+        lookup(usize index, usize scale = 1) const;
+
+    public:
+        /**
+         * @brief
+         */
+        char** m_memory;
 
         /**
          * @brief
          */
         usize m_length;
-
-        /**
-         * @brief
-         */
-        Node* m_list;
 
         /**
          * @brief
@@ -118,4 +120,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_PAGE_ALLOC_HPP
+#endif // SMAL_MEMORY_PAGE_TABLE_HPP

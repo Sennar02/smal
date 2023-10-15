@@ -9,7 +9,7 @@ namespace smal
     { }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PageAlloc& origin, usize length)
+    PagedArray<Type>::PagedArray(PoolOrigin& origin, usize length)
         : m_table {}
         , m_origin {&origin}
     {
@@ -26,7 +26,7 @@ namespace smal
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PageAlloc& origin, PageTable& table, usize length)
+    PagedArray<Type>::PagedArray(PoolOrigin& origin, PartTable& table, usize length)
         : m_table {move(table)}
         , m_origin {&origin}
     {
@@ -34,7 +34,7 @@ namespace smal
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PageAlloc& origin, void* memory, usize length)
+    PagedArray<Type>::PagedArray(PoolOrigin& origin, void* memory, usize length)
         : m_table {}
         , m_origin {&origin}
     {

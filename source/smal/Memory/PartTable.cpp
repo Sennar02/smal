@@ -1,66 +1,68 @@
-#include <smal/Memory/PageTable.hpp>
-#include <smal/Memory/PageAlloc.hpp>
+#include <smal/Memory/PartTable.hpp>
+#include <smal/Memory/Origin/PoolOrigin.hpp>
 
 namespace smal
 {
-    PageTable::PageTable()
+    PartTable::PartTable()
         : m_memory {0}
         , m_length {0}
         , m_size {0}
         , m_page {0}
     { }
 
-    PageTable::PageTable(void* memory, usize length, usize page)
-        : m_memory {(Item*) memory}
+    PartTable::PartTable(void* memory, usize length, usize page)
+        : m_memory {(char**) memory}
         , m_length {length}
         , m_size {0}
         , m_page {page}
     {
-        this->m_length /= sizeof(Item);
+        this->m_length /= sizeof(char*);
     }
 
     usize
-    PageTable::length() const
+    PartTable::length() const
     {
-        return this->m_length * sizeof(Item);
+        return this->m_length * sizeof(char*);
     }
 
     usize
-    PageTable::size() const
+    PartTable::size() const
     {
         return this->m_size;
     }
 
     usize
-    PageTable::page() const
+    PartTable::page() const
     {
         return this->m_page;
     }
 
     bool
-    PageTable::isFull() const
+    PartTable::isFull() const
     {
         return this->m_size == this->m_length;
     }
 
     bool
-    PageTable::isEmpty() const
+    PartTable::isEmpty() const
     {
         return this->m_size == 0;
     }
 
     bool
-    PageTable::insert(const Part& page, usize offset)
+    PartTable::insert(const Part& page, usize index)
     {
-        if ( offset >= this->m_length )
+        char* memory = (char*) page.memory();
+
+        if ( index >= this->m_length )
             return false;
 
         if ( page.isNull() == false ) {
-            if ( this->m_memory[offset] != 0 )
+            if ( this->m_memory[index] != 0 )
                 return false;
 
-            this->m_memory[offset] = page.memory();
             this->m_size += 1;
+            this->m_memory[index] = memory;
 
             return true;
         }
@@ -69,14 +71,14 @@ namespace smal
     }
 
     char*
-    PageTable::remove(usize offset)
+    PartTable::remove(usize index)
     {
         char* memory = 0;
 
-        if ( offset < this->m_length ) {
-            memory = this->m_memory[offset];
+        if ( index < this->m_length ) {
+            memory = this->m_memory[index];
 
-            this->m_memory[offset] = 0;
+            this->m_memory[index] = 0;
             this->m_size -= 1;
         }
 
@@ -84,7 +86,7 @@ namespace smal
     }
 
     char*
-    PageTable::lookup(usize index, usize scale) const
+    PartTable::lookup(usize index, usize scale) const
     {
         usize byte = index * scale;
 

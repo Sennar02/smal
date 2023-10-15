@@ -5,9 +5,13 @@
 #include <smal/Memory/define.hpp>
 
 #include <smal/Memory/Part.hpp>
-#include <smal/Memory/PageAlloc.hpp>
-#include <smal/Memory/PageTable.hpp>
-#include <smal/Memory/ArenaAlloc.hpp>
+#include <smal/Memory/PartTable.hpp>
+
+#include <smal/Memory/Origin/BaseOrigin.hpp>
+#include <smal/Memory/Origin/PoolOrigin.hpp>
+#include <smal/Memory/Origin/StackOrigin.hpp>
+
+#include <smal/Memory/Creator.hpp>
 
 #include <smal/Memory/FixedArray.hpp>
 #include <smal/Memory/PagedArray.hpp>

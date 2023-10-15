@@ -1,17 +1,18 @@
-#ifndef SMAL_MEMORY_PAGE_TABLE_HPP
-#define SMAL_MEMORY_PAGE_TABLE_HPP
+#ifndef SMAL_MEMORY_PAGE_ORIGIN_HPP
+#define SMAL_MEMORY_PAGE_ORIGIN_HPP
 
-#include <smal/Memory/Part.hpp>
+#include <smal/Memory/Origin/BaseOrigin.hpp>
 
 namespace smal
 {
-    class PageTable
+    class PoolOrigin
+        : public BaseOrigin
     {
     public:
         /**
          * @brief
          */
-        PageTable();
+        PoolOrigin();
 
         /**
          * @brief
@@ -20,7 +21,7 @@ namespace smal
          * @param length
          * @param page
          */
-        PageTable(void* memory, usize length, usize page);
+        PoolOrigin(void* memory, usize length, usize page = 0);
 
         /**
          * @brief
@@ -53,62 +54,71 @@ namespace smal
          * @return false
          */
         bool
-        isFull() const;
-
-        /**
-         * @brief
-         *
-         * @return true
-         * @return false
-         */
-        bool
-        isEmpty() const;
+        prepare();
 
         /**
          * @brief
          *
          * @param page
-         * @param offset
          *
          * @return true
          * @return false
          */
         bool
-        insert(const Part& page, usize offset);
+        prepare(usize page);
 
         /**
          * @brief
          *
-         * @param offset
+         * @param length
          *
-         * @return char*
+         * @return Part
          */
-        char*
-        remove(usize offset);
+        Part
+        reserve(usize length = 0);
 
         /**
          * @brief
          *
-         * @param index
-         * @param scale
+         * @param page
          *
-         * @return char*
+         * @return true
+         * @return false
          */
-        char*
-        lookup(usize index, usize scale = 1) const;
+        bool
+        reclaim(Part& page);
 
-    public:
-        using Item = char*;
+        /**
+         * @brief
+         *
+         * @param page
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        reclaim(Part&& page);
+
+    private:
+        struct Node
+        {
+            Node* next;
+        };
 
         /**
          * @brief
          */
-        Item* m_memory;
+        char* m_memory;
 
         /**
          * @brief
          */
         usize m_length;
+
+        /**
+         * @brief
+         */
+        Node* m_list;
 
         /**
          * @brief
@@ -122,4 +132,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_PAGE_TABLE_HPP
+#endif // SMAL_MEMORY_PAGE_ORIGIN_HPP

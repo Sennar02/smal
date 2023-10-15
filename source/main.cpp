@@ -1,29 +1,35 @@
-#include <smal/Entity/import.hpp>
-#include "game/App.hpp"
+#include <smal/Memory/import.hpp>
 
-static const usize memlen = 1024ul * 1024 * 1024;
-static const usize paglen = 1024ul * 128;
+static const usize g_zone = 1024 * 1024 * 8;
+static const usize g_pool = 1024 * 1024 * 1016;
+static const usize g_page = 1024 * 8;
 
 int
 main(int argc, const char* argv[])
 {
-    char* memptr = (char*) calloc(1, memlen);
+    char* memory = (char*) calloc(1, g_zone + g_pool);
 
     {
-        smal::PageAlloc  origin = {memptr + paglen, memlen - paglen, paglen};
-        smal::ArenaAlloc buffer = {memptr, paglen};
-        smal::Attributes holder = {origin, buffer};
+        smal::PoolOrigin  pool = {memory, g_pool};
+        smal::StackOrigin zone = {memory + g_pool, g_zone};
 
-        App engine = {holder};
+        smal::Creator<int> creator = {pool};
 
-        // clang-format off
-        sf::RenderWindow window = {{1280, 720}, "App"};
-        // clang-format on
+        for ( usize i = 0; i < 100; i++ ) {
+            int* item = creator.create();
 
-        engine.loop(window);
+            if ( item != 0 )
+                printf("%i\n", *item);
+            else
+                break;
+
+            creator.destroy(item);
+        }
+
+        srand(time(0));
     }
 
-    free(memptr);
+    free(memory);
 
     return 0;
 }

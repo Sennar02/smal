@@ -1,17 +1,18 @@
-#ifndef SMAL_MEMORY_STACK_ALLOC_HPP
-#define SMAL_MEMORY_STACK_ALLOC_HPP
+#ifndef SMAL_MEMORY_STACK_ORIGIN_HPP
+#define SMAL_MEMORY_STACK_ORIGIN_HPP
 
-#include <smal/Memory/Part.hpp>
+#include <smal/Memory/Origin/BaseOrigin.hpp>
 
 namespace smal
 {
-    class ArenaAlloc
+    class StackOrigin
+        : public BaseOrigin
     {
     public:
         /**
          * @brief
          */
-        ArenaAlloc();
+        StackOrigin();
 
         /**
          * @brief
@@ -19,7 +20,7 @@ namespace smal
          * @param memory
          * @param length
          */
-        ArenaAlloc(void* memory, usize length);
+        StackOrigin(void* memory, usize length);
 
         /**
          * @brief
@@ -65,7 +66,18 @@ namespace smal
          * @return false
          */
         bool
-        reclaim(const Part& part);
+        reclaim(Part& part);
+
+        /**
+         * @brief
+         *
+         * @param part
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        reclaim(Part&& part);
 
     private:
         /**
@@ -85,4 +97,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_STACK_ALLOC_HPP
+#endif // SMAL_MEMORY_STACK_ORIGIN_HPP

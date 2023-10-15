@@ -10,10 +10,10 @@ namespace smal::Memory
      *
      * @param memory
      * @param length
-     * @param byte
+     * @param value
      */
     void
-    set(void* memory, usize length, char byte);
+    set(void* memory, usize length, char value);
 } // namespace smal::Memory
 
 #endif // SMAL_MEMORY_HELPER_HPP
