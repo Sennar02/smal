@@ -1,19 +1,19 @@
-#include <smal/Memory/PagedArray.hpp>
+#include <smal/Memory/Array/PagedArray.hpp>
 
 namespace smal
 {
     template <class Type>
     PagedArray<Type>::PagedArray()
-        : m_table {}
-        , m_origin {0}
+        : m_origin {0}
+        , m_table {}
     { }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PoolOrigin& origin, usize length)
-        : m_table {}
-        , m_origin {&origin}
+    PagedArray<Type>::PagedArray(PoolOrigin* origin, usize length)
+        : m_origin {origin}
+        , m_table {}
     {
-        Part page = origin.reserve();
+        Part page = origin->reserve();
 
         if ( page.isNull() == false ) {
             create(this->m_table,
@@ -26,30 +26,17 @@ namespace smal
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PoolOrigin& origin, PartTable& table, usize length)
-        : m_table {move(table)}
-        , m_origin {&origin}
+    PagedArray<Type>::PagedArray(PoolOrigin* origin, PartTable& table, usize length)
+        : m_origin {origin}
+        , m_table {move(table)}
     {
         this->resize(length);
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PoolOrigin& origin, void* memory, usize length)
-        : m_table {}
-        , m_origin {&origin}
-    {
-        usize page = origin.page();
-
-        create(this->m_table,
-            memory,
-            length,
-            page);
-    }
-
-    template <class Type>
     PagedArray<Type>::~PagedArray()
     {
-        this->resize(0l);
+        this->resize(0);
     }
 
     template <class Type>
@@ -89,11 +76,6 @@ namespace smal
 
         for ( isize i = start; i < delta; i++ ) {
             Part page = this->m_origin->reserve();
-
-            // clang-format off
-            // printf("[%2lu. \x1b[32m%p\x1b[0m -> %lu]\n",
-            //     ++n, this, page.length());
-            // clang-format on
 
             if ( this->m_table.insert(page, i) == false ) {
                 this->m_origin->reclaim(page);

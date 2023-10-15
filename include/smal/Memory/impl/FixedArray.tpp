@@ -1,4 +1,4 @@
-#include <smal/Memory/FixedArray.hpp>
+#include <smal/Memory/Array/FixedArray.hpp>
 
 namespace smal
 {
@@ -9,11 +9,11 @@ namespace smal
     { }
 
     template <class Type>
-    FixedArray<Type>::FixedArray(PoolOrigin& origin, usize length)
+    FixedArray<Type>::FixedArray(BaseOrigin* origin, usize length)
         : m_memory {0}
         , m_length {0}
     {
-        Part page = origin.reserve();
+        Part page = origin->reserve(length * SIZE);
 
         if ( page.isNull() == false ) {
             this->m_memory = page.memory();

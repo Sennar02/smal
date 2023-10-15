@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_PAGE_TABLE_HPP
-#define SMAL_MEMORY_PAGE_TABLE_HPP
+#ifndef SMAL_MEMORY_PART_TABLE_HPP
+#define SMAL_MEMORY_PART_TABLE_HPP
 
 #include <smal/Memory/Part.hpp>
 
@@ -120,4 +120,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_PAGE_TABLE_HPP
+#endif // SMAL_MEMORY_PART_TABLE_HPP

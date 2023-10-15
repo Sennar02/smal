@@ -1,10 +1,13 @@
-#ifndef SMAL_MEMORY_ARRAY_HPP
-#define SMAL_MEMORY_ARRAY_HPP
+#ifndef SMAL_MEMORY_PAGED_ARRAY_HPP
+#define SMAL_MEMORY_PAGED_ARRAY_HPP
+
+#include <smal/Memory/Origin/PoolOrigin.hpp>
+#include <smal/Memory/PartTable.hpp>
 
 namespace smal
 {
     template <class Type>
-    class FixedArray
+    class PagedArray
     {
     public:
         static const usize SIZE = sizeof(Type);
@@ -13,7 +16,7 @@ namespace smal
         /**
          * @brief
          */
-        FixedArray();
+        PagedArray();
 
         /**
          * @brief
@@ -21,20 +24,21 @@ namespace smal
          * @param origin
          * @param length
          */
-        FixedArray(PoolOrigin& origin, usize length = 0);
+        PagedArray(PoolOrigin* origin, usize length = 0);
 
         /**
          * @brief
          *
-         * @param memory
+         * @param origin
+         * @param table
          * @param length
          */
-        FixedArray(void* memory, usize length);
+        PagedArray(PoolOrigin* origin, PartTable& table, usize length = 0);
 
         /**
          * @brief
          */
-        virtual ~FixedArray();
+        virtual ~PagedArray();
 
         /**
          * @brief
@@ -58,6 +62,28 @@ namespace smal
         /**
          * @brief
          *
+         * @param pages
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        attach(usize pages);
+
+        /**
+         * @brief
+         *
+         * @param pages
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        detach(usize pages);
+
+        /**
+         * @brief
+         *
          * @param index
          *
          * @return Type&
@@ -75,19 +101,19 @@ namespace smal
         const Type&
         operator[](usize index) const;
 
-    private:
+    public:
         /**
          * @brief
          */
-        char* m_memory;
+        PoolOrigin* m_origin;
 
         /**
          * @brief
          */
-        usize m_length;
+        PartTable m_table;
     };
 } // namespace smal
 
-#include <smal/Memory/impl/FixedArray.tpp>
+#include <smal/Memory/impl/PagedArray.tpp>
 
-#endif // SMAL_MEMORY_ARRAY_HPP
+#endif // SMAL_MEMORY_PAGED_ARRAY_HPP

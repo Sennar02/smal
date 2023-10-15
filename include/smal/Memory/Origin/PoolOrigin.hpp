@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_PAGE_ORIGIN_HPP
-#define SMAL_MEMORY_PAGE_ORIGIN_HPP
+#ifndef SMAL_MEMORY_POOL_ORIGIN_HPP
+#define SMAL_MEMORY_POOL_ORIGIN_HPP
 
 #include <smal/Memory/Origin/BaseOrigin.hpp>
 
@@ -132,4 +132,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_PAGE_ORIGIN_HPP
+#endif // SMAL_MEMORY_POOL_ORIGIN_HPP

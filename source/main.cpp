@@ -4,29 +4,35 @@ static const usize g_zone = 1024 * 1024 * 8;
 static const usize g_pool = 1024 * 1024 * 1016;
 static const usize g_page = 1024 * 8;
 
+struct Position
+{
+    f32 x;
+    f32 y;
+};
+
 int
 main(int argc, const char* argv[])
 {
     char* memory = (char*) calloc(1, g_zone + g_pool);
 
     {
-        smal::PoolOrigin  pool = {memory, g_pool};
+        smal::PoolOrigin  pool = {memory, g_pool, g_page};
         smal::StackOrigin zone = {memory + g_pool, g_zone};
 
-        smal::Creator<int> creator = {pool};
+        smal::PagedArray<Position> array = {&pool};
 
-        for ( usize i = 0; i < 100; i++ ) {
-            int* item = creator.create();
+        array.attach(1);
 
-            if ( item != 0 )
-                printf("%i\n", *item);
-            else
-                break;
+        for ( usize i = 0; i < array.length(); i++ ) {
+            array[i] = {
+                (f32) i,
+                (f32) i,
+            };
 
-            creator.destroy(item);
+            printf("%.3f, %.3f\n",
+                array[i].x,
+                array[i].y);
         }
-
-        srand(time(0));
     }
 
     free(memory);

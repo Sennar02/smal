@@ -13,7 +13,7 @@
 
 #include <smal/Memory/Creator.hpp>
 
-#include <smal/Memory/FixedArray.hpp>
-#include <smal/Memory/PagedArray.hpp>
+#include <smal/Memory/Array/FixedArray.hpp>
+#include <smal/Memory/Array/PagedArray.hpp>
 
 #endif // SMAL_MEMORY_IMPORT_HPP
