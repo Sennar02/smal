@@ -10,7 +10,7 @@ namespace smal
 
     template <class Type, template <class> class Array>
     ArrayList<Type, Array>::ArrayList(BaseOrigin* origin, usize length)
-        : m_array {(PoolOrigin*) origin, length}
+        : m_array {origin, length}
         , m_size {0}
     { }
 
@@ -49,12 +49,12 @@ namespace smal
     }
 
     template <class Type, template <class> class Array>
-    template <class Cmpr>
+    template <class Func>
     bool
-    ArrayList<Type, Array>::contains(const Type& value, Cmpr func) const
+    ArrayList<Type, Array>::contains(const Type& value, Func comp) const
     {
         for ( usize i = 0; i < this->m_size; i++ ) {
-            if ( func(this->m_array[i], value) == true )
+            if ( comp(this->m_array[i], value) == true )
                 return true;
         }
 
@@ -62,22 +62,32 @@ namespace smal
     }
 
     template <class Type, template <class> class Array>
-    bool
-    ArrayList<Type, Array>::insert(const Type& value, usize index)
+    template <class Func>
+    void
+    ArrayList<Type, Array>::forEach(Func oper) const
     {
-        auto& self = *this;
+        for ( usize i = 0; i < this->m_size; i++ )
+            oper(this->m_array[i], i);
+    }
+
+    template <class Type, template <class> class Array>
+    bool
+    ArrayList<Type, Array>::insert(const Type& value, isize index)
+    {
+        usize place = 0;
 
         if ( this->isFull() == true )
             this->resize(this->m_size * 1.5f + 16);
 
         if ( this->isFull() == false ) {
-            index = Math::min(this->m_size, index);
-
-            for ( usize i = this->m_size; i > index; i-- )
-                self[i] = move(self[i - 1]);
+            place = this->limit(index, this->m_size + 1);
 
             this->m_size += 1;
-            create(self[index], value);
+
+            for ( usize i = this->m_size - 1; i > place; i-- )
+                this->m_array[i] = move(this->m_array[i - 1]);
+
+            create(this->m_array[place], value);
 
             return true;
         }
@@ -87,21 +97,22 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    ArrayList<Type, Array>::insert(Type&& value, usize index)
+    ArrayList<Type, Array>::insert(Type&& value, isize index)
     {
-        auto& self = *this;
+        usize place = 0;
 
         if ( this->isFull() == true )
             this->resize(this->m_size * 1.5f + 16);
 
         if ( this->isFull() == false ) {
-            index = Math::min(this->m_size, index);
-
-            for ( usize i = this->m_size; i > index; i-- )
-                self[i] = move(self[i - 1]);
+            place = this->limit(index, this->m_size + 1);
 
             this->m_size += 1;
-            create(self[index], move(value));
+
+            for ( usize i = this->m_size - 1; i > place; i-- )
+                this->m_array[i] = move(this->m_array[i - 1]);
+
+            create(this->m_array[place], move(value));
 
             return true;
         }
@@ -111,16 +122,17 @@ namespace smal
 
     template <class Type, template <class> class Array>
     bool
-    ArrayList<Type, Array>::remove(usize index)
+    ArrayList<Type, Array>::remove(isize index)
     {
-        auto& self = *this;
+        usize place = 0;
 
         if ( this->isEmpty() == false ) {
-            index = Math::min(this->m_size, index);
+            place = this->limit(index, this->m_size + 1);
+
             this->m_size -= 1;
 
-            for ( usize i = index; i < this->m_size; i++ )
-                self[i] = move(self[i + 1]);
+            for ( usize i = place; i < this->m_size; i++ )
+                this->m_array[i] = move(this->m_array[i + 1]);
 
             return true;
         }
@@ -153,20 +165,14 @@ namespace smal
     Type&
     ArrayList<Type, Array>::find(isize index)
     {
-        if ( index < 0 )
-            index = this->m_size + index;
-
-        return this->m_array[index];
+        return this->m_array[this->collapse(index)];
     }
 
     template <class Type, template <class> class Array>
     const Type&
     ArrayList<Type, Array>::find(isize index) const
     {
-        if ( index < 0 )
-            index = this->m_size + index;
-
-        return this->m_array[index];
+        return this->m_array[this->collapse(index)];
     }
 
     template <class Type, template <class> class Array>
@@ -181,5 +187,20 @@ namespace smal
     ArrayList<Type, Array>::operator[](isize index) const
     {
         return this->find(index);
+    }
+
+    template <class Type, template <class> class Array>
+    usize
+    ArrayList<Type, Array>::limit(isize index, usize limit) const
+    {
+        usize place = 0;
+
+        if ( index < 0 )
+            index = this->m_size + index + 1;
+
+        place = Math::max(index, (isize) 0);
+        place = Math::min(place, this->m_size);
+
+        return place;
     }
 } // namespace smal

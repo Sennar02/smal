@@ -1,14 +1,17 @@
 #include <smal/Struct/import.hpp>
 
-static const usize g_zone = 1024 * 1024 * 8;
-static const usize g_pool = 1024 * 1024 * 1016;
-static const usize g_page = 1024 * 8;
+using smal::usize;
+using smal::f32;
 
 struct Position
 {
     f32 x;
     f32 y;
 };
+
+static const usize g_zone = 1024 * 1024 * 8;
+static const usize g_pool = 1024 * 1024 * 1016;
+static const usize g_page = 1024 * 2;
 
 int
 main(int argc, const char* argv[])
@@ -21,14 +24,13 @@ main(int argc, const char* argv[])
 
         smal::ArrayList<Position> list = {&pool};
 
-        list.insert({0.4, 11.5}, 0);
+        list.insert({0, 0});
+        list.insert({1, 1}, 0);
+        list.insert({2, 2}, -3);
 
-        bool b = list.contains({0.4, 11.5}, [](auto& a, auto& b) {
-            return a.x == b.x &&
-                   a.y == b.y;
+        list.forEach([](const auto& a, usize i) {
+            printf("%lu => %.3f, %.3f\n", i, a.x, a.y);
         });
-
-        printf("%i\n", b);
     }
 
     free(memory);

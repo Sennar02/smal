@@ -74,14 +74,25 @@ namespace smal
          * @tparam Func
          *
          * @param value
-         * @param compare
+         * @param comp
          *
          * @return true
          * @return false
          */
         template <class Func>
         bool
-        contains(const Type& value, Func compare) const;
+        contains(const Type& value, Func comp) const;
+
+        /**
+         * @brief
+         *
+         * @tparam Func
+         *
+         * @param oper
+         */
+        template <class Func>
+        void
+        forEach(Func oper) const;
 
         /**
          * @brief
@@ -93,7 +104,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(const Type& value, usize index);
+        insert(const Type& value, isize index = -1);
 
         /**
          * @brief
@@ -105,7 +116,7 @@ namespace smal
          * @return false
          */
         bool
-        insert(Type&& value, usize index);
+        insert(Type&& value, isize index = -1);
 
         /**
          * @brief
@@ -116,7 +127,7 @@ namespace smal
          * @return false
          */
         bool
-        remove(usize index);
+        remove(isize index = -1);
 
         /**
          * @brief
@@ -184,6 +195,18 @@ namespace smal
          */
         const Type&
         operator[](isize index) const;
+
+    private:
+        /**
+         * @brief
+         *
+         * @param index
+         * @param limit
+         *
+         * @return usize
+         */
+        usize
+        limit(isize index, usize limit) const;
 
     private:
         /**

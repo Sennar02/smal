@@ -24,7 +24,7 @@ namespace smal
          * @param origin
          * @param length
          */
-        PagedArray(PoolOrigin* origin, usize length = 0);
+        PagedArray(BaseOrigin* origin, usize length = 0);
 
         /**
          * @brief
@@ -33,7 +33,7 @@ namespace smal
          * @param table
          * @param length
          */
-        PagedArray(PoolOrigin* origin, PartTable& table, usize length = 0);
+        PagedArray(BaseOrigin* origin, PartTable& table, usize length = 0);
 
         /**
          * @brief
@@ -105,7 +105,7 @@ namespace smal
         /**
          * @brief
          */
-        PoolOrigin* m_origin;
+        BaseOrigin* m_origin;
 
         /**
          * @brief

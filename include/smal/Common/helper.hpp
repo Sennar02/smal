@@ -88,6 +88,19 @@ namespace smal
         template <class Type>
         Type
         max(Type a, Type b);
+
+        /**
+         * @brief
+         *
+         * @tparam Type
+         *
+         * @param a
+         *
+         * @return Type
+         */
+        template <class Type>
+        Type
+        abs(Type a);
     } // namespace Math
 
     namespace impl
@@ -115,109 +128,109 @@ namespace smal
     using RemoveRef = typename impl::RemoveRef<Type>::Result;
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         *
-         * @param value
-         *
-         * @return RemoveRef<Type>&&
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     *
+     * @return RemoveRef<Type>&&
+     */
     template <class Type>
     RemoveRef<Type>&&
     move(Type&& value);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         *
-         * @param value
-         *
-         * @return Type&&
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     *
+     * @return Type&&
+     */
     template <class Type>
     Type&&
     forw(RemoveRef<Type>& value);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         *
-         * @param value
-         *
-         * @return Type&&
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     *
+     * @return Type&&
+     */
     template <class Type>
     Type&&
     forw(RemoveRef<Type>&& value);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         *
-         * @param value
-         * @param other
-         *
-         * @return Type&
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     * @param other
+     *
+     * @return Type&
+     */
     template <class Type>
     Type&
     swap(Type& value, Type& other);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         *
-         * @param value
-         * @param other
-         *
-         * @return Type
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     * @param other
+     *
+     * @return Type
+     */
     template <class Type>
     Type
     exch(Type& value, Type&& other);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         *
-         * @param value
-         *
-         * @return Type&
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     *
+     * @return Type&
+     */
     template <class Type>
     Type&
     create(Type& value);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-         * @tparam Args
-         *
-         * @param value
-         * @param args
-         *
-         * @return Type&
-         */
+     * @brief
+     *
+     * @tparam Type
+     * @tparam Args
+     *
+     * @param value
+     * @param args
+     *
+     * @return Type&
+     */
     template <class Type, class... Args>
     Type&
     create(Type& value, Args&&... args);
 
     /**
-         * @brief
-         *
-         * @tparam Type
-
-         * @param value
-
-         * @return Type&
-         */
+     * @brief
+     *
+     * @tparam Type
+     *
+     * @param value
+     *
+     * @return Type&
+     */
     template <class Type>
     Type&
     destroy(Type& value);

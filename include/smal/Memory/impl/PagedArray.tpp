@@ -9,11 +9,11 @@ namespace smal
     { }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PoolOrigin* origin, usize length)
+    PagedArray<Type>::PagedArray(BaseOrigin* origin, usize length)
         : m_origin {origin}
         , m_table {}
     {
-        Part page = origin->reserve();
+        Part page = origin->reserve(0);
 
         if ( page.isNull() == false ) {
             create(this->m_table,
@@ -26,7 +26,7 @@ namespace smal
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(PoolOrigin* origin, PartTable& table, usize length)
+    PagedArray<Type>::PagedArray(BaseOrigin* origin, PartTable& table, usize length)
         : m_origin {origin}
         , m_table {move(table)}
     {
@@ -75,7 +75,7 @@ namespace smal
         isize delta = start + pages;
 
         for ( isize i = start; i < delta; i++ ) {
-            Part page = this->m_origin->reserve();
+            Part page = this->m_origin->reserve(0);
 
             if ( this->m_table.insert(page, i) == false ) {
                 this->m_origin->reclaim(page);

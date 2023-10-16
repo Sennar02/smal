@@ -63,6 +63,16 @@ namespace smal
 
             return a;
         }
+
+        template <class Type>
+        Type
+        abs(Type a)
+        {
+            if ( a < 0 )
+                return -a;
+
+            return a;
+        }
     } // namespace Math
 
     template <class Type>
