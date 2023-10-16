@@ -1,4 +1,4 @@
-#include <smal/Struct/ArrayList.hpp>
+#include <smal/Struct/Data/ArrayList.hpp>
 
 namespace smal
 {
@@ -59,6 +59,15 @@ namespace smal
         }
 
         return false;
+    }
+
+    template <class Type, template <class> class Array>
+    bool
+    ArrayList<Type, Array>::contains(const Type& value) const
+    {
+        return this->contains(value, [](auto& a, auto& b) {
+            return a == b;
+        });
     }
 
     template <class Type, template <class> class Array>
@@ -127,7 +136,7 @@ namespace smal
         usize place = 0;
 
         if ( this->isEmpty() == false ) {
-            place = this->limit(index, this->m_size + 1);
+            place = this->limit(index, this->m_size);
 
             this->m_size -= 1;
 
@@ -145,6 +154,14 @@ namespace smal
     ArrayList<Type, Array>::resize(usize length)
     {
         return this->m_array.resize(length);
+    }
+
+    template <class Type, template <class> class Array>
+    template <class Algo, class Comp>
+    void
+    ArrayList<Type, Array>::sort(Comp comp)
+    {
+        Algo::sort(this->m_array, this->m_size, comp);
     }
 
     template <class Type, template <class> class Array>
@@ -196,10 +213,10 @@ namespace smal
         usize place = 0;
 
         if ( index < 0 )
-            index = this->m_size + index + 1;
+            index = limit + index;
 
         place = Math::max(index, (isize) 0);
-        place = Math::min(place, this->m_size);
+        place = Math::min(place, limit);
 
         return place;
     }

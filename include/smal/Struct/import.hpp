@@ -4,6 +4,8 @@
 #include <smal/Struct/depend.hpp>
 #include <smal/Struct/define.hpp>
 
-#include <smal/Struct/ArrayList.hpp>
+#include <smal/Struct/Data/ArrayList.hpp>
+
+#include <smal/Struct/Algo/QuickSort.hpp>
 
 #endif // SMAL_STRUCT_IMPORT_HPP

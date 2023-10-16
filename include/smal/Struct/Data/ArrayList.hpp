@@ -85,6 +85,18 @@ namespace smal
 
         /**
          * @brief
+         *         *
+         * @param value
+         * @param comp
+         *
+         * @return true
+         * @return false
+         */
+        bool
+        contains(const Type& value) const;
+
+        /**
+         * @brief
          *
          * @tparam Func
          *
@@ -139,6 +151,18 @@ namespace smal
          */
         bool
         resize(usize length);
+
+        /**
+         * @brief
+         *
+         * @tparam Algo
+         * @tparam Comp
+         *
+         * @param comp
+         */
+        template <class Algo, class Comp>
+        void
+        sort(Comp comp);
 
         /**
          * @brief
