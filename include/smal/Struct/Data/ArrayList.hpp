@@ -85,9 +85,8 @@ namespace smal
 
         /**
          * @brief
-         *         *
+         *
          * @param value
-         * @param comp
          *
          * @return true
          * @return false
@@ -100,11 +99,45 @@ namespace smal
          *
          * @tparam Func
          *
+         * @param value
+         * @param comp
+         *
+         * @return isize
+         */
+        template <class Func>
+        isize
+        indexOf(const Type& value, Func comp) const;
+
+        /**
+         * @brief
+         *
+         * @param value
+         *
+         * @return isize
+         */
+        isize
+        indexOf(const Type& value) const;
+
+        /**
+         * @brief
+         *
+         * @tparam Func
+         *
          * @param oper
          */
         template <class Func>
         void
         forEach(Func oper) const;
+
+        /**
+         * @brief
+         *
+         * @param origin
+         *
+         * @return ArrayList<Type, Array>
+         */
+        ArrayList<Type, Array>
+        clone(BaseOrigin* origin) const;
 
         /**
          * @brief

@@ -20,6 +20,12 @@ static const usize g_zone = 1024 * 1024 * 8;
 static const usize g_pool = 1024 * 1024 * 1016;
 static const usize g_page = 1024 * 2;
 
+namespace smal
+{
+    template <class Type>
+    using FixedList = ArrayList<Type, FixedArray>;
+} // namespace smal
+
 int
 main(int argc, const char* argv[])
 {
@@ -29,27 +35,12 @@ main(int argc, const char* argv[])
         smal::PoolOrigin  pool = {memory, g_pool, g_page};
         smal::StackOrigin zone = {memory + g_pool, g_zone};
 
-        smal::ArrayList<Position> list = {&pool};
+        smal::FixedList<Position> list = {&pool};
 
         list.insert({2, 2}, -3);
         list.insert({0, 0});
         list.insert({1, 1}, 0);
-
-        list.forEach([&list](const auto& a, usize i) {
-            printf("%lu => %.3f, %.3f\n", i, a.x, a.y);
-
-            if ( i == list.size() - 1 )
-                printf("\n");
-        });
-
         list.remove(-3);
-
-        list.forEach([&list](const auto& a, usize i) {
-            printf("%lu => %.3f, %.3f\n", i, a.x, a.y);
-
-            if ( i == list.size() - 1 )
-                printf("\n");
-        });
 
         list.sort<smal::QuickSort>([](auto& a, auto& b) {
             return a.x < b.x;
@@ -58,6 +49,16 @@ main(int argc, const char* argv[])
         list.forEach([](const auto& a, usize i) {
             printf("%lu => %.3f, %.3f\n", i, a.x, a.y);
         });
+
+        auto copy = list.clone(&pool);
+
+        copy.forEach([](const auto& a, usize i) {
+            printf("%lu => %.3f, %.3f\n", i, a.x, a.y);
+        });
+
+        printf("%li\n", list.indexOf({2, 2}, [](auto& a, auto& b) {
+            return a.x == b.x;
+        }));
     }
 
     free(memory);

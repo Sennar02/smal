@@ -72,11 +72,45 @@ namespace smal
 
     template <class Type, template <class> class Array>
     template <class Func>
+    isize
+    ArrayList<Type, Array>::indexOf(const Type& value, Func comp) const
+    {
+        for ( usize i = 0; i < this->m_size; i++ ) {
+            if ( comp(this->m_array[i], value) == true )
+                return i;
+        }
+
+        return -1;
+    }
+
+    template <class Type, template <class> class Array>
+    isize
+    ArrayList<Type, Array>::indexOf(const Type& value) const
+    {
+        return this->indexOf(value, [](auto& a, auto& b) {
+            return a == b;
+        });
+    }
+
+    template <class Type, template <class> class Array>
+    template <class Func>
     void
     ArrayList<Type, Array>::forEach(Func oper) const
     {
         for ( usize i = 0; i < this->m_size; i++ )
             oper(this->m_array[i], i);
+    }
+
+    template <class Type, template <class> class Array>
+    ArrayList<Type, Array>
+    ArrayList<Type, Array>::clone(BaseOrigin* origin) const
+    {
+        ArrayList<Type, Array> other = {origin, this->m_size};
+
+        for ( usize i = 0; i < this->m_size; i++ )
+            other.insert(this->m_array[i]);
+
+        return other;
     }
 
     template <class Type, template <class> class Array>
@@ -182,14 +216,14 @@ namespace smal
     Type&
     ArrayList<Type, Array>::find(isize index)
     {
-        return this->m_array[this->collapse(index)];
+        return this->m_array[this->limit(index, this->m_size)];
     }
 
     template <class Type, template <class> class Array>
     const Type&
     ArrayList<Type, Array>::find(isize index) const
     {
-        return this->m_array[this->collapse(index)];
+        return this->m_array[this->limit(index, this->m_size)];
     }
 
     template <class Type, template <class> class Array>

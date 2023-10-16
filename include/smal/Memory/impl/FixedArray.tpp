@@ -51,13 +51,13 @@ namespace smal
     Type&
     FixedArray<Type>::operator[](usize index)
     {
-        return this->m_memory[index * SIZE];
+        return (Type&) this->m_memory[index * SIZE];
     }
 
     template <class Type>
     const Type&
     FixedArray<Type>::operator[](usize index) const
     {
-        return this->m_memory[index * SIZE];
+        return (Type&) this->m_memory[index * SIZE];
     }
 } // namespace smal
