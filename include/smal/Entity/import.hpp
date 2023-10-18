@@ -5,5 +5,6 @@
 #include <smal/Entity/define.hpp>
 
 #include <smal/Entity/Holder.hpp>
+#include <smal/Entity/Actors.hpp>
 
 #endif // SMAL_ENTITY_IMPORT_HPP

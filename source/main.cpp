@@ -8,9 +8,10 @@ struct Pos
     f32 x, y;
 };
 
-static const usize g_zone = 1024 * 1024 * 8;
-static const usize g_pool = 1024 * 1024 * 1; // 1016;
+static const usize g_pool = 1024 * 1024 * 16;
 static const usize g_page = 1024 * 16;
+
+static const usize g_numb = 10;
 
 int
 main(int argc, const char* argv[])
@@ -25,23 +26,22 @@ main(int argc, const char* argv[])
 
         holder.give(&pos);
 
-        for ( usize i = 0; i < 100'000; i++ )
-            holder.give<Pos>(i, {(f32) i, (f32) i});
+        pos.resize(g_numb, g_numb);
+
+        for ( usize i = 0; i < g_numb; i++ )
+            holder.give<Pos>(g_numb - 1 - i, {(f32) i, (f32) i});
 
         if ( holder.has<Pos>() ) {
             auto& pool = *holder.find<Pos>();
 
-            while ( pool.size() > 0 ) {
-                printf("%lu\n", pool.size());
+            for ( usize i = 0; i < pool.size(); i++ ) {
+                auto& pi = pool[i];
+                auto& pk = pool[pool.indexOf(i)];
 
-                for ( usize i = 0; i < pool.size(); i++ ) {
-                    auto& p = holder.find<Pos>(i);
-
-                    p.x += 1;
-                    p.y += 1;
-                }
-
-                holder.take<Pos>(pool.size() - 1);
+                // clang-format off
+                printf("<%2.3f, %2.3f> vs <%2.3f, %2.3f>\n",
+                    pi.x, pi.y, pk.x, pk.y);
+                // clang-format on
             }
         }
     }
