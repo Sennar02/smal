@@ -7,6 +7,9 @@ namespace smal
 {
     template <class Type, template <class> class Array>
     class ArrayList;
+
+    template <class Type, template <class> class Array>
+    class SparseMap;
 } // namespace smal
 
 #endif // SMAL_STRUCT_DEFINE_HPP

@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_PAGED_ARRAY_HPP
-#define SMAL_MEMORY_PAGED_ARRAY_HPP
+#ifndef SMAL_MEMORY_ARRAY_PAGED_ARRAY_HPP
+#define SMAL_MEMORY_ARRAY_PAGED_ARRAY_HPP
 
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 #include <smal/Memory/PartTable.hpp>
@@ -84,6 +84,14 @@ namespace smal
         /**
          * @brief
          *
+         * @return const PartTable&
+         */
+        const PartTable&
+        ptable() const;
+
+        /**
+         * @brief
+         *
          * @param index
          *
          * @return Type&
@@ -116,4 +124,4 @@ namespace smal
 
 #include <smal/Memory/impl/PagedArray.tpp>
 
-#endif // SMAL_MEMORY_PAGED_ARRAY_HPP
+#endif // SMAL_MEMORY_ARRAY_PAGED_ARRAY_HPP

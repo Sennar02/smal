@@ -22,7 +22,7 @@ namespace smal
     usize
     PartTable::length() const
     {
-        return this->m_length * sizeof(char*);
+        return this->m_length;
     }
 
     usize

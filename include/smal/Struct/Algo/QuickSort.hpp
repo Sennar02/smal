@@ -1,5 +1,5 @@
-#ifndef SMAL_STRUCT_QUICK_SORT_HPP
-#define SMAL_STRUCT_QUICK_SORT_HPP
+#ifndef SMAL_STRUCT_ALGO_QUICK_SORT_HPP
+#define SMAL_STRUCT_ALGO_QUICK_SORT_HPP
 
 namespace smal
 {
@@ -60,4 +60,4 @@ namespace smal
 
 #include <smal/Struct/impl/QuickSort.tpp>
 
-#endif // SMAL_STRUCT_QUICK_SORT_HPP
+#endif // SMAL_STRUCT_ALGO_QUICK_SORT_HPP

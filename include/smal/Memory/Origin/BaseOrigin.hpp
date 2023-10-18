@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_BASE_ORIGIN_HPP
-#define SMAL_MEMORY_BASE_ORIGIN_HPP
+#ifndef SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
+#define SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 
 #include <smal/Memory/Part.hpp>
 
@@ -47,7 +47,7 @@ namespace smal
          * @brief
          *
          * @param part
-         * 
+         *
          * @return true
          * @return false
          */
@@ -56,4 +56,4 @@ namespace smal
     };
 } // namespace smal
 
-#endif // SMAL_MEMORY_BASE_ORIGIN_HPP
+#endif // SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP

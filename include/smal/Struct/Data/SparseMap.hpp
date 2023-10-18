@@ -1,18 +1,18 @@
-#ifndef SMAL_STRUCT_DATA_ARRAY_LIST_HPP
-#define SMAL_STRUCT_DATA_ARRAY_LIST_HPP
+#ifndef SMAL_STRUCT_DATA_SPARSE_MAP_HPP
+#define SMAL_STRUCT_DATA_SPARSE_MAP_HPP
 
 #include <smal/Struct/define.hpp>
 
 namespace smal
 {
     template <class Type, template <class> class Array = PagedArray>
-    class ArrayList
+    class SparseMap
     {
     public:
         /**
          * @brief
          */
-        ArrayList();
+        SparseMap();
 
         /**
          * @brief
@@ -20,19 +20,19 @@ namespace smal
          * @param origin
          * @param length
          */
-        ArrayList(BaseOrigin* origin, usize length = 0);
+        SparseMap(BaseOrigin* origin, usize length = 0);
 
         /**
          * @brief
          *
          * @param values
          */
-        ArrayList(const Array<Type>& values);
+        SparseMap(const Array<Type>& values);
 
         /**
          * @brief
          */
-        virtual ~ArrayList() = default;
+        virtual ~SparseMap() = default;
 
         /**
          * @brief
@@ -73,7 +73,7 @@ namespace smal
          *
          * @tparam Func
          *
-         * @param value
+         * @param key
          * @param comp
          *
          * @return true
@@ -81,42 +81,66 @@ namespace smal
          */
         template <class Func>
         bool
-        contains(const Type& value, Func comp) const;
+        contains(usize key, Func comp) const;
 
         /**
          * @brief
          *
-         * @param value
+         * @param key
          *
          * @return true
          * @return false
          */
         bool
-        contains(const Type& value) const;
+        contains(usize key) const;
 
         /**
          * @brief
          *
          * @tparam Func
          *
-         * @param value
+         * @param key
          * @param comp
          *
          * @return isize
          */
         template <class Func>
         isize
-        indexOf(const Type& value, Func comp) const;
+        indexOf(usize key, Func comp) const;
 
         /**
          * @brief
          *
-         * @param value
+         * @param key
          *
          * @return isize
          */
         isize
-        indexOf(const Type& value) const;
+        indexOf(usize key) const;
+
+        /**
+         * @brief
+         *
+         * @tparam Func
+         *
+         * @param index
+         * @param comp
+         *
+         * @return isize
+         */
+        template <class Func>
+        isize
+        keyOf(usize index, Func comp) const;
+
+        /**
+         * @brief
+         *
+         * @param index
+         *
+         * @return isize
+         */
+        isize
+        keyOf(usize index) const;
 
         /**
          * @brief
@@ -134,56 +158,57 @@ namespace smal
          *
          * @param origin
          *
-         * @return ArrayList<Type, Array>
+         * @return SparseMap<Type, Array>
          */
-        ArrayList<Type, Array>
+        SparseMap<Type, Array>
         clone(BaseOrigin* origin) const;
 
         /**
          * @brief
          *
+         * @param key
          * @param value
-         * @param index
          *
          * @return true
          * @return false
          */
         bool
-        insert(const Type& value, isize index = -1);
+        insert(usize key, const Type& value);
 
         /**
          * @brief
          *
+         * @param key
          * @param value
-         * @param index
          *
          * @return true
          * @return false
          */
         bool
-        insert(Type&& value, isize index = -1);
+        insert(usize key, Type&& value);
 
         /**
          * @brief
          *
-         * @param index
+         * @param key
          *
          * @return true
          * @return false
          */
         bool
-        remove(isize index = -1);
+        remove(usize key);
 
         /**
          * @brief
          *
-         * @param length
+         * @param sparse
+         * @param packed
          *
          * @return true
          * @return false
          */
         bool
-        resize(usize length);
+        resize(usize sparse, usize packed);
 
         /**
          * @brief
@@ -196,6 +221,38 @@ namespace smal
         template <class Algo, class Comp>
         void
         sort(Comp comp);
+
+        /**
+         * @brief
+         *
+         * @return PagedArray<Type>&
+         */
+        PagedArray<usize>&
+        sparse();
+
+        /**
+         * @brief
+         *
+         * @return const PagedArray<Type>&
+         */
+        const PagedArray<usize>&
+        sparse() const;
+
+        /**
+         * @brief
+         *
+         * @return PagedArray<Type>&
+         */
+        PagedArray<usize>&
+        packed();
+
+        /**
+         * @brief
+         *
+         * @return const PagedArray<Type>&
+         */
+        const PagedArray<usize>&
+        packed() const;
 
         /**
          * @brief
@@ -221,7 +278,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        find(isize index);
+        find(usize index);
 
         /**
          * @brief
@@ -231,7 +288,7 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        find(isize index) const;
+        find(usize index) const;
 
         /**
          * @brief
@@ -241,7 +298,7 @@ namespace smal
          * @return Type&
          */
         Type&
-        operator[](isize index);
+        operator[](usize index);
 
         /**
          * @brief
@@ -251,21 +308,30 @@ namespace smal
          * @return const Type&
          */
         const Type&
-        operator[](isize index) const;
+        operator[](usize index) const;
 
     private:
         /**
          * @brief
          *
-         * @param index
-         * @param limit
-         *
-         * @return usize
+         * @param key
+         * @return true
+         * @return false
          */
-        usize
-        limit(isize index, usize limit) const;
+        bool
+        growTo(usize key);
 
     private:
+        /**
+         * @brief
+         */
+        PagedArray<usize> m_sparse;
+
+        /**
+         * @brief
+         */
+        PagedArray<usize> m_packed;
+
         /**
          * @brief
          */
@@ -278,6 +344,6 @@ namespace smal
     };
 } // namespace smal
 
-#include <smal/Struct/impl/ArrayList.tpp>
+#include <smal/Struct/impl/SparseMap.tpp>
 
-#endif // SMAL_STRUCT_DATA_ARRAY_LIST_HPP
+#endif // SMAL_STRUCT_DATA_SPARSE_MAP_HPP

@@ -3,6 +3,30 @@
 
 namespace smal
 {
+    namespace impl
+    {
+        template <class Type>
+        struct RemoveRef
+        {
+            using Result = Type;
+        };
+
+        template <class Type>
+        struct RemoveRef<Type&>
+        {
+            using Result = Type;
+        };
+
+        template <class Type>
+        struct RemoveRef<Type&&>
+        {
+            using Result = Type;
+        };
+    } // namespace impl
+
+    template <class Type>
+    using RemoveRef = typename impl::RemoveRef<Type>::Result;
+
     namespace Math
     {
         /**
@@ -102,30 +126,6 @@ namespace smal
         Type
         abs(Type a);
     } // namespace Math
-
-    namespace impl
-    {
-        template <class Type>
-        struct RemoveRef
-        {
-            using Result = Type;
-        };
-
-        template <class Type>
-        struct RemoveRef<Type&>
-        {
-            using Result = Type;
-        };
-
-        template <class Type>
-        struct RemoveRef<Type&&>
-        {
-            using Result = Type;
-        };
-    } // namespace impl
-
-    template <class Type>
-    using RemoveRef = typename impl::RemoveRef<Type>::Result;
 
     /**
      * @brief

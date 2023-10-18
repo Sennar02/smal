@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_FIXED_ARRAY_HPP
-#define SMAL_MEMORY_FIXED_ARRAY_HPP
+#ifndef SMAL_MEMORY_ARRAY_FIXED_ARRAY_HPP
+#define SMAL_MEMORY_ARRAY_FIXED_ARRAY_HPP
 
 #include <smal/Memory/define.hpp>
 
@@ -92,4 +92,4 @@ namespace smal
 
 #include <smal/Memory/impl/FixedArray.tpp>
 
-#endif // SMAL_MEMORY_FIXED_ARRAY_HPP
+#endif // SMAL_MEMORY_ARRAY_FIXED_ARRAY_HPP

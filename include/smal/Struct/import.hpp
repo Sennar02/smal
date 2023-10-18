@@ -5,6 +5,7 @@
 #include <smal/Struct/define.hpp>
 
 #include <smal/Struct/Data/ArrayList.hpp>
+#include <smal/Struct/Data/SparseMap.hpp>
 
 #include <smal/Struct/Algo/QuickSort.hpp>
 

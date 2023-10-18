@@ -109,6 +109,13 @@ namespace smal
     }
 
     template <class Type>
+    const PartTable&
+    PagedArray<Type>::ptable() const
+    {
+        return this->m_table;
+    }
+
+    template <class Type>
     Type&
     PagedArray<Type>::operator[](usize index)
     {
