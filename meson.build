@@ -8,8 +8,8 @@ smal_header = include_directories('include')
 smal_memory = static_library('smal-memory',
     sources: [
         'source/smal/Memory/helper.cpp',
-        'source/smal/Memory/Part.cpp',
-        'source/smal/Memory/PartTable.cpp',
+        'source/smal/Memory/Page.cpp',
+        'source/smal/Memory/PageTable.cpp',
         'source/smal/Memory/Origin/PoolOrigin.cpp',
         'source/smal/Memory/Origin/StackOrigin.cpp'
     ],
@@ -17,7 +17,7 @@ smal_memory = static_library('smal-memory',
 )
 
 smal_depend = [
-    dependency('sfml-graphics', static: true)
+    # dependency('sfml-graphics', static: true)
 ]
 
 executable('smal', 'source/main.cpp',

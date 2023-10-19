@@ -4,31 +4,22 @@ namespace smal
 {
     template <class Type>
     PagedArray<Type>::PagedArray()
-        : m_origin {0}
-        , m_table {}
+        : PageTable()
+        , m_origin {0}
     { }
 
     template <class Type>
     PagedArray<Type>::PagedArray(BaseOrigin* origin, usize length)
-        : m_origin {origin}
-        , m_table {}
+        : PageTable(origin->reserve(0))
+        , m_origin {origin}
     {
-        Part page = origin->reserve(0);
-
-        if ( page.isNull() == false ) {
-            create(this->m_table,
-                page.memory(),
-                page.length(),
-                page.length());
-
-            this->resize(length);
-        }
+        this->resize(length);
     }
 
     template <class Type>
-    PagedArray<Type>::PagedArray(BaseOrigin* origin, PartTable& table, usize length)
-        : m_origin {origin}
-        , m_table {move(table)}
+    PagedArray<Type>::PagedArray(BaseOrigin* origin, PageTable& ptable, usize length)
+        : PageTable(move(ptable))
+        , m_origin {origin}
     {
         this->resize(length);
     }
@@ -43,63 +34,59 @@ namespace smal
     usize
     PagedArray<Type>::length() const
     {
-        usize page = this->m_table.page();
-        usize size = this->m_table.size();
+        usize ratio =
+            Math::floor(this->m_page, SIZE);
 
-        usize fact = Math::floor(page, SIZE); // items per page.
-
-        return fact * size;
+        return ratio * this->m_size;
     }
 
     template <class Type>
     bool
     PagedArray<Type>::resize(usize length)
     {
-        usize page = this->m_table.page();
-        usize size = this->m_table.size();
+        usize ratio = Math::floor(this->m_page, SIZE);
+        usize pages = Math::ceil(length, ratio);
 
-        usize fact = Math::floor(page, SIZE); // items per page.
-        usize numb = Math::ceil(length, fact);
+        if ( pages > this->m_size )
+            return this->attach(pages - this->m_size);
 
-        if ( numb > size )
-            return this->attach(numb - size);
-        else
-            return this->detach(size - numb);
+        return this->detach(this->m_size - pages);
     }
 
     template <class Type>
     bool
     PagedArray<Type>::attach(usize pages)
     {
-        usize start = this->m_table.size();
-        isize delta = start + pages;
+        usize delta = this->m_size + pages;
+        usize count = 0;
 
-        for ( isize i = start; i < delta; i++ ) {
-            Part page = this->m_origin->reserve(0);
+        if ( delta > this->m_length )
+            return false;
 
-            if ( this->m_table.insert(page, i) == false ) {
-                this->m_origin->reclaim(page);
+        for ( usize k = this->m_size; k < delta; k++ ) {
+            auto page = this->m_origin->reserve(0);
 
-                return false;
-            }
+            if ( this->insert(k, page) == false )
+                this->m_origin->reclaim(page), k = delta;
+            else
+                count++;
         }
 
-        return true;
+        return count == pages;
     }
 
     template <class Type>
     bool
     PagedArray<Type>::detach(usize pages)
     {
-        isize start = this->m_table.size();
-        isize delta = start - pages;
+        usize delta = this->m_size - pages;
 
-        for ( isize i = start - 1; i >= delta; i-- ) {
-            Part page = {
-                this->m_origin,
-                this->m_table.remove(i),
-                this->m_table.page(),
-            };
+        if ( delta > this->m_size )
+            return false;
+
+        for ( usize k = this->m_size; k > delta; k-- ) {
+            auto* item = this->remove(k - 1);
+            Page  page = {this->m_origin, item, this->m_page};
 
             if ( this->m_origin->reclaim(page) == false )
                 return false;
@@ -109,29 +96,23 @@ namespace smal
     }
 
     template <class Type>
-    const PartTable&
+    const PageTable&
     PagedArray<Type>::ptable() const
     {
-        return this->m_table;
+        return *(PageTable*) this;
     }
 
     template <class Type>
     Type&
     PagedArray<Type>::operator[](usize index)
     {
-        auto item =
-            this->m_table.lookup(index, SIZE);
-
-        return *(Type*) item;
+        return (Type&) *this->lookup(index * SIZE);
     }
 
     template <class Type>
     const Type&
     PagedArray<Type>::operator[](usize index) const
     {
-        auto item =
-            this->m_table.lookup(index, SIZE);
-
-        return *(const Type*) item;
+        return (Type&) *this->lookup(index * SIZE);
     }
 } // namespace smal

@@ -2,18 +2,17 @@
 
 namespace smal
 {
-    template <class Type>
-    Creator<Type>::Creator(PoolOrigin& origin)
+    Creator::Creator(BaseOrigin* origin)
         : m_origin {origin}
-    {
-        origin.prepare(SIZE);
-    }
+    { }
 
     template <class Type>
     Type*
-    Creator<Type>::create()
+    Creator::create()
     {
-        Part  part = this->m_origin.reserve(SIZE);
+        static usize size = sizeof(Type);
+
+        Page  part = this->m_origin->reserve(size);
         Type* item = (Type*) part.memory();
 
         if ( part.isNull() == false )
@@ -22,12 +21,13 @@ namespace smal
         return item;
     }
 
-    template <class Type>
-    template <class... Args>
+    template <class Type, class... Args>
     Type*
-    Creator<Type>::create(Args&&... args)
+    Creator::create(Args&&... args)
     {
-        Part  part = this->m_origin.reserve(SIZE);
+        static usize size = sizeof(Type);
+
+        Page  part = this->m_origin->reserve(size);
         Type* item = (Type*) part.memory();
 
         if ( part.isNull() == false )
@@ -38,14 +38,16 @@ namespace smal
 
     template <class Type>
     bool
-    Creator<Type>::destroy(Type* item)
+    Creator::destroy(Type* item)
     {
-        Part part = {&this->m_origin, item, SIZE};
+        static usize size = sizeof(Type);
+
+        Page part = {this->m_origin, item, size};
 
         if ( item != 0 ) {
             item->~Type();
 
-            if ( this->m_origin.reclaim(part) )
+            if ( this->m_origin->reclaim(part) )
                 return true;
         }
 

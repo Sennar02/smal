@@ -75,10 +75,10 @@ namespace smal
         return this->prepare();
     }
 
-    Part
+    Page
     PoolOrigin::reserve(usize length)
     {
-        Part page = {this, this->m_list, this->m_page};
+        Page page = {this, this->m_list, this->m_page};
 
         if ( length > this->m_page )
             return {};
@@ -99,7 +99,7 @@ namespace smal
     }
 
     bool
-    PoolOrigin::reclaim(Part& page)
+    PoolOrigin::reclaim(Page& page)
     {
         Node* node = (Node*) page.memory();
 
@@ -119,7 +119,7 @@ namespace smal
     }
 
     bool
-    PoolOrigin::reclaim(Part&& page)
+    PoolOrigin::reclaim(Page&& page)
     {
         Node* node = (Node*) page.memory();
 

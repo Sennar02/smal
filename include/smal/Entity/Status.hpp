@@ -6,18 +6,18 @@
 namespace smal
 {
     template <template <class> class Array = PagedArray>
-    class Actors
+    class Status
     {
     public:
         /**
-         * @brief
+         *
          *
          * @param origin
          */
-        Actors(BaseOrigin* origin);
+        Status(BaseOrigin* origin);
 
         /**
-         * @brief
+         *
          *
          * @return usize
          */
@@ -25,18 +25,18 @@ namespace smal
         create();
 
         /**
-         * @brief
+         *
          *
          * @param entity
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         destroy(usize entity);
 
         /**
-         * @brief
+         *
          *
          * @param entity
          *
@@ -46,7 +46,7 @@ namespace smal
         version(usize entity);
 
         /**
-         * @brief
+         *
          *
          * @param entity
          *
@@ -57,22 +57,22 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          */
         ArrayList<usize, Array> m_list;
 
         /**
-         * @brief
+         *
          */
         usize m_next;
 
         /**
-         * @brief
+         *
          */
         usize m_size;
     };
 } // namespace smal
 
-#include <smal/Entity/impl/Actors.tpp>
+#include <smal/Entity/impl/Status.tpp>
 
 #endif // SMAL_ENTITY_ACTORS_HPP

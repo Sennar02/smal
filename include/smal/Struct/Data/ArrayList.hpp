@@ -10,12 +10,12 @@ namespace smal
     {
     public:
         /**
-         * @brief
+         *
          */
         ArrayList();
 
         /**
-         * @brief
+         *
          *
          * @param origin
          * @param length
@@ -23,19 +23,19 @@ namespace smal
         ArrayList(BaseOrigin* origin, usize length = 0);
 
         /**
-         * @brief
+         *
          *
          * @param values
          */
         ArrayList(const Array<Type>& values);
 
         /**
-         * @brief
+         *
          */
         virtual ~ArrayList() = default;
 
         /**
-         * @brief
+         *
          *
          * @return usize
          */
@@ -43,7 +43,7 @@ namespace smal
         capacity() const;
 
         /**
-         * @brief
+         *
          *
          * @return usize
          */
@@ -51,51 +51,51 @@ namespace smal
         size() const;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         bool
         isEmpty() const;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         bool
         isFull() const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
          * @param value
          * @param comp
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Func>
         bool
         contains(const Type& value, Func comp) const;
 
         /**
-         * @brief
+         *
          *
          * @param value
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         contains(const Type& value) const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
@@ -109,7 +109,7 @@ namespace smal
         indexOf(const Type& value, Func comp) const;
 
         /**
-         * @brief
+         *
          *
          * @param value
          *
@@ -119,7 +119,7 @@ namespace smal
         indexOf(const Type& value) const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
@@ -130,7 +130,7 @@ namespace smal
         forEach(Func oper) const;
 
         /**
-         * @brief
+         *
          *
          * @param origin
          *
@@ -140,53 +140,53 @@ namespace smal
         clone(BaseOrigin* origin) const;
 
         /**
-         * @brief
+         *
          *
          * @param value
          * @param index
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         insert(const Type& value, isize index = -1);
 
         /**
-         * @brief
+         *
          *
          * @param value
          * @param index
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         insert(Type&& value, isize index = -1);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         remove(isize index = -1);
 
         /**
-         * @brief
+         *
          *
          * @param length
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         resize(usize length);
 
         /**
-         * @brief
+         *
          *
          * @tparam Algo
          * @tparam Comp
@@ -198,7 +198,7 @@ namespace smal
         sort(Comp comp);
 
         /**
-         * @brief
+         *
          *
          * @return Array<Type>&
          */
@@ -206,7 +206,7 @@ namespace smal
         values();
 
         /**
-         * @brief
+         *
          *
          * @return const Array<Type>&
          */
@@ -214,7 +214,7 @@ namespace smal
         values() const;
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -224,7 +224,7 @@ namespace smal
         find(isize index);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -234,7 +234,7 @@ namespace smal
         find(isize index) const;
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -244,7 +244,7 @@ namespace smal
         operator[](isize index);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -255,7 +255,7 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          *
          * @param index
          * @param limit
@@ -267,12 +267,12 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          */
         Array<Type> m_array;
 
         /**
-         * @brief
+         *
          */
         usize m_size;
     };

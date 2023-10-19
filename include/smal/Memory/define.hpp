@@ -5,14 +5,13 @@
 
 namespace smal
 {
-    class Part;
-    class PartTable;
+    class Page;
+    class PageTable;
 
     class BaseOrigin;
     class PoolOrigin;
     class StackOrigin;
 
-    template <class Type>
     class Creator;
 
     template <class Type>

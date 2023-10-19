@@ -9,7 +9,9 @@ namespace smal
     class Holder;
 
     template <template <class> class Array>
-    class Actors;
+    class Status;
+
+    class Entity;
 } // namespace smal
 
 #endif // SMAL_ENTITY_DEFINE_HPP

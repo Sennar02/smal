@@ -10,12 +10,12 @@ namespace smal
     {
     public:
         /**
-         * @brief
+         *
          */
         PoolOrigin();
 
         /**
-         * @brief
+         *
          *
          * @param memory
          * @param length
@@ -24,80 +24,80 @@ namespace smal
         PoolOrigin(void* memory, usize length, usize page = 0);
 
         /**
-         * @brief
          *
-         * @return usize
+         *
+         * @return
          */
         usize
         length() const;
 
         /**
-         * @brief
          *
-         * @return usize
+         *
+         * @return
          */
         usize
         size() const;
 
         /**
-         * @brief
          *
-         * @return usize
+         *
+         * @return
          */
         usize
         page() const;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         bool
         prepare();
 
         /**
-         * @brief
+         *
          *
          * @param page
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         prepare(usize page);
 
         /**
-         * @brief
+         *
          *
          * @param length
          *
-         * @return Part
+         * @return 
          */
-        Part
+        Page
         reserve(usize length = 0);
 
         /**
-         * @brief
+         *
          *
          * @param page
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
-        reclaim(Part& page);
+        reclaim(Page& page);
 
         /**
-         * @brief
+         *
          *
          * @param page
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
-        reclaim(Part&& page);
+        reclaim(Page&& page);
 
     private:
         struct Node
@@ -106,27 +106,27 @@ namespace smal
         };
 
         /**
-         * @brief
+         *
          */
         char* m_memory;
 
         /**
-         * @brief
+         *
          */
         usize m_length;
 
         /**
-         * @brief
+         *
          */
         Node* m_list;
 
         /**
-         * @brief
+         *
          */
         usize m_size;
 
         /**
-         * @brief
+         *
          */
         usize m_page;
     };

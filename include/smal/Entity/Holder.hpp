@@ -5,57 +5,57 @@
 
 namespace smal
 {
-    template <template <class> class Pool>
+    template <template <class> class Pool = SparseMap>
     class Holder
     {
     public:
         /**
-         * @brief
+         *
          *
          * @param origin
          */
         Holder(BaseOrigin* origin);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         has() const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
          * @param pool
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         give(Pool<Type>* pool);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         take();
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
@@ -66,7 +66,7 @@ namespace smal
         find();
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
@@ -77,65 +77,65 @@ namespace smal
         find() const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
          * @param entity
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         has(usize entity) const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
          * @param entity
          * @param attrib
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         give(usize entity, const Type& attrib);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
          * @param entity
          * @param attrib
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         give(usize entity, Type&& attrib);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
          * @param entity
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Type>
         bool
         take(usize entity);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
@@ -148,7 +148,7 @@ namespace smal
         find(usize entity);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          *
@@ -162,7 +162,7 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          */
         PagedArray<void*> m_array;
     };

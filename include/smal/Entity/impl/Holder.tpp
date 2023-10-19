@@ -104,10 +104,13 @@ namespace smal
     Holder<Pool>::has(usize entity) const
     {
         usize type = impl::Identif::of<Type>;
-        auto* pool = (Pool<Type>*) this->m_array[type];
+        auto* pool = (Pool<Type>*) 0;
 
-        if ( this->has<Type>() == true )
+        if ( this->has<Type>() == true ) {
+            pool = (Pool<Type>*) this->m_array[type];
+
             return pool->contains(entity);
+        }
 
         return false;
     }
@@ -118,10 +121,13 @@ namespace smal
     Holder<Pool>::give(usize entity, const Type& attrib)
     {
         usize type = impl::Identif::of<Type>;
-        auto* pool = (Pool<Type>*) this->m_array[type];
+        auto* pool = (Pool<Type>*) 0;
 
-        if ( this->has<Type>() == true )
+        if ( this->has<Type>() == true ) {
+            pool = (Pool<Type>*) this->m_array[type];
+
             return pool->insert(entity, attrib);
+        }
 
         return false;
     }
@@ -132,10 +138,13 @@ namespace smal
     Holder<Pool>::give(usize entity, Type&& attrib)
     {
         usize type = impl::Identif::of<Type>;
-        auto* pool = (Pool<Type>*) this->m_array[type];
+        auto* pool = (Pool<Type>*) 0;
 
-        if ( this->has<Type>() == true )
+        if ( this->has<Type>() == true ) {
+            pool = (Pool<Type>*) this->m_array[type];
+
             return pool->insert(entity, move(attrib));
+        }
 
         return false;
     }
@@ -146,10 +155,13 @@ namespace smal
     Holder<Pool>::take(usize entity)
     {
         usize type = impl::Identif::of<Type>;
-        auto* pool = (Pool<Type>*) this->m_array[type];
+        auto* pool = (Pool<Type>*) 0;
 
-        if ( this->has<Type>() == true )
+        if ( this->has<Type>() == true ) {
+            pool = (Pool<Type>*) this->m_array[type];
+
             return pool->remove(entity);
+        }
 
         return false;
     }

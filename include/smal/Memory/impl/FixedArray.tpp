@@ -13,7 +13,7 @@ namespace smal
         : m_memory {0}
         , m_length {0}
     {
-        Part page = origin->reserve(length * SIZE);
+        Page page = origin->reserve(length * SIZE);
 
         if ( page.isNull() == false ) {
             this->m_memory = page.memory();

@@ -7,7 +7,7 @@ namespace smal
     {
     public:
         /**
-         * @brief
+         *
          *
          * @tparam Type
          * @tparam Array
@@ -23,7 +23,7 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          *
          * @tparam Type
          * @tparam Array
@@ -39,7 +39,7 @@ namespace smal
         sort(Array<Type>& array, usize start, usize stop, Func func);
 
         /**
-         * @brief
+         *
          *
          * @tparam Type
          * @tparam Array

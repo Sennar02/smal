@@ -5,60 +5,53 @@
 
 namespace smal
 {
-    template <class Type>
     class Creator
     {
     public:
         /**
-         * @brief
-         */
-        static const usize SIZE = sizeof(Type);
-
-    public:
-        /**
-         * @brief
+         * Creates a creator.
          *
-         * @param origin
+         * @param origin Memory origin.
          */
-        Creator(PoolOrigin& origin);
+        Creator(BaseOrigin* origin);
 
         /**
-         * @brief
+         * Creates a default instance of a type.
          *
-         * @return Type*
+         * @return A pointer to the instance.
          */
+        template <class Type>
         Type*
         create();
 
         /**
-         * @brief
+         * Creates an instance of a type.
          *
-         * @tparam Args
+         * @param args Arguments to create the instance.
          *
-         * @param args
-         *
-         * @return Type*
+         * @return A pointer to the instance.
          */
-        template <class... Args>
+        template <class Type, class... Args>
         Type*
         create(Args&&... args);
 
         /**
-         * @brief
+         * Destroys a previously created instance.
          *
-         * @param item
+         * @param item Instance to destroy.
          *
-         * @return true
-         * @return false
+         * @return True if it's destroy.
+         * @return False otherwise.
          */
+        template <class Type>
         bool
         destroy(Type* item);
 
     private:
         /**
-         * @brief
+         * Origin of memory.
          */
-        BaseOrigin& m_origin;
+        BaseOrigin* m_origin;
     };
 } // namespace smal
 

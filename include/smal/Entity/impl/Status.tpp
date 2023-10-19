@@ -1,9 +1,9 @@
-#include <smal/Entity/Actors.hpp>
+#include <smal/Entity/Status.hpp>
 
 namespace smal
 {
     template <template <class> class Array>
-    Actors<Array>::Actors(BaseOrigin* origin)
+    Status<Array>::Status(BaseOrigin* origin)
         : m_list {origin}
         , m_next {(usize) -1}
         , m_size {0}
@@ -11,7 +11,7 @@ namespace smal
 
     template <template <class> class Array>
     usize
-    Actors<Array>::create()
+    Status<Array>::create()
     {
         usize entity = -1;
 
@@ -33,7 +33,7 @@ namespace smal
 
     template <template <class> class Array>
     bool
-    Actors<Array>::destroy(usize entity)
+    Status<Array>::destroy(usize entity)
     {
         if ( this->m_size != this->m_list.size() ) {
             this->m_size += 1;
@@ -49,14 +49,14 @@ namespace smal
 
     template <template <class> class Array>
     usize
-    Actors<Array>::version(usize entity)
+    Status<Array>::version(usize entity)
     {
         return -1;
     }
 
     template <template <class> class Array>
     usize
-    Actors<Array>::identif(usize entity)
+    Status<Array>::identif(usize entity)
     {
         return -1;
     }

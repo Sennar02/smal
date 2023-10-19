@@ -39,10 +39,10 @@ namespace smal
         return true;
     }
 
-    Part
+    Page
     StackOrigin::reserve(usize length)
     {
-        Part part = {this, this->m_next, length};
+        Page part = {this, this->m_next, length};
 
         if ( length < this->size() ) {
             this->m_next += length;
@@ -59,7 +59,7 @@ namespace smal
     }
 
     bool
-    StackOrigin::reclaim(Part& part)
+    StackOrigin::reclaim(Page& part)
     {
         char* finish = part.memory() + part.length();
 
@@ -78,7 +78,7 @@ namespace smal
     }
 
     bool
-    StackOrigin::reclaim(Part&& part)
+    StackOrigin::reclaim(Page&& part)
     {
         char* finish = part.memory() + part.length();
 

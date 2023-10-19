@@ -10,12 +10,12 @@ namespace smal
     {
     public:
         /**
-         * @brief
+         *
          */
         SparseMap();
 
         /**
-         * @brief
+         *
          *
          * @param origin
          * @param length
@@ -23,19 +23,19 @@ namespace smal
         SparseMap(BaseOrigin* origin, usize length = 0);
 
         /**
-         * @brief
+         *
          *
          * @param values
          */
         SparseMap(const Array<Type>& values);
 
         /**
-         * @brief
+         *
          */
         virtual ~SparseMap() = default;
 
         /**
-         * @brief
+         *
          *
          * @return usize
          */
@@ -43,7 +43,7 @@ namespace smal
         capacity() const;
 
         /**
-         * @brief
+         *
          *
          * @return usize
          */
@@ -51,51 +51,51 @@ namespace smal
         size() const;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         bool
         isEmpty() const;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         bool
         isFull() const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
          * @param key
          * @param comp
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         template <class Func>
         bool
         contains(usize key, Func comp) const;
 
         /**
-         * @brief
+         *
          *
          * @param key
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         contains(usize key) const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
@@ -109,7 +109,7 @@ namespace smal
         indexOf(usize key, Func comp) const;
 
         /**
-         * @brief
+         *
          *
          * @param key
          *
@@ -119,7 +119,7 @@ namespace smal
         indexOf(usize key) const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
@@ -133,7 +133,7 @@ namespace smal
         keyOf(usize index, Func comp) const;
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -143,7 +143,7 @@ namespace smal
         keyOf(usize index) const;
 
         /**
-         * @brief
+         *
          *
          * @tparam Func
          *
@@ -154,7 +154,7 @@ namespace smal
         forEach(Func oper) const;
 
         /**
-         * @brief
+         *
          *
          * @param origin
          *
@@ -164,54 +164,54 @@ namespace smal
         clone(BaseOrigin* origin) const;
 
         /**
-         * @brief
+         *
          *
          * @param key
          * @param value
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         insert(usize key, const Type& value);
 
         /**
-         * @brief
+         *
          *
          * @param key
          * @param value
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         insert(usize key, Type&& value);
 
         /**
-         * @brief
+         *
          *
          * @param key
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         remove(usize key);
 
         /**
-         * @brief
+         *
          *
          * @param sparse
          * @param packed
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         resize(usize sparse, usize packed);
 
         /**
-         * @brief
+         *
          *
          * @tparam Algo
          * @tparam Comp
@@ -223,7 +223,7 @@ namespace smal
         sort(Comp comp);
 
         /**
-         * @brief
+         *
          *
          * @return PagedArray<Type>&
          */
@@ -231,7 +231,7 @@ namespace smal
         sparse();
 
         /**
-         * @brief
+         *
          *
          * @return const PagedArray<Type>&
          */
@@ -239,7 +239,7 @@ namespace smal
         sparse() const;
 
         /**
-         * @brief
+         *
          *
          * @return PagedArray<Type>&
          */
@@ -247,7 +247,7 @@ namespace smal
         packed();
 
         /**
-         * @brief
+         *
          *
          * @return const PagedArray<Type>&
          */
@@ -255,7 +255,7 @@ namespace smal
         packed() const;
 
         /**
-         * @brief
+         *
          *
          * @return Array<Type>&
          */
@@ -263,7 +263,7 @@ namespace smal
         values();
 
         /**
-         * @brief
+         *
          *
          * @return const Array<Type>&
          */
@@ -271,7 +271,7 @@ namespace smal
         values() const;
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -281,7 +281,7 @@ namespace smal
         find(usize index);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -291,7 +291,7 @@ namespace smal
         find(usize index) const;
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -301,7 +301,7 @@ namespace smal
         operator[](usize index);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -312,33 +312,33 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          *
          * @param key
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         growTo(usize key);
 
     private:
         /**
-         * @brief
+         *
          */
         PagedArray<usize> m_sparse;
 
         /**
-         * @brief
+         *
          */
         PagedArray<usize> m_packed;
 
         /**
-         * @brief
+         *
          */
         Array<Type> m_array;
 
         /**
-         * @brief
+         *
          */
         usize m_size;
     };

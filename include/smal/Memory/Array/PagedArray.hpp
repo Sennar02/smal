@@ -2,24 +2,25 @@
 #define SMAL_MEMORY_ARRAY_PAGED_ARRAY_HPP
 
 #include <smal/Memory/Origin/PoolOrigin.hpp>
-#include <smal/Memory/PartTable.hpp>
+#include <smal/Memory/PageTable.hpp>
 
 namespace smal
 {
     template <class Type>
     class PagedArray
+        : private PageTable
     {
     public:
         static const usize SIZE = sizeof(Type);
 
     public:
         /**
-         * @brief
+         *
          */
         PagedArray();
 
         /**
-         * @brief
+         *
          *
          * @param origin
          * @param length
@@ -27,98 +28,93 @@ namespace smal
         PagedArray(BaseOrigin* origin, usize length = 0);
 
         /**
-         * @brief
+         *
          *
          * @param origin
-         * @param table
+         * @param ptable
          * @param length
          */
-        PagedArray(BaseOrigin* origin, PartTable& table, usize length = 0);
+        PagedArray(BaseOrigin* origin, PageTable& ptable, usize length = 0);
 
         /**
-         * @brief
+         *
          */
         virtual ~PagedArray();
 
         /**
-         * @brief
          *
-         * @return usize
+         *
+         * @return
          */
         usize
         length() const;
 
         /**
-         * @brief
+         *
          *
          * @param length
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         resize(usize length);
 
         /**
-         * @brief
+         *
          *
          * @param pages
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         attach(usize pages);
 
         /**
-         * @brief
+         *
          *
          * @param pages
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         detach(usize pages);
 
         /**
-         * @brief
          *
-         * @return const PartTable&
+         *
+         * @return
          */
-        const PartTable&
+        const PageTable&
         ptable() const;
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
-         * @return Type&
+         * @return
          */
         Type&
         operator[](usize index);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
-         * @return const Type&
+         * @return
          */
         const Type&
         operator[](usize index) const;
 
-    public:
+    private:
         /**
-         * @brief
+         *
          */
         BaseOrigin* m_origin;
-
-        /**
-         * @brief
-         */
-        PartTable m_table;
     };
 } // namespace smal
 

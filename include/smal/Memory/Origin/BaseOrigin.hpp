@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 #define SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 
-#include <smal/Memory/Part.hpp>
+#include <smal/Memory/Page.hpp>
 
 namespace smal
 {
@@ -9,50 +9,50 @@ namespace smal
     {
     public:
         /**
-         * @brief
+         *
          */
         virtual ~BaseOrigin() = default;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         virtual bool
         prepare() = 0;
 
         /**
-         * @brief
+         *
          *
          * @param length
          *
-         * @return Part
+         * @return
          */
-        virtual Part
+        virtual Page
         reserve(usize length) = 0;
 
         /**
-         * @brief
+         *
          *
          * @param part
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         virtual bool
-        reclaim(Part& part) = 0;
+        reclaim(Page& part) = 0;
 
         /**
-         * @brief
+         *
          *
          * @param part
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         virtual bool
-        reclaim(Part&& part) = 0;
+        reclaim(Page&& part) = 0;
     };
 } // namespace smal
 

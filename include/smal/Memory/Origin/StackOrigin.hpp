@@ -10,12 +10,12 @@ namespace smal
     {
     public:
         /**
-         * @brief
+         *
          */
         StackOrigin();
 
         /**
-         * @brief
+         *
          *
          * @param memory
          * @param length
@@ -23,75 +23,75 @@ namespace smal
         StackOrigin(void* memory, usize length);
 
         /**
-         * @brief
          *
-         * @return usize
+         *
+         * @return
          */
         usize
         length() const;
 
         /**
-         * @brief
          *
-         * @return usize
+         *
+         * @return
          */
         usize
         size() const;
 
         /**
-         * @brief
          *
-         * @return true
-         * @return false
+         *
+         * @return True.
+         * @return False.
          */
         bool
         prepare();
 
         /**
-         * @brief
+         *
          *
          * @param length
          *
-         * @return Part
+         * @return
          */
-        Part
+        Page
         reserve(usize length);
 
         /**
-         * @brief
+         *
          *
          * @param part
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
-        reclaim(Part& part);
+        reclaim(Page& part);
 
         /**
-         * @brief
+         *
          *
          * @param part
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
-        reclaim(Part&& part);
+        reclaim(Page&& part);
 
     private:
         /**
-         * @brief
+         *
          */
         char* m_memory;
 
         /**
-         * @brief
+         *
          */
         usize m_length;
 
         /**
-         * @brief
+         *
          */
         char* m_next;
     };

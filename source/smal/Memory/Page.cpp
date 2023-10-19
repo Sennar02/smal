@@ -1,45 +1,45 @@
-#include <smal/Memory/Part.hpp>
+#include <smal/Memory/Page.hpp>
 
 namespace smal
 {
-    Part::Part()
+    Page::Page()
         : m_origin {0}
         , m_memory {0}
         , m_length {0}
     { }
 
-    Part::Part(BaseOrigin* origin, void* memory, usize length)
+    Page::Page(BaseOrigin* origin, void* memory, usize length)
         : m_origin {origin}
         , m_memory {(char*) memory}
         , m_length {length}
     { }
 
     bool
-    Part::isNull() const
+    Page::isNull() const
     {
         return this->m_memory == 0;
     }
 
     const BaseOrigin*
-    Part::origin() const
+    Page::origin() const
     {
         return this->m_origin;
     }
 
     char*
-    Part::memory()
+    Page::memory()
     {
         return this->m_memory;
     }
 
     const char*
-    Part::memory() const
+    Page::memory() const
     {
         return this->m_memory;
     }
 
     usize
-    Part::length() const
+    Page::length() const
     {
         return this->m_length;
     }

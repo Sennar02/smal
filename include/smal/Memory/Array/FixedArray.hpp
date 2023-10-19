@@ -13,12 +13,12 @@ namespace smal
 
     public:
         /**
-         * @brief
+         *
          */
         FixedArray();
 
         /**
-         * @brief
+         *
          *
          * @param origin
          * @param length
@@ -26,7 +26,7 @@ namespace smal
         FixedArray(BaseOrigin* origin, usize length = 0);
 
         /**
-         * @brief
+         *
          *
          * @param memory
          * @param length
@@ -34,12 +34,12 @@ namespace smal
         FixedArray(void* memory, usize length);
 
         /**
-         * @brief
+         *
          */
         virtual ~FixedArray();
 
         /**
-         * @brief
+         *
          *
          * @return usize
          */
@@ -47,18 +47,18 @@ namespace smal
         length() const;
 
         /**
-         * @brief
+         *
          *
          * @param length
          *
-         * @return true
-         * @return false
+         * @return True.
+         * @return False.
          */
         bool
         resize(usize length);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -68,7 +68,7 @@ namespace smal
         operator[](usize index);
 
         /**
-         * @brief
+         *
          *
          * @param index
          *
@@ -79,12 +79,12 @@ namespace smal
 
     private:
         /**
-         * @brief
+         *
          */
         char* m_memory;
 
         /**
-         * @brief
+         *
          */
         usize m_length;
     };

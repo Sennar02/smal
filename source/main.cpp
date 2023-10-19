@@ -1,52 +1,41 @@
 #include <smal/Entity/import.hpp>
 
-using smal::usize;
-using smal::f32;
-
-struct Pos
-{
-    f32 x, y;
-};
-
-static const usize g_pool = 1024 * 1024 * 16;
-static const usize g_page = 1024 * 16;
-
-static const usize g_numb = 10;
+static const long size = 1024 * 1024 * 4;
+static const long page = 1024 * 4;
 
 int
 main(int argc, const char* argv[])
 {
-    char* memory = (char*) calloc(1, g_pool);
+    char* buff = (char*) calloc(1, size);
+
+    smal::PoolOrigin origin = {buff, size, page};
 
     {
-        smal::PoolOrigin pool = {memory, g_pool, g_page};
+        smal::SparseMap<long> longs  = {&origin};
+        smal::Holder          holder = {&origin};
+        smal::Status          status = {&origin};
 
-        smal::Holder<smal::SparseMap> holder = {&pool};
-        smal::SparseMap<Pos>          pos    = {&pool};
+        if ( holder.give(&longs) == false )
+            return 1;
 
-        holder.give(&pos);
+        smal::Entity entity;
 
-        pos.resize(g_numb, g_numb);
+        printf("entity = %lu\n", entity.identif());
 
-        for ( usize i = 0; i < g_numb; i++ )
-            holder.give<Pos>(g_numb - 1 - i, {(f32) i, (f32) i});
+        if ( entity.create(status) ) {
+            printf("entity = %lu\n", entity.identif());
 
-        if ( holder.has<Pos>() ) {
-            auto& pool = *holder.find<Pos>();
+            if ( entity.give<long>(holder, -1) )
+                printf("attrib = %li\n", entity.find<long>(holder));
 
-            for ( usize i = 0; i < pool.size(); i++ ) {
-                auto& pi = pool[i];
-                auto& pk = pool[pool.indexOf(i)];
+            if ( entity.destroy(status) )
+                printf("entity = %lu\n", entity.identif());
 
-                // clang-format off
-                printf("<%2.3f, %2.3f> vs <%2.3f, %2.3f>\n",
-                    pi.x, pi.y, pk.x, pk.y);
-                // clang-format on
-            }
+            // Segfaults
+            // entity.find<long>(holder);
         }
     }
 
-    free(memory);
-
+    free(buff);
     return 0;
 }

@@ -6,11 +6,12 @@
 namespace smal::Memory
 {
     /**
-     * @brief
+     * Sets the value of a certain amount of bytes
+     * in a memory buffer.
      *
-     * @param memory
-     * @param length
-     * @param value
+     * @param memory Pointer to buffer.
+     * @param length Amount of bytes.
+     * @param value  Value of each byte.
      */
     void
     set(void* memory, usize length, char value);
