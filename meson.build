@@ -5,6 +5,7 @@ project('smal', 'cpp',
 )
 
 smal_header = include_directories('include')
+
 smal_memory = static_library('smal-memory',
     sources: [
         'source/smal/Memory/helper.cpp',
@@ -16,12 +17,22 @@ smal_memory = static_library('smal-memory',
     include_directories: [smal_header]
 )
 
+
+smal_parser = static_library('smal-parser',
+    sources: [
+        'source/smal/Parser/String.cpp',
+        'source/smal/Parser/Json/Piece.cpp',
+        'source/smal/Parser/Json/Lexer.cpp',
+    ],
+    include_directories: [smal_header]
+)
+
 smal_depend = [
     # dependency('sfml-graphics', static: true)
 ]
 
 executable('smal', 'source/main.cpp',
     include_directories: [smal_header],
-    link_with:           [smal_memory],
+    link_with:           [smal_memory, smal_parser],
     link_args:           '-lm',
     dependencies:        [smal_depend])

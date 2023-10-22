@@ -1,41 +1,37 @@
-#include <smal/Entity/import.hpp>
-
-static const long size = 1024 * 1024 * 4;
-static const long page = 1024 * 4;
+#include <smal/Parser/import.hpp>
+#include <string.h>
 
 int
 main(int argc, const char* argv[])
 {
-    char* buff = (char*) calloc(1, size);
+    using namespace smal;
+    using namespace smal::Json;
 
-    smal::PoolOrigin origin = {buff, size, page};
+    char buffer[256] = {0};
 
-    {
-        smal::SparseMap<long> longs  = {&origin};
-        smal::Holder          holder = {&origin};
-        smal::Status          status = {&origin};
+    auto* file = fopen("../assets/prova.json", "r");
 
-        if ( holder.give(&longs) == false )
-            return 1;
+    fread(buffer, 256, 1, file);
 
-        smal::Entity entity;
+    String s = {buffer, strlen(buffer)};
+    Lexer  r = {s};
 
-        printf("entity = %lu\n", entity.identif());
+    while ( true ) {
+        Piece p = r.next();
 
-        if ( entity.create(status) ) {
-            printf("entity = %lu\n", entity.identif());
+        if ( p.type() == PieceType::Finish ||
+             p.length() == 0 )
+            break;
 
-            if ( entity.give<long>(holder, -1) )
-                printf("attrib = %li\n", entity.find<long>(holder));
+        printf("%2lu:%lu ",
+            (usize) p.type(),
+            (usize) p.kind());
 
-            if ( entity.destroy(status) )
-                printf("entity = %lu\n", entity.identif());
+        for ( usize i = 0; i < p.length(); i++ )
+            printf("%c", p.memory()[i]);
 
-            // Segfaults
-            // entity.find<long>(holder);
-        }
+        printf("\n");
     }
 
-    free(buff);
     return 0;
 }
