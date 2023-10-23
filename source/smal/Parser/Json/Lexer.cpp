@@ -2,35 +2,30 @@
 
 namespace smal::Json
 {
-
     static String g_number = {"+-.eE0123456789", 15};
     static String g_float  = {".eE", 3};
     static String g_negat  = {"-", 1};
     static String g_string = {"\0\"", 2};
 
-    Lexer::Lexer(const String& string)
-        : m_string {string.memory()}
-        , m_length {string.length()}
-    { }
-
-    Piece
-    Lexer::next()
+    Lexeme
+    Lexer::lexeme(String& string)
     {
         static String table = {"\40\t\n\r", 4};
 
-        char byte = 0;
+        usize       length = string.length();
+        const char* memory = string.memory();
 
-        if ( this->m_length != 0 && this->m_string != 0 ) {
+        if ( memory != 0 && length != 0 ) {
             while ( true ) {
-                byte = *this->m_string;
-
-                if ( table.contains(byte) )
-                    this->m_string += 1;
+                if ( table.contains(*memory) )
+                    memory += 1, length -= 1;
                 else
                     break;
             }
 
-            switch ( byte ) {
+            string = {memory, length};
+
+            switch ( *memory ) {
                 case '-':
                 case '0':
                 case '1':
@@ -41,120 +36,93 @@ namespace smal::Json
                 case '6':
                 case '7':
                 case '8':
-                case '9':
-                    return this->number();
-                case '"':
-                    return this->string();
-                case 't':
-                    return this->symbol({"true", 4}, PieceType::Boolean);
-                case 'f':
-                    return this->symbol({"false", 5}, PieceType::Boolean);
-                case 'n':
-                    return this->symbol({"null", 4}, PieceType::Boolean);
-                case '{':
-                    return this->symbol({"{", 1}, PieceType::ObjOpen);
-                case '}':
-                    return this->symbol({"}", 1}, PieceType::ObjClose);
-                case '[':
-                    return this->symbol({"[", 1}, PieceType::ArrOpen);
-                case ']':
-                    return this->symbol({"]", 1}, PieceType::ArrClose);
-                case ':':
-                    return this->symbol({":", 1}, PieceType::Colon);
-                case ',':
-                    return this->symbol({",", 1}, PieceType::Comma);
-                case '\0':
-                    return this->symbol({"\0", 1}, PieceType::Finish);
-                case '/':
-                    return {}; // this->comment();
+                case '9': return Lexer::number(string);
+                case '"': return Lexer::string(string);
+                case 't': return Lexer::symbol(string, {"true", 4}, LexType::Boolean);
+                case 'f': return Lexer::symbol(string, {"false", 5}, LexType::Boolean);
+                case 'n': return Lexer::symbol(string, {"null", 4}, LexType::Boolean);
+                case '{': return Lexer::symbol(string, {"{", 1}, LexType::ObjOpen);
+                case '}': return Lexer::symbol(string, {"}", 1}, LexType::ObjClose);
+                case '[': return Lexer::symbol(string, {"[", 1}, LexType::ArrOpen);
+                case ']': return Lexer::symbol(string, {"]", 1}, LexType::ArrClose);
+                case ':': return Lexer::symbol(string, {":", 1}, LexType::Colon);
+                case ',': return Lexer::symbol(string, {",", 1}, LexType::Comma);
+                case '\0': return Lexer::symbol(string, {"\0", 1}, LexType::Finish);
             }
         }
 
         return {};
     }
 
-    Piece
-    Lexer::number()
+    Lexeme
+    Lexer::number(String& string)
     {
-        usize       length = 0;
-        const char* cursor = this->m_string;
-        char        byte   = 0;
-        char        flag   = 0;
+        const char* memory = string.memory();
+        usize       length = string.length();
+        const char* cursor = memory;
+        u32         flag   = 0;
         String      result;
 
-        while ( true ) {
-            byte = *cursor;
+        while ( length != 0 ) {
+            flag |= g_float.contains(*cursor) ? LexFlag::Floating : 0;
+            flag |= g_negat.contains(*cursor) ? LexFlag::Negative : 0;
 
-            if ( g_float.contains(byte) ) flag |= 2;
-            if ( g_negat.contains(byte) ) flag |= 1;
-
-            if ( g_number.contains(byte) )
-                cursor += 1;
+            if ( g_number.contains(*cursor) )
+                cursor += 1, length -= 1;
             else
                 break;
         }
 
-        length = cursor - this->m_string;
-        result = {this->m_string, length};
+        result = {memory, (usize) (cursor - memory)};
+        string = {cursor, length};
 
-        if ( length <= this->m_length ) {
-            this->m_string += length;
-            this->m_length -= length;
-
-            if ( (flag & 2) != 0 ) return {result, PieceType::Floating};
-            if ( (flag & 1) != 0 ) return {result, PieceType::Signed};
-
-            return {result, PieceType::Unsigned};
-        }
-
-        return {};
+        return {result, LexType::Number, flag};
     }
 
-    Piece
-    Lexer::string()
+    Lexeme
+    Lexer::string(String& string)
     {
-        usize       length = 0;
-        const char* cursor = this->m_string;
-        char        byte   = 0;
+        const char* memory = string.memory();
+        usize       length = string.length();
+        const char* cursor = memory;
         String      result;
 
-        if ( *cursor++ != '\"' )
+        if ( *cursor == '"' )
+            cursor += 1, length -= 1;
+        else
             return {};
 
-        while ( true ) {
-            byte = *cursor;
-
-            if ( g_string.contains(byte) == false )
-                cursor += 1;
+        while ( length != 0 ) {
+            if ( g_string.contains(*cursor) == false )
+                cursor += 1, length -= 1;
             else
                 break;
         }
 
-        if ( *cursor++ != '\"' )
+        if ( *cursor == '"' )
+            cursor += 1, length -= 1;
+        else
             return {};
 
-        length = cursor - this->m_string - 2;
-        result = {this->m_string + 1, length};
+        result = {memory + 1, (usize) (cursor - memory) - 2};
+        string = {cursor, length};
 
-        if ( length <= this->m_length ) {
-            this->m_string += length + 2;
-            this->m_length -= length + 2;
-
-            return {result, PieceType::String};
-        }
-
-        return {};
+        return {result, LexType::String};
     }
 
-    Piece
-    Lexer::symbol(const String& string, PieceType type)
+    Lexeme
+    Lexer::symbol(String& string, const String& symbol, LexType type)
     {
-        usize  length = string.length();
-        String result = {this->m_string, length};
+        const char* memory = string.memory();
+        usize       length = string.length();
 
-        if ( string.equals(result) ) {
-            this->m_string += length;
-            this->m_length -= length;
+        String result = {memory, symbol.length()};
+
+        if ( symbol.equals(string) ) {
+            memory += symbol.length();
+            length -= symbol.length();
+
+            string = {memory, length};
 
             return {result, type};
         }

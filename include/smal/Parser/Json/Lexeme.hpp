@@ -1,58 +1,68 @@
-#ifndef SMAL_PARSER_JSON_PIECE_HPP
-#define SMAL_PARSER_JSON_PIECE_HPP
+#ifndef SMAL_PARSER_JSON_LEXEME_HPP
+#define SMAL_PARSER_JSON_LEXEME_HPP
 
 #include <smal/Parser/String.hpp>
 
 namespace smal::Json
 {
-    enum class PieceType
+    enum class LexType
     {
+        // Literals
+        String,
+        Number,
+        // Keywords
+        Boolean,
+        Null,
+        // Separators
         ObjOpen,
         ObjClose,
         ArrOpen,
         ArrClose,
-        String,
-        Floating,
-        Signed,
-        Unsigned,
-        Boolean,
-        Null,
         Colon,
         Comma,
-        Comment,
+        // Auxiliaries
         Finish,
         Error,
+
         SIZE,
     };
 
-    enum class PieceKind
+    enum class LexKind
     {
-        Value,
-        Delim,
-        Extra,
+        Literal,
+        Keyword,
+        Separator,
+        Auxiliary,
+
         SIZE,
     };
 
-    class Piece
+    enum LexFlag
+    {
+        Floating = 1,
+        Negative = 2,
+
+        SIZE = 2,
+    };
+
+    class Lexeme
     {
     public:
-        using Type = PieceType;
-        using Kind = PieceKind;
-
         /**
          *
          *
          * @param string
          * @param type
+         * @param flag
          */
-        Piece(const String& string = {}, PieceType type = Type::Error);
+        Lexeme(const String& string = {}, LexType type = LexType::Error, u32 flag = 0);
 
         /**
          *
          *
          * @return
          */
-        PieceType
+        LexType
         type() const;
 
         /**
@@ -60,7 +70,7 @@ namespace smal::Json
          *
          * @return
          */
-        PieceKind
+        LexKind
         kind() const;
 
         /**
@@ -70,6 +80,12 @@ namespace smal::Json
          */
         usize
         length() const;
+
+        /**
+         *
+         */
+        u32
+        flag() const;
 
         /**
          *
@@ -88,8 +104,13 @@ namespace smal::Json
         /**
          *
          */
-        PieceType m_type;
+        LexType m_type;
+
+        /**
+         *
+         */
+        u32 m_flag;
     };
 } // namespace smal::Json
 
-#endif // SMAL_PARSER_JSON_PIECE_HPP
+#endif // SMAL_PARSER_JSON_LEXEME_HPP

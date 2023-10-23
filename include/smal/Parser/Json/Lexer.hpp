@@ -1,7 +1,7 @@
 #ifndef BITE_PARSER_JSON_LEXER_HPP
 #define BITE_PARSER_JSON_LEXER_HPP
 
-#include <smal/Parser/Json/Piece.hpp>
+#include <smal/Parser/Json/Lexeme.hpp>
 
 namespace smal::Json
 {
@@ -10,55 +10,38 @@ namespace smal::Json
     public:
         /**
          *
-         * @param string
+         *
+         * @return
          */
-        Lexer(const String& string);
+        static Lexeme
+        lexeme(String& string);
 
         /**
          *
          *
          * @return
          */
-        Piece
-        next();
-
-    private:
-        /**
-         *
-         *
-         * @return
-         */
-        Piece
-        number();
+        static Lexeme
+        number(String& string);
 
         /**
          *
          *
          * @return
          */
-        Piece
-        string();
+        static Lexeme
+        string(String& string);
 
         /**
          *
          * @param string
+         * @param symbol
          * @param type
          *
          * @return
          */
-        Piece
-        symbol(const String& string, PieceType type);
-
-    private:
-        /**
-         *
-         */
-        const char* m_string;
-
-        /**
-         *
-         */
-        usize m_length;
+        static Lexeme
+        symbol(String& string, const String& symbol, LexType type);
     };
 } // namespace smal::Json
 
