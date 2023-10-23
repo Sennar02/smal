@@ -14,15 +14,7 @@ namespace smal::Json
          * @return
          */
         static Lexeme
-        lexeme(String& string);
-
-        /**
-         *
-         *
-         * @return
-         */
-        static Lexeme
-        number(String& string);
+        next(String& string);
 
         /**
          *
@@ -31,6 +23,14 @@ namespace smal::Json
          */
         static Lexeme
         string(String& string);
+
+        /**
+         *
+         *
+         * @return
+         */
+        static Lexeme
+        number(String& string);
 
         /**
          *

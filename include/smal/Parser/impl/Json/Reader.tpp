@@ -2,177 +2,143 @@
 
 namespace smal::Json
 {
-    template <class Handler>
-    Reader<Handler>::Reader(const String& string)
-        : m_lexer {string}
-    { }
-
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::read()
+    Reader::read(Client& client, String& string)
     {
-        return this->value(this->m_lexer.next());
-    }
+        auto lexeme = Lexer::next(string);
 
-    template <class Handler>
-    bool
-    Reader<Handler>::value(const Piece& piece)
-    {
-        switch ( piece.type() ) {
-            case LexType::Floating:
-                return this->floating(piece);
-            case LexType::Relative:
-                return this->relative(piece);
-            case LexType::Absolute:
-                return this->absolute(piece);
-            case LexType::String:
-                return this->string(piece);
-            case LexType::Boolean:
-                return this->boolean(piece);
-            case LexType::Null:
-                return this->null();
-            case LexType::ObjOpen:
-                return this->object();
-            case LexType::ArrOpen:
-                return this->array();
+        if ( lexeme.length() != 0 ) {
+            switch ( lexeme.type() ) {
+                case LexType::String: return Reader::string(client, lexeme);
+                case LexType::Number: return Reader::number(client, lexeme);
+                case LexType::Boolean: return Reader::boolean(client, lexeme);
+                case LexType::Null: return Reader::null(client);
+                case LexType::ObjOpen: return Reader::object(client, string);
+                case LexType::ArrOpen: return Reader::array(client, string);
 
-            default:
-                return false;
+                default:
+                    break;
+            }
         }
 
         return false;
     }
 
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::floating(const Piece& piece)
+    Reader::string(Client& client, const Lexeme& lexeme)
     {
-        f64   value = strtod(piece.memory(), 0);
-        usize absol = (usize) value;
-        isize relat = (isize) value;
+        const char* memory = lexeme.memory();
+        usize       length = lexeme.length();
 
-        if ( value == absol )
-            return Handler::absolute(value);
-        if ( value == relat )
-            return Handler::relative(value);
-
-        return Handler::floating(value);
+        return client.string(memory, length);
     }
 
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::relative(const Piece& piece)
+    Reader::number(Client& client, const Lexeme& lexeme)
     {
-        return Handler::relative(strtol(piece.memory(), 0, 10));
+        const char* memory = lexeme.memory();
+
+        f64 num = 0;
+
+        if ( (lexeme.flag() & LexFlag::Floating) != 0 ) {
+            num = strtod(memory, 0);
+
+            if ( num == (isize) num )
+                return client.number((isize) num);
+            if ( num == (usize) num )
+                return client.number((usize) num);
+
+            return client.number(num);
+        }
+
+        if ( (lexeme.flag() & LexFlag::Negative) != 0 )
+            return client.number((isize) strtol(memory, 0, 10));
+
+        return client.number((usize) strtoul(memory, 0, 10));
     }
 
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::absolute(const Piece& piece)
+    Reader::boolean(Client& client, const Lexeme& lexeme)
     {
-        return Handler::absolute(strtoul(piece.memory(), 0, 10));
+        if ( *lexeme.memory() == 't' )
+            return client.boolean(true);
+
+        return client.boolean(false);
     }
 
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::string(const Piece& piece)
+    Reader::null(Client& client)
     {
-        return Handler::string(piece.memory(), piece.length());
+        return client.null();
     }
 
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::boolean(const Piece& piece)
+    Reader::object(Client& client, String& string)
     {
-        if ( piece.memory()[0] == 't' )
-            return Handler::boolean(true);
+        const char* memory = 0;
+        usize       length = 0;
+        usize       count  = 0;
+        Lexeme      lexeme;
 
-        return Handler::boolean(false);
-    }
-
-    template <class Handler>
-    bool
-    Reader<Handler>::null()
-    {
-        return Handler::null();
-    }
-
-    template <class Handler>
-    bool
-    Reader<Handler>::object()
-    {
-        Piece piece;
-        usize count = 0;
-
-        if ( Handler::objOpen() == false )
-            return false;
+        if ( client.objOpen() == false ) return false;
 
         for ( ; true; count++ ) {
-            piece = this->m_lexer.next();
+            lexeme = Lexer::next(string);
+            memory = lexeme.memory();
+            length = lexeme.length();
 
-            if ( piece.type() != LexType::String )
+            if ( lexeme.type() != LexType::String )
                 return false;
 
-            if ( Handler::objKey(piece.memory(), piece.length()) == false )
+            if ( client.objKey(memory, length) == false )
                 return false;
 
-            piece = this->m_lexer.next();
+            lexeme = Lexer::next(string);
 
-            if ( piece.type() != LexType::Colon )
+            if ( lexeme.type() != LexType::Colon )
                 return false;
 
-            piece = this->m_lexer.next();
-
-            if ( piece.kind() != LexKind::Value )
+            if ( Reader::read(client, string) == false )
                 return false;
 
-            if ( this->value(piece) == false )
-                return false;
+            lexeme = Lexer::next(string);
 
-            piece = this->m_lexer.next();
-
-            if ( piece.type() == LexType::Comma )
-                continue;
-
-            if ( piece.type() == LexType::ObjClose )
-                break;
+            if ( lexeme.type() == LexType::Comma ) continue;
+            if ( lexeme.type() == LexType::ObjClose ) break;
 
             return false;
         }
 
-        return Handler::objClose(count + 1);
+        return client.objClose(count + 1);
     }
 
-    template <class Handler>
+    template <class Client>
     bool
-    Reader<Handler>::array()
+    Reader::array(Client& client, String& string)
     {
-        Piece piece;
-        usize count = 0;
+        usize  count = 0;
+        Lexeme lexeme;
 
-        if ( Handler::arrOpen() == false )
-            return false;
+        if ( client.arrOpen() == false ) return false;
 
         for ( ; true; count++ ) {
-            piece = this->m_lexer.next();
-
-            if ( piece.kind() != LexKind::Value )
+            if ( Reader::read(client, string) == false )
                 return false;
 
-            if ( this->value(piece) == false )
-                return false;
+            lexeme = Lexer::next(string);
 
-            piece = this->m_lexer.next();
-
-            if ( piece.type() == LexType::Comma )
-                continue;
-
-            if ( piece.type() == LexType::ArrClose )
-                break;
+            if ( lexeme.type() == LexType::Comma ) continue;
+            if ( lexeme.type() == LexType::ArrClose ) break;
 
             return false;
         }
 
-        return Handler::arrClose(count + 1);
+        return client.arrClose(count + 1);
     }
 } // namespace smal::Json

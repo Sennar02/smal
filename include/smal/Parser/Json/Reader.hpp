@@ -5,45 +5,36 @@
 
 namespace smal::Json
 {
-    template <class Handler>
     class Reader
     {
     public:
-        Reader(const String& string);
+        template <class Client>
+        static bool
+        read(Client& client, String& string);
 
-        bool
-        read();
+        template <class Client>
+        static bool
+        string(Client& client, const Lexeme& lexeme);
 
-    private:
-        bool
-        value(const Piece& piece);
+        template <class Client>
+        static bool
+        number(Client& client, const Lexeme& lexeme);
 
-        bool
-        floating(const Piece& piece);
+        template <class Client>
+        static bool
+        boolean(Client& client, const Lexeme& lexeme);
 
-        bool
-        relative(const Piece& piece);
+        template <class Client>
+        static bool
+        null(Client& client);
 
-        bool
-        absolute(const Piece& piece);
+        template <class Client>
+        static bool
+        object(Client& client, String& string);
 
-        bool
-        string(const Piece& piece);
-
-        bool
-        null();
-
-        bool
-        boolean(const Piece& piece);
-
-        bool
-        object();
-
-        bool
-        array();
-
-    private:
-        Lexer m_lexer;
+        template <class Client>
+        static bool
+        array(Client& client, String& string);
     };
 } // namespace smal::Json
 

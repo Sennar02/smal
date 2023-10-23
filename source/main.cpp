@@ -6,78 +6,97 @@ using namespace smal;
 class Printer
 {
 public:
-    static bool
-    objOpen()
+    bool
+    string(const char* string, usize length)
     {
+        for ( usize i = 0; i < length; i++ )
+            printf("%c", string[i]);
+
+        printf("\n");
+
         return true;
     }
 
-    static bool
-    objKey(const char* string, usize length)
-    {
-        if ( strncmp("tilemap", string, length) == 0 )
-            return true;
-
-        return false;
-    }
-
-    static bool
-    objClose(usize count)
-    {
-        if ( count == 1 )
-            return true;
-
-        return false;
-    }
-
-    static bool
-    arrOpen()
-    {
-        return true;
-    }
-
-    static bool
-    arrClose(usize count)
-    {
-        return true;
-    }
-
-    static bool
-    absolute(usize value)
+    bool
+    number(usize value)
     {
         printf("%lu\n", value);
 
         return true;
     }
 
-    static bool
-    floating(f64 value)
+    bool
+    number(isize value)
     {
-        return false;
+        printf("%li\n", value);
+
+        return true;
     }
 
-    static bool
-    relative(isize value)
+    bool
+    number(f64 value)
     {
-        return false;
+        printf("%lf\n", value);
+
+        return true;
     }
 
-    static bool
-    string(const char* string, usize length)
-    {
-        return false;
-    }
-
-    static bool
+    bool
     boolean(bool value)
     {
-        return false;
+        static const char* values[] = {
+            "false",
+            "true",
+        };
+
+        printf("%s\n", values[(usize) value]);
+
+        return true;
     }
 
-    static bool
+    bool
     null()
     {
-        return false;
+        printf("null\n");
+
+        return true;
+    }
+
+    bool
+    arrOpen()
+    {
+        return true;
+    }
+
+    bool
+    arrClose(usize count)
+    {
+        return true;
+    }
+
+    bool
+    objOpen()
+    {
+        return true;
+    }
+
+    bool
+    objKey(const char* string, usize length)
+    {
+        printf("<");
+
+        for ( usize i = 0; i < length; i++ )
+            printf("%c", string[i]);
+
+        printf(">\n");
+
+        return true;
+    }
+
+    bool
+    objClose(usize count)
+    {
+        return true;
     }
 };
 
@@ -93,31 +112,12 @@ main(int argc, const char* argv[])
 
     fread(buffer, 256, 1, file);
 
-    String s = {buffer, strlen(buffer)};
-    Lexeme l;
+    String  s = {buffer, strlen(buffer)};
+    Reader  r;
+    Printer p;
 
-    while ( true ) {
-        l = Lexer::lexeme(s);
-
-        if ( l.type() == LexType::Finish )
-            break;
-
-        if ( l.type() == LexType::Error )
-            return 1;
-
-        printf("(%lu:%lu:%u) -> [%lu '",
-            (usize) l.type(),
-            (usize) l.kind(),
-            l.flag(),
-            l.length());
-
-        for ( usize i = 0; i < l.length(); i++ ) {
-            if ( l.memory()[i] != '\n' )
-                printf("%c", l.memory()[i]);
-        }
-
-        printf("']\n");
-    }
+    if ( r.read(p, s) == false )
+        return 1;
 
     return 0;
 }

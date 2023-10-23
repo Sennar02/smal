@@ -8,7 +8,7 @@ namespace smal::Json
     static String g_string = {"\0\"", 2};
 
     Lexeme
-    Lexer::lexeme(String& string)
+    Lexer::next(String& string)
     {
         static String table = {"\40\t\n\r", 4};
 
@@ -40,7 +40,7 @@ namespace smal::Json
                 case '"': return Lexer::string(string);
                 case 't': return Lexer::symbol(string, {"true", 4}, LexType::Boolean);
                 case 'f': return Lexer::symbol(string, {"false", 5}, LexType::Boolean);
-                case 'n': return Lexer::symbol(string, {"null", 4}, LexType::Boolean);
+                case 'n': return Lexer::symbol(string, {"null", 4}, LexType::Null);
                 case '{': return Lexer::symbol(string, {"{", 1}, LexType::ObjOpen);
                 case '}': return Lexer::symbol(string, {"}", 1}, LexType::ObjClose);
                 case '[': return Lexer::symbol(string, {"[", 1}, LexType::ArrOpen);
@@ -48,35 +48,13 @@ namespace smal::Json
                 case ':': return Lexer::symbol(string, {":", 1}, LexType::Colon);
                 case ',': return Lexer::symbol(string, {",", 1}, LexType::Comma);
                 case '\0': return Lexer::symbol(string, {"\0", 1}, LexType::Finish);
+
+                default:
+                    break;
             }
         }
 
         return {};
-    }
-
-    Lexeme
-    Lexer::number(String& string)
-    {
-        const char* memory = string.memory();
-        usize       length = string.length();
-        const char* cursor = memory;
-        u32         flag   = 0;
-        String      result;
-
-        while ( length != 0 ) {
-            flag |= g_float.contains(*cursor) ? LexFlag::Floating : 0;
-            flag |= g_negat.contains(*cursor) ? LexFlag::Negative : 0;
-
-            if ( g_number.contains(*cursor) )
-                cursor += 1, length -= 1;
-            else
-                break;
-        }
-
-        result = {memory, (usize) (cursor - memory)};
-        string = {cursor, length};
-
-        return {result, LexType::Number, flag};
     }
 
     Lexeme
@@ -108,6 +86,31 @@ namespace smal::Json
         string = {cursor, length};
 
         return {result, LexType::String};
+    }
+
+    Lexeme
+    Lexer::number(String& string)
+    {
+        const char* memory = string.memory();
+        usize       length = string.length();
+        const char* cursor = memory;
+        u32         flag   = 0;
+        String      result;
+
+        while ( length != 0 ) {
+            flag |= g_float.contains(*cursor) ? LexFlag::Floating : 0;
+            flag |= g_negat.contains(*cursor) ? LexFlag::Negative : 0;
+
+            if ( g_number.contains(*cursor) )
+                cursor += 1, length -= 1;
+            else
+                break;
+        }
+
+        result = {memory, (usize) (cursor - memory)};
+        string = {cursor, length};
+
+        return {result, LexType::Number, flag};
     }
 
     Lexeme
