@@ -1,7 +1,7 @@
 #include <smal/Common/helper.hpp>
 #include <new>
 
-namespace smal
+namespace ma
 {
     namespace Math
     {
@@ -147,4 +147,4 @@ namespace smal
 
         return value;
     }
-} // namespace smal
+} // namespace ma

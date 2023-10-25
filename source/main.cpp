@@ -1,123 +1,67 @@
+#include <smal/Memory/import.hpp>
 #include <smal/Parser/import.hpp>
+
 #include <string.h>
 
-using namespace smal;
+class Client
+    : public ma::Json::Client
+{ };
 
-class Printer
-{
-public:
-    bool
-    string(const char* string, usize length)
-    {
-        for ( usize i = 0; i < length; i++ )
-            printf("%c", string[i]);
+static const ma::usize g_pool = 1024 * 1024 * 16;
+static const ma::usize g_parr = 1024 * 1024 * 12;
+static const ma::usize g_page = 1024 * 32;
 
-        printf("\n");
-
-        return true;
-    }
-
-    bool
-    number(usize value)
-    {
-        printf("%lu\n", value);
-
-        return true;
-    }
-
-    bool
-    number(isize value)
-    {
-        printf("%li\n", value);
-
-        return true;
-    }
-
-    bool
-    number(f64 value)
-    {
-        printf("%lf\n", value);
-
-        return true;
-    }
-
-    bool
-    boolean(bool value)
-    {
-        static const char* values[] = {
-            "false",
-            "true",
-        };
-
-        printf("%s\n", values[(usize) value]);
-
-        return true;
-    }
-
-    bool
-    null()
-    {
-        printf("null\n");
-
-        return true;
-    }
-
-    bool
-    arrOpen()
-    {
-        return true;
-    }
-
-    bool
-    arrClose(usize count)
-    {
-        return true;
-    }
-
-    bool
-    objOpen()
-    {
-        return true;
-    }
-
-    bool
-    objKey(const char* string, usize length)
-    {
-        printf("<");
-
-        for ( usize i = 0; i < length; i++ )
-            printf("%c", string[i]);
-
-        printf(">\n");
-
-        return true;
-    }
-
-    bool
-    objClose(usize count)
-    {
-        return true;
-    }
-};
+static char g_buff[g_page] = {0};
 
 int
 main(int argc, const char* argv[])
 {
-    using namespace smal;
-    using namespace smal::Json;
+    using namespace ma;
 
-    char buffer[256] = {0};
+    auto* file = fopen("../assets/doc.json", "r");
+    usize size = 0;
+    usize prev = 0;
 
-    auto* file = fopen("../assets/prova.json", "r");
-
-    fread(buffer, 256, 1, file);
-
-    String  s = {buffer, strlen(buffer)};
-    Reader  r;
-    Printer p;
-
-    if ( r.read(p, s) == false )
+    if ( file == 0 )
         return 1;
+
+    char* memory = (char*) calloc(1, g_pool);
+
+    {
+        StackOrigin      pool = {memory, g_pool};
+        FixedArray<char> parr = {&pool, g_parr};
+
+        while ( true ) {
+            size = fread(g_buff, 1, g_page - 1, file);
+
+            g_buff[size] = 0;
+
+            for ( usize i = 0; i < size; i++ )
+                parr[prev + i] = g_buff[i];
+
+            prev += size;
+
+            if ( size != g_page - 1 )
+                break;
+        }
+
+        fclose(file);
+
+        Client c;
+        String s = {&parr[0], prev};
+
+        // clang-format off
+        printf("Read \x1b[34m%.6f\x1b[0m MB from \x1b[34m'%s'\x1b[0m\n",
+            prev / (1000000.f), "../assets/doc.json");
+        // clang-format on
+
+        if ( Json::Reader::read(c, s) == false )
+            printf("-> \x1b[31mFailure\x1b[0m\n");
+        else
+            printf("-> \x1b[32mSuccess\x1b[0m\n");
+    }
+
+    free(memory);
 
     return 0;
 }

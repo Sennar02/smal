@@ -1,6 +1,6 @@
 #include <smal/Memory/Creator.hpp>
 
-namespace smal
+namespace ma
 {
     Creator::Creator(BaseOrigin* origin)
         : m_origin {origin}
@@ -53,4 +53,4 @@ namespace smal
 
         return false;
     }
-} // namespace smal
+} // namespace ma

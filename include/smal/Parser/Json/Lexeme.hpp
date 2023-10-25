@@ -3,7 +3,7 @@
 
 #include <smal/Parser/String.hpp>
 
-namespace smal::Json
+namespace ma::Json
 {
     enum class LexType
     {
@@ -111,6 +111,6 @@ namespace smal::Json
          */
         u32 m_flag;
     };
-} // namespace smal::Json
+} // namespace ma::Json
 
 #endif // SMAL_PARSER_JSON_LEXEME_HPP

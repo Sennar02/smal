@@ -4,7 +4,7 @@
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 #include <smal/Memory/PageTable.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type>
     class PagedArray
@@ -116,7 +116,7 @@ namespace smal
          */
         BaseOrigin* m_origin;
     };
-} // namespace smal
+} // namespace ma
 
 #include <smal/Memory/impl/PagedArray.tpp>
 

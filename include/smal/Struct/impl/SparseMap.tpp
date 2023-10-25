@@ -1,6 +1,6 @@
 #include <smal/Struct/Data/SparseMap.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type, template <class> class Array>
     SparseMap<Type, Array>::SparseMap()
@@ -370,4 +370,4 @@ namespace smal
 
         return true;
     }
-} // namespace smal
+} // namespace ma

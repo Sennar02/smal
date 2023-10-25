@@ -1,6 +1,6 @@
 #include <smal/Struct/Algo/QuickSort.hpp>
 
-namespace smal
+namespace ma
 {
     template <typename Type, template <class> class Array, class Func>
     void
@@ -46,4 +46,4 @@ namespace smal
                 return ridx;
         }
     }
-} // namespace smal
+} // namespace ma

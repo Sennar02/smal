@@ -3,7 +3,7 @@
 
 #include <smal/Memory/Page.hpp>
 
-namespace smal
+namespace ma
 {
     class BaseOrigin
     {
@@ -54,6 +54,6 @@ namespace smal
         virtual bool
         reclaim(Page&& part) = 0;
     };
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP

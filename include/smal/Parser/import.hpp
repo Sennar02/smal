@@ -9,5 +9,6 @@
 #include <smal/Parser/Json/Lexeme.hpp>
 #include <smal/Parser/Json/Lexer.hpp>
 #include <smal/Parser/Json/Reader.hpp>
+#include <smal/Parser/Json/Client.hpp>
 
 #endif // SMAL_PARSER_IMPORT_HPP

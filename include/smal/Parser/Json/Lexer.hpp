@@ -3,7 +3,7 @@
 
 #include <smal/Parser/Json/Lexeme.hpp>
 
-namespace smal::Json
+namespace ma::Json
 {
     class Lexer
     {
@@ -15,6 +15,17 @@ namespace smal::Json
          */
         static Lexeme
         next(String& string);
+
+    private:
+        /**
+         *
+         *
+         * @param string
+         *
+         * @return
+         */
+        static Lexeme
+        forward(String& string);
 
         /**
          *
@@ -43,6 +54,6 @@ namespace smal::Json
         static Lexeme
         symbol(String& string, const String& symbol, LexType type);
     };
-} // namespace smal::Json
+} // namespace ma::Json
 
 #endif // BITE_PARSER_JSON_LEXER_HPP

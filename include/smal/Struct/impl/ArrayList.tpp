@@ -1,6 +1,6 @@
 #include <smal/Struct/Data/ArrayList.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type, template <class> class Array>
     ArrayList<Type, Array>::ArrayList()
@@ -254,4 +254,4 @@ namespace smal
 
         return place;
     }
-} // namespace smal
+} // namespace ma

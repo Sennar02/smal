@@ -1,7 +1,7 @@
 #ifndef SMAL_STRUCT_ALGO_QUICK_SORT_HPP
 #define SMAL_STRUCT_ALGO_QUICK_SORT_HPP
 
-namespace smal
+namespace ma
 {
     class QuickSort
     {
@@ -56,7 +56,7 @@ namespace smal
         static usize
         part(Array<Type>& array, usize start, usize stop, Func func);
     };
-} // namespace smal
+} // namespace ma
 
 #include <smal/Struct/impl/QuickSort.tpp>
 

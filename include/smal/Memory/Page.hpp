@@ -3,7 +3,7 @@
 
 #include <smal/Memory/define.hpp>
 
-namespace smal
+namespace ma
 {
     class Page
     {
@@ -71,6 +71,6 @@ namespace smal
          */
         usize m_length;
     };
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_MEMORY_PAGE_HPP

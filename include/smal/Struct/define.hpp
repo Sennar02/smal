@@ -3,13 +3,13 @@
 
 #include <smal/Struct/depend.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type, template <class> class Array>
     class ArrayList;
 
     template <class Type, template <class> class Array>
     class SparseMap;
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_STRUCT_DEFINE_HPP

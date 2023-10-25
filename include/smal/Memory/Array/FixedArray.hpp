@@ -3,7 +3,7 @@
 
 #include <smal/Memory/define.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type>
     class FixedArray
@@ -88,7 +88,7 @@ namespace smal
          */
         usize m_length;
     };
-} // namespace smal
+} // namespace ma
 
 #include <smal/Memory/impl/FixedArray.tpp>
 

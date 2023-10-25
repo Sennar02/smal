@@ -1,6 +1,6 @@
 #include <smal/Memory/Array/PagedArray.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type>
     PagedArray<Type>::PagedArray()
@@ -115,4 +115,4 @@ namespace smal
     {
         return (Type&) *this->lookup(index * SIZE);
     }
-} // namespace smal
+} // namespace ma

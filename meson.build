@@ -23,13 +23,13 @@ smal_parser = static_library('smal-parser',
         'source/smal/Parser/String.cpp',
         'source/smal/Parser/Json/Lexeme.cpp',
         'source/smal/Parser/Json/Lexer.cpp',
+        'source/smal/Parser/Json/Reader.cpp',
+        'source/smal/Parser/Json/Client.cpp',
     ],
     include_directories: [smal_header]
 )
 
-smal_depend = [
-    # dependency('sfml-graphics', static: true)
-]
+smal_depend = []
 
 executable('smal', 'source/main.cpp',
     include_directories: [smal_header],

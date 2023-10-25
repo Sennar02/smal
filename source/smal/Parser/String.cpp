@@ -1,6 +1,6 @@
 #include <smal/Parser/String.hpp>
 
-namespace smal
+namespace ma
 {
     String::String(const char* string, usize length)
         : m_string {string}
@@ -52,4 +52,4 @@ namespace smal
 
         return false;
     }
-} // namespace smal
+} // namespace ma

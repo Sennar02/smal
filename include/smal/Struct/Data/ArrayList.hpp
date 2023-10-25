@@ -3,7 +3,7 @@
 
 #include <smal/Struct/define.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type, template <class> class Array = PagedArray>
     class ArrayList
@@ -276,7 +276,7 @@ namespace smal
          */
         usize m_size;
     };
-} // namespace smal
+} // namespace ma
 
 #include <smal/Struct/impl/ArrayList.tpp>
 

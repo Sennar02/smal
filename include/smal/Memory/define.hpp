@@ -3,7 +3,7 @@
 
 #include <smal/Memory/depend.hpp>
 
-namespace smal
+namespace ma
 {
     class Page;
     class PageTable;
@@ -19,6 +19,6 @@ namespace smal
 
     template <class Type>
     class PagedArray;
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_MEMORY_DEFINE_HPP

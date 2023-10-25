@@ -1,7 +1,7 @@
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 #include <smal/Memory/helper.hpp>
 
-namespace smal
+namespace ma
 {
     PoolOrigin::PoolOrigin()
         : m_memory {0}
@@ -135,4 +135,4 @@ namespace smal
 
         return true;
     }
-} // namespace smal
+} // namespace ma

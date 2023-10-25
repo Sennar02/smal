@@ -3,7 +3,7 @@
 
 #include <smal/Parser/define.hpp>
 
-namespace smal
+namespace ma
 {
     class String
     {
@@ -69,6 +69,6 @@ namespace smal
          */
         usize m_length;
     };
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_PARSER_STRING_HPP

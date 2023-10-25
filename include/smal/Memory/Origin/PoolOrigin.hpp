@@ -3,7 +3,7 @@
 
 #include <smal/Memory/Origin/BaseOrigin.hpp>
 
-namespace smal
+namespace ma
 {
     class PoolOrigin
         : public BaseOrigin
@@ -72,7 +72,7 @@ namespace smal
          *
          * @param length
          *
-         * @return 
+         * @return
          */
         Page
         reserve(usize length = 0);
@@ -130,6 +130,6 @@ namespace smal
          */
         usize m_page;
     };
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_MEMORY_ORIGIN_POOL_ORIGIN_HPP

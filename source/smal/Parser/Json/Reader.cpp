@@ -1,21 +1,35 @@
 #include <smal/Parser/Json/Reader.hpp>
 
-namespace smal::Json
+namespace ma::Json
 {
-    template <class Client>
     bool
     Reader::read(Client& client, String& string)
     {
-        auto lexeme = Lexer::next(string);
+        return forward(client, string, Lexer::next(string), 0);
+    }
 
+    bool
+    Reader::forward(Client& client, String& string, const Lexeme& lexeme, usize depth)
+    {
         if ( lexeme.length() != 0 ) {
             switch ( lexeme.type() ) {
-                case LexType::String: return Reader::string(client, lexeme);
-                case LexType::Number: return Reader::number(client, lexeme);
-                case LexType::Boolean: return Reader::boolean(client, lexeme);
-                case LexType::Null: return Reader::null(client);
-                case LexType::ObjOpen: return Reader::object(client, string);
-                case LexType::ArrOpen: return Reader::array(client, string);
+                case LexType::String:
+                    return Reader::string(client, lexeme);
+
+                case LexType::Number:
+                    return Reader::number(client, lexeme);
+
+                case LexType::Boolean:
+                    return Reader::boolean(client, lexeme);
+
+                case LexType::Null:
+                    return Reader::null(client);
+
+                case LexType::ObjOpen:
+                    return Reader::object(client, string, depth + 1);
+
+                case LexType::ArrOpen:
+                    return Reader::array(client, string, depth + 1);
 
                 default:
                     break;
@@ -25,17 +39,17 @@ namespace smal::Json
         return false;
     }
 
-    template <class Client>
     bool
     Reader::string(Client& client, const Lexeme& lexeme)
     {
         const char* memory = lexeme.memory();
         usize       length = lexeme.length();
 
+        ((char*) memory)[length] = 0;
+
         return client.string(memory, length);
     }
 
-    template <class Client>
     bool
     Reader::number(Client& client, const Lexeme& lexeme)
     {
@@ -60,7 +74,6 @@ namespace smal::Json
         return client.number((usize) strtoul(memory, 0, 10));
     }
 
-    template <class Client>
     bool
     Reader::boolean(Client& client, const Lexeme& lexeme)
     {
@@ -70,41 +83,42 @@ namespace smal::Json
         return client.boolean(false);
     }
 
-    template <class Client>
     bool
     Reader::null(Client& client)
     {
         return client.null();
     }
 
-    template <class Client>
     bool
-    Reader::object(Client& client, String& string)
+    Reader::object(Client& client, String& string, usize depth)
     {
         const char* memory = 0;
         usize       length = 0;
         usize       count  = 0;
         Lexeme      lexeme;
 
-        if ( client.objOpen() == false ) return false;
+        if ( client.objOpen(depth) == false ) return false;
 
         for ( ; true; count++ ) {
             lexeme = Lexer::next(string);
             memory = lexeme.memory();
             length = lexeme.length();
 
-            if ( lexeme.type() != LexType::String )
-                return false;
+            if ( lexeme.type() == LexType::ObjClose ) break;
+            if ( lexeme.type() != LexType::String ) return false;
+
+            ((char*) memory)[length] = 0;
 
             if ( client.objKey(memory, length) == false )
                 return false;
 
             lexeme = Lexer::next(string);
 
-            if ( lexeme.type() != LexType::Colon )
-                return false;
+            if ( lexeme.type() != LexType::Colon ) return false;
 
-            if ( Reader::read(client, string) == false )
+            lexeme = Lexer::next(string);
+
+            if ( forward(client, string, lexeme, depth) == false )
                 return false;
 
             lexeme = Lexer::next(string);
@@ -115,20 +129,23 @@ namespace smal::Json
             return false;
         }
 
-        return client.objClose(count + 1);
+        return client.objClose(depth, count);
     }
 
-    template <class Client>
     bool
-    Reader::array(Client& client, String& string)
+    Reader::array(Client& client, String& string, usize depth)
     {
         usize  count = 0;
         Lexeme lexeme;
 
-        if ( client.arrOpen() == false ) return false;
+        if ( client.arrOpen(depth) == false ) return false;
 
         for ( ; true; count++ ) {
-            if ( Reader::read(client, string) == false )
+            lexeme = Lexer::next(string);
+
+            if ( lexeme.type() == LexType::ArrClose ) break;
+
+            if ( forward(client, string, lexeme, depth) == false )
                 return false;
 
             lexeme = Lexer::next(string);
@@ -139,6 +156,6 @@ namespace smal::Json
             return false;
         }
 
-        return client.arrClose(count + 1);
+        return client.arrClose(depth, count);
     }
-} // namespace smal::Json
+} // namespace ma::Json

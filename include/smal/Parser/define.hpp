@@ -3,9 +3,17 @@
 
 #include <smal/Parser/depend.hpp>
 
-namespace smal
+namespace ma
 {
     class String;
-} // namespace smal
+
+    namespace Json
+    {
+        class Lexeme;
+        class Lexer;
+        class Reader;
+        class Client;
+    } // namespace Json
+} // namespace ma
 
 #endif // SMAL_PARSER_DEFINE_HPP

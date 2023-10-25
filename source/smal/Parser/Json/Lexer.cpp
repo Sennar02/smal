@@ -1,6 +1,6 @@
 #include <smal/Parser/Json/Lexer.hpp>
 
-namespace smal::Json
+namespace ma::Json
 {
     static String g_number = {"+-.eE0123456789", 15};
     static String g_float  = {".eE", 3};
@@ -25,33 +25,75 @@ namespace smal::Json
 
             string = {memory, length};
 
-            switch ( *memory ) {
-                case '-':
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9': return Lexer::number(string);
-                case '"': return Lexer::string(string);
-                case 't': return Lexer::symbol(string, {"true", 4}, LexType::Boolean);
-                case 'f': return Lexer::symbol(string, {"false", 5}, LexType::Boolean);
-                case 'n': return Lexer::symbol(string, {"null", 4}, LexType::Null);
-                case '{': return Lexer::symbol(string, {"{", 1}, LexType::ObjOpen);
-                case '}': return Lexer::symbol(string, {"}", 1}, LexType::ObjClose);
-                case '[': return Lexer::symbol(string, {"[", 1}, LexType::ArrOpen);
-                case ']': return Lexer::symbol(string, {"]", 1}, LexType::ArrClose);
-                case ':': return Lexer::symbol(string, {":", 1}, LexType::Colon);
-                case ',': return Lexer::symbol(string, {",", 1}, LexType::Comma);
-                case '\0': return Lexer::symbol(string, {"\0", 1}, LexType::Finish);
+            return forward(string);
+        }
 
-                default:
-                    break;
-            }
+        return {};
+    }
+
+    Lexeme
+    Lexer::forward(String& string)
+    {
+        static String s_true     = {"true", 4};
+        static String s_false    = {"false", 5};
+        static String s_null     = {"null", 4};
+        static String s_objOpen  = {"{", 1};
+        static String s_objClose = {"}", 1};
+        static String s_arrOpen  = {"[", 1};
+        static String s_arrClose = {"]", 1};
+        static String s_colon    = {":", 1};
+        static String s_comma    = {",", 1};
+        static String s_finish   = {"\0", 1};
+
+        switch ( *string.memory() ) {
+            case '"':
+                return Lexer::string(string);
+
+            case '-':
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                return Lexer::number(string);
+
+            case 't':
+                return Lexer::symbol(string, s_true, LexType::Boolean);
+
+            case 'f':
+                return Lexer::symbol(string, s_false, LexType::Boolean);
+
+            case 'n':
+                return Lexer::symbol(string, s_null, LexType::Null);
+
+            case '{':
+                return Lexer::symbol(string, s_objOpen, LexType::ObjOpen);
+
+            case '}':
+                return Lexer::symbol(string, s_objClose, LexType::ObjClose);
+
+            case '[':
+                return Lexer::symbol(string, s_arrOpen, LexType::ArrOpen);
+
+            case ']':
+                return Lexer::symbol(string, s_arrClose, LexType::ArrClose);
+
+            case ':':
+                return Lexer::symbol(string, s_colon, LexType::Colon);
+
+            case ',':
+                return Lexer::symbol(string, s_comma, LexType::Comma);
+
+            case '\0':
+                return Lexer::symbol(string, s_finish, LexType::Finish);
+
+            default:
+                break;
         }
 
         return {};
@@ -132,4 +174,4 @@ namespace smal::Json
 
         return {};
     }
-} // namespace smal::Json
+} // namespace ma::Json

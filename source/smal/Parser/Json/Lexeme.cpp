@@ -1,6 +1,6 @@
 #include <smal/Parser/Json/Lexeme.hpp>
 
-namespace smal
+namespace ma
 {
     namespace impl
     {
@@ -60,4 +60,4 @@ namespace smal
             return this->m_string.memory();
         }
     } // namespace Json
-} // namespace smal
+} // namespace ma

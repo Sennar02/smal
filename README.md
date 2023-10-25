@@ -1,1 +1,1 @@
-# Simple Memory Allocation Library
+# Simply Memory Allocation

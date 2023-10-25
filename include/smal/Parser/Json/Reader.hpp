@@ -2,42 +2,113 @@
 #define SMAL_PARSER_JSON_READER_HPP
 
 #include <smal/Parser/Json/Lexer.hpp>
+#include <smal/Parser/Json/Client.hpp>
 
-namespace smal::Json
+namespace ma::Json
 {
     class Reader
     {
     public:
-        template <class Client>
+        /**
+         *
+         *
+         * @param client
+         * @param string
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
         read(Client& client, String& string);
 
-        template <class Client>
+    private:
+        /**
+         *
+         *
+         * @param client
+         * @param string
+         * @param lexeme
+         * @param depth
+         *
+         * @return True.
+         * @return False.
+         */
+        static bool
+        forward(Client& client, String& string, const Lexeme& lexeme, usize depth);
+
+        /**
+         *
+         *
+         * @param client
+         * @param lexeme
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
         string(Client& client, const Lexeme& lexeme);
 
-        template <class Client>
+        /**
+         *
+         *
+         * @param client
+         * @param lexeme
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
         number(Client& client, const Lexeme& lexeme);
 
-        template <class Client>
+        /**
+         *
+         *
+         * @param client
+         * @param lexeme
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
         boolean(Client& client, const Lexeme& lexeme);
 
-        template <class Client>
+        /**
+         *
+         *
+         * @param client
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
         null(Client& client);
 
-        template <class Client>
+        /**
+         *
+         *
+         * @param client
+         * @param string
+         * @param depth
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
-        object(Client& client, String& string);
+        object(Client& client, String& string, usize depth);
 
-        template <class Client>
+        /**
+         *
+         *
+         * @param client
+         * @param string
+         * @param depth
+         *
+         * @return True.
+         * @return False.
+         */
         static bool
-        array(Client& client, String& string);
+        array(Client& client, String& string, usize depth);
     };
-} // namespace smal::Json
-
-#include <smal/Parser/impl/Json/Reader.tpp>
+} // namespace ma::Json
 
 #endif // SMAL_PARSER_JSON_READER_HPP

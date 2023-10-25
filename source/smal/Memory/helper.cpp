@@ -1,6 +1,6 @@
 #include <smal/Memory/define.hpp>
 
-namespace smal::Memory
+namespace ma::Memory
 {
     void
     set(void* memory, usize length, char value)
@@ -10,4 +10,4 @@ namespace smal::Memory
         for ( usize i = 0; i < length; i++ )
             dst[i] = value;
     }
-} // namespace smal::Memory
+} // namespace ma::Memory
