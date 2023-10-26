@@ -16,9 +16,7 @@ smal_memory = static_library('smal-memory',
     include_directories: [smal_header]
 )
 
-smal_depend = [
-    # dependency('sfml-graphics', static: true)
-]
+smal_depend = []
 
 executable('smal', 'source/main.cpp',
     include_directories: [smal_header],
