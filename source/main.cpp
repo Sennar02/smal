@@ -1,4 +1,4 @@
-#include <smal/Struct/import.hpp>
+#include <smal/Entity/import.hpp>
 
 int
 main(int argc, const char* argv[])
