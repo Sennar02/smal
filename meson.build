@@ -17,7 +17,6 @@ smal_memory = static_library('smal-memory',
     include_directories: [smal_header]
 )
 
-
 smal_parser = static_library('smal-parser',
     sources: [
         'source/smal/Parser/String.cpp',
