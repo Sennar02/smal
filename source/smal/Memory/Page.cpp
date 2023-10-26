@@ -1,6 +1,6 @@
 #include <smal/Memory/Page.hpp>
 
-namespace smal
+namespace ma
 {
     Page::Page()
         : m_origin {0}
@@ -43,4 +43,4 @@ namespace smal
     {
         return this->m_length;
     }
-} // namespace smal
+} // namespace ma

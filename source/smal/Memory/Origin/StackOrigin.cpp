@@ -1,7 +1,7 @@
 #include <smal/Memory/Origin/StackOrigin.hpp>
 #include <smal/Memory/helper.hpp>
 
-namespace smal
+namespace ma
 {
     StackOrigin::StackOrigin()
         : m_memory {0}
@@ -93,4 +93,4 @@ namespace smal
 
         return true;
     }
-} // namespace smal
+} // namespace ma

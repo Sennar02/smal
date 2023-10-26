@@ -3,7 +3,7 @@
 
 #include <smal/Memory/Origin/BaseOrigin.hpp>
 
-namespace smal
+namespace ma
 {
     class StackOrigin
         : public BaseOrigin
@@ -95,6 +95,6 @@ namespace smal
          */
         char* m_next;
     };
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_MEMORY_ORIGIN_STACK_ORIGIN_HPP

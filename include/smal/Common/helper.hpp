@@ -1,7 +1,7 @@
 #ifndef SMAL_COMMON_HELPER_HPP
 #define SMAL_COMMON_HELPER_HPP
 
-namespace smal
+namespace ma
 {
     namespace impl
     {
@@ -89,7 +89,7 @@ namespace smal
     template <class Type>
     Type&
     destroy(Type& value);
-} // namespace smal
+} // namespace ma
 
 #include <smal/Common/impl/helper.tpp>
 

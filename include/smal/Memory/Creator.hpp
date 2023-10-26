@@ -3,7 +3,7 @@
 
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 
-namespace smal
+namespace ma
 {
     class Creator
     {
@@ -53,7 +53,7 @@ namespace smal
          */
         BaseOrigin* m_origin;
     };
-} // namespace smal
+} // namespace ma
 
 #include <smal/Memory/impl/Creator.tpp>
 

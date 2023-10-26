@@ -1,6 +1,6 @@
 #include <smal/Memory/Array/FixedArray.hpp>
 
-namespace smal
+namespace ma
 {
     template <class Type>
     FixedArray<Type>::FixedArray()
@@ -60,4 +60,4 @@ namespace smal
     {
         return (Type&) this->m_memory[index * SIZE];
     }
-} // namespace smal
+} // namespace ma

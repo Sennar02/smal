@@ -3,7 +3,7 @@
 
 #include <smal/Common/depend.hpp>
 
-namespace smal
+namespace ma
 {
     using u8  = uint8_t;
     using u16 = uint16_t;
@@ -20,6 +20,6 @@ namespace smal
 
     using usize = size_t;
     using isize = ssize_t;
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_COMMON_DEFINE_HPP

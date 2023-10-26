@@ -1,7 +1,7 @@
 #include <smal/Memory/PageTable.hpp>
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 
-namespace smal
+namespace ma
 {
     PageTable::PageTable()
         : m_memory {0}
@@ -100,4 +100,4 @@ namespace smal
 
         return this->m_memory[page] + byte;
     }
-} // namespace smal
+} // namespace ma

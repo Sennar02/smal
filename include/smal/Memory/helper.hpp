@@ -3,7 +3,7 @@
 
 #include <smal/Memory/define.hpp>
 
-namespace smal::Memory
+namespace ma::Memory
 {
     /**
      * Sets the value of a certain amount of bytes
@@ -15,6 +15,6 @@ namespace smal::Memory
      */
     void
     set(void* memory, usize length, char value);
-} // namespace smal::Memory
+} // namespace ma::Memory
 
 #endif // SMAL_MEMORY_HELPER_HPP

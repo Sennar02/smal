@@ -3,7 +3,7 @@
 
 #include <smal/Memory/Page.hpp>
 
-namespace smal
+namespace ma
 {
     class PageTable
     {
@@ -160,6 +160,6 @@ namespace smal
          */
         usize m_page;
     };
-} // namespace smal
+} // namespace ma
 
 #endif // SMAL_MEMORY_PAGE_TABLE_HPP
