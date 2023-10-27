@@ -29,9 +29,14 @@ smal_parser = static_library('smal-parser',
 )
 
 smal_depend = []
+smal_define = [smal_memory, smal_parser]
 
-executable('smal', 'source/main.cpp',
+executable('smal',
+    sources: [
+        'source/smal.cpp',
+    ],
     include_directories: [smal_header],
     link_with:           [smal_memory, smal_parser],
     link_args:           '-lm',
-    dependencies:        [smal_depend])
+    dependencies:        [smal_depend]
+)
