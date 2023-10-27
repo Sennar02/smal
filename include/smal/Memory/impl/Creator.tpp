@@ -2,10 +2,6 @@
 
 namespace ma
 {
-    Creator::Creator(BaseOrigin* origin)
-        : m_origin {origin}
-    { }
-
     template <class Type>
     Type*
     Creator::create()
