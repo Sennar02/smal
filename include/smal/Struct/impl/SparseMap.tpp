@@ -35,21 +35,21 @@ namespace ma
 
     template <class Type, template <class> class Array>
     usize
-    SparseMap<Type, Array>::size() const
+    SparseMap<Type, Array>::count() const
     {
         return this->m_size;
     }
 
     template <class Type, template <class> class Array>
     bool
-    SparseMap<Type, Array>::isEmpty() const
+    SparseMap<Type, Array>::is_empty() const
     {
         return this->m_size == 0;
     }
 
     template <class Type, template <class> class Array>
     bool
-    SparseMap<Type, Array>::isFull() const
+    SparseMap<Type, Array>::is_full() const
     {
         return this->m_size == this->m_array.length();
     }
@@ -168,7 +168,7 @@ namespace ma
             return false;
 
         if ( this->growTo(key) == true ) {
-            if ( this->isFull() == false ) {
+            if ( this->is_full() == false ) {
                 this->m_size += 1;
 
                 this->m_sparse[key] = idx;
@@ -193,7 +193,7 @@ namespace ma
             return false;
 
         if ( this->growTo(key) == true ) {
-            if ( this->isFull() == false ) {
+            if ( this->is_full() == false ) {
                 this->m_size += 1;
 
                 this->m_sparse[key] = idx;

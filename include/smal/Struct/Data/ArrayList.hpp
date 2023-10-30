@@ -48,7 +48,7 @@ namespace ma
          * @return usize
          */
         usize
-        size() const;
+        count() const;
 
         /**
          *
@@ -57,7 +57,7 @@ namespace ma
          * @return False.
          */
         bool
-        isEmpty() const;
+        is_empty() const;
 
         /**
          *
@@ -66,7 +66,7 @@ namespace ma
          * @return False.
          */
         bool
-        isFull() const;
+        is_full() const;
 
         /**
          *

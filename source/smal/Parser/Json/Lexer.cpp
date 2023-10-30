@@ -5,7 +5,18 @@ namespace ma::Json
     static String g_number = {"+-.eE0123456789", 15};
     static String g_float  = {".eE", 3};
     static String g_negat  = {"-", 1};
-    static String g_string = {"\0\"", 2};
+    static String g_string = {"\0\"\'", 3};
+
+    static String g_true      = {"true", 4};
+    static String g_false     = {"false", 5};
+    static String g_null      = {"null", 4};
+    static String g_obj_start = {"{", 1};
+    static String g_obj_stop  = {"}", 1};
+    static String g_arr_start = {"[", 1};
+    static String g_arr_stop  = {"]", 1};
+    static String g_colon     = {":", 1};
+    static String g_comma     = {",", 1};
+    static String g_finish    = {"\0", 1};
 
     Lexeme
     Lexer::next(String& string)
@@ -25,29 +36,21 @@ namespace ma::Json
 
             string = {memory, length};
 
-            return forward(string);
+            return match(string);
         }
 
         return {};
     }
 
     Lexeme
-    Lexer::forward(String& string)
+    Lexer::match(String& string)
     {
-        static String s_true     = {"true", 4};
-        static String s_false    = {"false", 5};
-        static String s_null     = {"null", 4};
-        static String s_objOpen  = {"{", 1};
-        static String s_objClose = {"}", 1};
-        static String s_arrOpen  = {"[", 1};
-        static String s_arrClose = {"]", 1};
-        static String s_colon    = {":", 1};
-        static String s_comma    = {",", 1};
-        static String s_finish   = {"\0", 1};
-
         switch ( *string.memory() ) {
-            case '"':
-                return Lexer::string(string);
+            case '\"':
+                return Lexer::string(string, '\"');
+
+            case '\'':
+                return Lexer::string(string, '\'');
 
             case '-':
             case '0':
@@ -63,34 +66,34 @@ namespace ma::Json
                 return Lexer::number(string);
 
             case 't':
-                return Lexer::symbol(string, s_true, LexType::Boolean);
+                return Lexer::symbol(string, g_true, LexType::Boolean);
 
             case 'f':
-                return Lexer::symbol(string, s_false, LexType::Boolean);
+                return Lexer::symbol(string, g_false, LexType::Boolean);
 
             case 'n':
-                return Lexer::symbol(string, s_null, LexType::Null);
+                return Lexer::symbol(string, g_null, LexType::Null);
 
             case '{':
-                return Lexer::symbol(string, s_objOpen, LexType::ObjOpen);
+                return Lexer::symbol(string, g_obj_start, LexType::ObjOpen);
 
             case '}':
-                return Lexer::symbol(string, s_objClose, LexType::ObjClose);
+                return Lexer::symbol(string, g_obj_stop, LexType::ObjClose);
 
             case '[':
-                return Lexer::symbol(string, s_arrOpen, LexType::ArrOpen);
+                return Lexer::symbol(string, g_arr_start, LexType::ArrOpen);
 
             case ']':
-                return Lexer::symbol(string, s_arrClose, LexType::ArrClose);
+                return Lexer::symbol(string, g_arr_stop, LexType::ArrClose);
 
             case ':':
-                return Lexer::symbol(string, s_colon, LexType::Colon);
+                return Lexer::symbol(string, g_colon, LexType::Colon);
 
             case ',':
-                return Lexer::symbol(string, s_comma, LexType::Comma);
+                return Lexer::symbol(string, g_comma, LexType::Comma);
 
             case '\0':
-                return Lexer::symbol(string, s_finish, LexType::Finish);
+                return Lexer::symbol(string, g_finish, LexType::Finish);
 
             default:
                 break;
@@ -100,14 +103,14 @@ namespace ma::Json
     }
 
     Lexeme
-    Lexer::string(String& string)
+    Lexer::string(String& string, char separ)
     {
         const char* memory = string.memory();
         usize       length = string.length();
         const char* cursor = memory;
         String      result;
 
-        if ( *cursor == '"' )
+        if ( *cursor == separ )
             cursor += 1, length -= 1;
         else
             return {};
@@ -119,7 +122,7 @@ namespace ma::Json
                 break;
         }
 
-        if ( *cursor == '"' )
+        if ( *cursor == separ )
             cursor += 1, length -= 1;
         else
             return {};

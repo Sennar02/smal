@@ -26,28 +26,28 @@ namespace ma
 
         /**
          * Creates a page table from a memory buffer of a specified
-         * length.
+         * size.
          *
          * Every page associated inside the table is and must be
          * of the specified size.
          *
          * @param memory Pointer to memory.
-         * @param length Length of the table in bytes.
-         * @param page   Length of each page in bytes.
+         * @param size   Size of the table in bytes.
+         * @param page   Size of each page in bytes.
          */
-        PageTable(void* memory, usize length, usize page);
+        PageTable(void* memory, usize size, usize page);
 
         /**
          * @return The maximum number of entries.
          */
         usize
-        length() const;
+        size() const;
 
         /**
-         * @return The current number of stored entries.
+         * @return The current number of entries.
          */
         usize
-        size() const;
+        count() const;
 
         /**
          * @return The size of each page.
@@ -61,14 +61,14 @@ namespace ma
          * This operation is equal to:
          *
          * ```
-         * table.size() == 0
+         * table.count() == 0
          * ```
          *
          * @return True if it's empty.
          * @return False otherwise.
          */
         bool
-        isEmpty() const;
+        is_empty() const;
 
         /**
          * Verifies if the table is full.
@@ -76,26 +76,26 @@ namespace ma
          * This operation is equal to:
          *
          * ```
-         * table.size() == table.length()
+         * table.count() == table.size()
          * ```
          *
          * @return True if it's full.
          * @return False otherwise.
          */
         bool
-        isFull() const;
+        is_full() const;
 
         /**
          * Associates a memory page to a particular key for
          * future lookups.
          *
-         * The page is left intact by this function.
+         * The page is always left intact.
          *
          * This function fails in any of the following cases:
          * - The table is full
          * - The page is null
          * - The page is of a different size than required
-         * - The key is beyond the length of the table
+         * - The key is beyond the size of the table
          * - The key is already associated to a page
          *
          * @param key  Key to associate.
@@ -116,7 +116,7 @@ namespace ma
          *
          * This funcion fails in any of the following cases:
          * - The table is empty
-         * - The key is beyond the length of the table
+         * - The key is beyond the size of the table
          * - The key is not associated to a page
          *
          * @param key Key to disassociate
@@ -146,17 +146,17 @@ namespace ma
         Node* m_memory;
 
         /**
-         * Length of the table in entries.
-         */
-        usize m_length;
-
-        /**
-         * Number of current associations.
+         * Size of the table in entries.
          */
         usize m_size;
 
         /**
-         * Length of each page in bytes.
+         * Number of current associations.
+         */
+        usize m_count;
+
+        /**
+         * Size of each page in bytes.
          */
         usize m_page;
     };

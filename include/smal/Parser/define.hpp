@@ -14,6 +14,8 @@ namespace ma
         class Reader;
         class Client;
     } // namespace Json
+
+    using namespace Json;
 } // namespace ma
 
 #endif // SMAL_PARSER_DEFINE_HPP

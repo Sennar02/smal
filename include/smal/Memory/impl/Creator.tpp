@@ -11,7 +11,7 @@ namespace ma
         Page  part = this->m_origin->reserve(size);
         Type* item = (Type*) part.memory();
 
-        if ( part.isNull() == false )
+        if ( part.is_null() == false )
             new (item) Type {};
 
         return item;
@@ -26,7 +26,7 @@ namespace ma
         Page  part = this->m_origin->reserve(size);
         Type* item = (Type*) part.memory();
 
-        if ( part.isNull() == false )
+        if ( part.is_null() == false )
             new (item) Type {forw<Args>(args)...};
 
         return item;

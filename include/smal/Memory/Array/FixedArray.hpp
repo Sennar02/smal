@@ -21,17 +21,17 @@ namespace ma
          *
          *
          * @param origin
-         * @param length
+         * @param size
          */
-        FixedArray(BaseOrigin* origin, usize length = 0);
+        FixedArray(BaseOrigin* origin, usize size = 0);
 
         /**
          *
          *
          * @param memory
-         * @param length
+         * @param size
          */
-        FixedArray(void* memory, usize length);
+        FixedArray(void* memory, usize size);
 
         /**
          *
@@ -44,18 +44,18 @@ namespace ma
          * @return usize
          */
         usize
-        length() const;
+        size() const;
 
         /**
          *
          *
-         * @param length
+         * @param size
          *
          * @return True.
          * @return False.
          */
         bool
-        resize(usize length);
+        resize(usize size);
 
         /**
          *
@@ -86,7 +86,7 @@ namespace ma
         /**
          *
          */
-        usize m_length;
+        usize m_size;
     };
 } // namespace ma
 

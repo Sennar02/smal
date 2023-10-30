@@ -29,21 +29,21 @@ namespace ma
 
     template <class Type, template <class> class Array>
     usize
-    ArrayList<Type, Array>::size() const
+    ArrayList<Type, Array>::count() const
     {
         return this->m_size;
     }
 
     template <class Type, template <class> class Array>
     bool
-    ArrayList<Type, Array>::isEmpty() const
+    ArrayList<Type, Array>::is_empty() const
     {
         return this->m_size == 0;
     }
 
     template <class Type, template <class> class Array>
     bool
-    ArrayList<Type, Array>::isFull() const
+    ArrayList<Type, Array>::is_full() const
     {
         return this->m_size == this->m_array.length();
     }
@@ -119,10 +119,10 @@ namespace ma
     {
         usize place = 0;
 
-        if ( this->isFull() == true )
+        if ( this->is_full() == true )
             this->resize(this->m_size * 1.5f + 16);
 
-        if ( this->isFull() == false ) {
+        if ( this->is_full() == false ) {
             place = this->limit(index, this->m_size + 1);
 
             this->m_size += 1;
@@ -144,10 +144,10 @@ namespace ma
     {
         usize place = 0;
 
-        if ( this->isFull() == true )
+        if ( this->is_full() == true )
             this->resize(this->m_size * 1.5f + 16);
 
-        if ( this->isFull() == false ) {
+        if ( this->is_full() == false ) {
             place = this->limit(index, this->m_size + 1);
 
             this->m_size += 1;
@@ -169,7 +169,7 @@ namespace ma
     {
         usize place = 0;
 
-        if ( this->isEmpty() == false ) {
+        if ( this->is_empty() == false ) {
             place = this->limit(index, this->m_size);
 
             this->m_size -= 1;

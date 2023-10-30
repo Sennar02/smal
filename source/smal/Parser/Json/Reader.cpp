@@ -5,35 +5,36 @@ namespace ma::Json
     bool
     Reader::read(Client& client, String& string)
     {
-        return forward(client, string, Lexer::next(string), 0);
+        return match(client, string, Lexer::next(string), 0);
     }
 
     bool
-    Reader::forward(Client& client, String& string, const Lexeme& lexeme, usize depth)
+    Reader::match(Client& client, String& string, const Lexeme& lexeme, usize depth)
     {
-        if ( lexeme.length() != 0 ) {
-            switch ( lexeme.type() ) {
-                case LexType::String:
-                    return Reader::string(client, lexeme);
+        if ( lexeme.length() == 0 )
+            return false;
 
-                case LexType::Number:
-                    return Reader::number(client, lexeme);
+        switch ( lexeme.type() ) {
+            case LexType::String:
+                return Reader::string(client, lexeme);
 
-                case LexType::Boolean:
-                    return Reader::boolean(client, lexeme);
+            case LexType::Number:
+                return Reader::number(client, lexeme);
 
-                case LexType::Null:
-                    return Reader::null(client);
+            case LexType::Boolean:
+                return Reader::boolean(client, lexeme);
 
-                case LexType::ObjOpen:
-                    return Reader::object(client, string, depth + 1);
+            case LexType::Null:
+                return Reader::null(client);
 
-                case LexType::ArrOpen:
-                    return Reader::array(client, string, depth + 1);
+            case LexType::ObjOpen:
+                return Reader::object(client, string, depth + 1);
 
-                default:
-                    break;
-            }
+            case LexType::ArrOpen:
+                return Reader::array(client, string, depth + 1);
+
+            default:
+                break;
         }
 
         return false;
@@ -44,8 +45,6 @@ namespace ma::Json
     {
         const char* memory = lexeme.memory();
         usize       length = lexeme.length();
-
-        ((char*) memory)[length] = 0;
 
         return client.string(memory, length);
     }
@@ -97,7 +96,7 @@ namespace ma::Json
         usize       count  = 0;
         Lexeme      lexeme;
 
-        if ( client.objOpen(depth) == false ) return false;
+        if ( client.object_start(depth) == false ) return false;
 
         for ( ; true; count++ ) {
             lexeme = Lexer::next(string);
@@ -107,9 +106,7 @@ namespace ma::Json
             if ( lexeme.type() == LexType::ObjClose ) break;
             if ( lexeme.type() != LexType::String ) return false;
 
-            ((char*) memory)[length] = 0;
-
-            if ( client.objKey(memory, length) == false )
+            if ( client.name(memory, length) == false )
                 return false;
 
             lexeme = Lexer::next(string);
@@ -118,7 +115,7 @@ namespace ma::Json
 
             lexeme = Lexer::next(string);
 
-            if ( forward(client, string, lexeme, depth) == false )
+            if ( match(client, string, lexeme, depth) == false )
                 return false;
 
             lexeme = Lexer::next(string);
@@ -129,7 +126,7 @@ namespace ma::Json
             return false;
         }
 
-        return client.objClose(depth, count);
+        return client.object_stop(depth, count);
     }
 
     bool
@@ -138,14 +135,14 @@ namespace ma::Json
         usize  count = 0;
         Lexeme lexeme;
 
-        if ( client.arrOpen(depth) == false ) return false;
+        if ( client.array_start(depth) == false ) return false;
 
         for ( ; true; count++ ) {
             lexeme = Lexer::next(string);
 
             if ( lexeme.type() == LexType::ArrClose ) break;
 
-            if ( forward(client, string, lexeme, depth) == false )
+            if ( match(client, string, lexeme, depth) == false )
                 return false;
 
             lexeme = Lexer::next(string);
@@ -156,6 +153,6 @@ namespace ma::Json
             return false;
         }
 
-        return client.arrClose(depth, count);
+        return client.array_stop(depth, count);
     }
 } // namespace ma::Json
