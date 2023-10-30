@@ -18,17 +18,9 @@ namespace ma
          *
          *
          * @param memory
-         * @param length
+         * @param size
          */
-        StackOrigin(void* memory, usize length);
-
-        /**
-         *
-         *
-         * @return
-         */
-        usize
-        length() const;
+        StackOrigin(void* memory, usize size);
 
         /**
          *
@@ -37,6 +29,14 @@ namespace ma
          */
         usize
         size() const;
+
+        /**
+         *
+         *
+         * @return
+         */
+        usize
+        count() const;
 
         /**
          *
@@ -50,12 +50,12 @@ namespace ma
         /**
          *
          *
-         * @param length
+         * @param size
          *
          * @return
          */
         Page
-        reserve(usize length);
+        reserve(usize size);
 
         /**
          *
@@ -88,7 +88,7 @@ namespace ma
         /**
          *
          */
-        usize m_length;
+        usize m_size;
 
         /**
          *

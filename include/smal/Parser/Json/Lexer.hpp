@@ -25,7 +25,7 @@ namespace ma::Json
          * @return
          */
         static Lexeme
-        forward(String& string);
+        match(String& string);
 
         /**
          *
@@ -33,7 +33,7 @@ namespace ma::Json
          * @return
          */
         static Lexeme
-        string(String& string);
+        string(String& string, char separ);
 
         /**
          *

@@ -23,18 +23,18 @@ namespace ma
          *
          *
          * @param origin
-         * @param length
+         * @param size
          */
-        PagedArray(BaseOrigin* origin, usize length = 0);
+        PagedArray(BaseOrigin* origin, usize size = 0);
 
         /**
          *
          *
          * @param origin
          * @param ptable
-         * @param length
+         * @param size
          */
-        PagedArray(BaseOrigin* origin, PageTable& ptable, usize length = 0);
+        PagedArray(BaseOrigin* origin, PageTable& ptable, usize size = 0);
 
         /**
          *
@@ -47,18 +47,18 @@ namespace ma
          * @return
          */
         usize
-        length() const;
+        size() const;
 
         /**
          *
          *
-         * @param length
+         * @param size
          *
          * @return True.
          * @return False.
          */
         bool
-        resize(usize length);
+        resize(usize size);
 
         /**
          *

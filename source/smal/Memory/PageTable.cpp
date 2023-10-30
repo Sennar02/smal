@@ -5,28 +5,22 @@ namespace ma
 {
     PageTable::PageTable()
         : m_memory {0}
-        , m_length {0}
         , m_size {0}
+        , m_count {0}
         , m_page {0}
     { }
 
     PageTable::PageTable(const Page& page)
-        : PageTable((void*) page.memory(), page.length(), page.length())
+        : PageTable((char*) page.memory(), page.size(), page.size())
     { }
 
-    PageTable::PageTable(void* memory, usize length, usize page)
+    PageTable::PageTable(void* memory, usize size, usize page)
         : m_memory {(Node*) memory}
-        , m_length {length}
-        , m_size {0}
+        , m_size {size}
+        , m_count {0}
         , m_page {page}
     {
-        this->m_length /= sizeof(Node);
-    }
-
-    usize
-    PageTable::length() const
-    {
-        return this->m_length;
+        this->m_size /= sizeof(Node);
     }
 
     usize
@@ -36,21 +30,27 @@ namespace ma
     }
 
     usize
+    PageTable::count() const
+    {
+        return this->m_count;
+    }
+
+    usize
     PageTable::page() const
     {
         return this->m_page;
     }
 
     bool
-    PageTable::isEmpty() const
+    PageTable::is_empty() const
     {
-        return this->m_size == 0;
+        return this->m_count == 0;
     }
 
     bool
-    PageTable::isFull() const
+    PageTable::is_full() const
     {
-        return this->m_size == this->m_length;
+        return this->m_count == this->m_size;
     }
 
     bool
@@ -58,15 +58,15 @@ namespace ma
     {
         char* memory = (char*) page.memory();
 
-        if ( key >= this->m_length )
+        if ( this->m_size <= key ||
+             this->m_page != page.size() )
             return false;
 
-        if ( page.length() == this->m_page &&
-             page.isNull() == false ) {
+        if ( page.is_null() == false ) {
             if ( this->m_memory[key] != 0 )
                 return false;
 
-            this->m_size += 1;
+            this->m_count += 1;
             this->m_memory[key] = memory;
 
             return true;
@@ -80,11 +80,11 @@ namespace ma
     {
         char* memory = 0;
 
-        if ( key < this->m_length ) {
+        if ( key < this->m_size ) {
             if ( this->m_memory[key] != 0 ) {
                 memory = this->m_memory[key];
 
-                this->m_size -= 1;
+                this->m_count -= 1;
                 this->m_memory[key] = 0;
             }
         }

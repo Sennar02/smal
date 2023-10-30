@@ -18,9 +18,9 @@ namespace ma
          *
          * @param origin Origin of memory.
          * @param memory Pointer to page.
-         * @param length Length of the page in bytes.
+         * @param size   Size of the page in bytes.
          */
-        Page(BaseOrigin* origin, void* memory, usize length);
+        Page(BaseOrigin* origin, void* memory, usize size);
 
         /**
          * Verifies if the page points to null.
@@ -29,7 +29,7 @@ namespace ma
          * @return False otherwise.
          */
         bool
-        isNull() const;
+        is_null() const;
 
         /**
          * @return A read-only pointer to the origin of memory.
@@ -50,10 +50,10 @@ namespace ma
         memory() const;
 
         /**
-         * @return Length of the page in bytes.
+         * @return Size of the page in bytes.
          */
         usize
-        length() const;
+        size() const;
 
     private:
         /**
@@ -67,9 +67,9 @@ namespace ma
         char* m_memory;
 
         /**
-         * Length of the page in bytes.
+         * Size of the page in bytes.
          */
-        usize m_length;
+        usize m_size;
     };
 } // namespace ma
 

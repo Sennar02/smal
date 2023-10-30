@@ -42,31 +42,31 @@ namespace ma::Json
     }
 
     bool
-    Client::arrOpen(usize depth)
+    Client::name(const char* string, usize length)
     {
         return true;
     }
 
     bool
-    Client::arrClose(usize depth, usize count)
+    Client::array_start(usize depth)
     {
         return true;
     }
 
     bool
-    Client::objOpen(usize depth)
+    Client::array_stop(usize depth, usize count)
     {
         return true;
     }
 
     bool
-    Client::objKey(const char* string, usize length)
+    Client::object_start(usize depth)
     {
         return true;
     }
 
     bool
-    Client::objClose(usize depth, usize count)
+    Client::object_stop(usize depth, usize count)
     {
         return true;
     }

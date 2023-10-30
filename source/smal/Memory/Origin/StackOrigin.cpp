@@ -5,29 +5,29 @@ namespace ma
 {
     StackOrigin::StackOrigin()
         : m_memory {0}
-        , m_length {0}
+        , m_size {0}
         , m_next {0}
     { }
 
-    StackOrigin::StackOrigin(void* memory, usize length)
+    StackOrigin::StackOrigin(void* memory, usize size)
         : m_memory {(char*) memory}
-        , m_length {length}
+        , m_size {size}
         , m_next {m_memory}
     { }
 
     usize
-    StackOrigin::length() const
+    StackOrigin::size() const
     {
-        return this->m_length;
+        return this->m_size;
     }
 
     usize
-    StackOrigin::size() const
+    StackOrigin::count() const
     {
         usize diff =
             this->m_next - this->m_memory;
 
-        return this->m_length - diff;
+        return this->m_size - diff;
     }
 
     bool
@@ -40,16 +40,16 @@ namespace ma
     }
 
     Page
-    StackOrigin::reserve(usize length)
+    StackOrigin::reserve(usize size)
     {
-        Page part = {this, this->m_next, length};
+        Page part = {this, this->m_next, size};
 
-        if ( length < this->size() ) {
-            this->m_next += length;
+        if ( size < this->count() ) {
+            this->m_next += size;
 
             Memory::set(
                 part.memory(),
-                part.length(),
+                part.size(),
                 0);
 
             return part;
@@ -61,18 +61,19 @@ namespace ma
     bool
     StackOrigin::reclaim(Page& part)
     {
-        char* finish = part.memory() + part.length();
+        char* finish = part.memory() + part.size();
 
-        if ( part.origin() != this && part.origin() != 0 )
+        if ( part.origin() != this &&
+             part.origin() != 0 )
             return false;
 
         if ( this->m_next == finish ) {
-            if ( part.isNull() == false )
-                this->m_next -= part.length();
+            if ( part.is_null() == false )
+                this->m_next -= part.size();
 
             part = {};
         } else
-            return part.isNull();
+            return part.is_null();
 
         return true;
     }
@@ -80,16 +81,17 @@ namespace ma
     bool
     StackOrigin::reclaim(Page&& part)
     {
-        char* finish = part.memory() + part.length();
+        char* finish = part.memory() + part.size();
 
-        if ( part.origin() != this && part.origin() != 0 )
+        if ( part.origin() != this &&
+             part.origin() != 0 )
             return false;
 
         if ( this->m_next == finish ) {
-            if ( part.isNull() == false )
-                this->m_next -= part.length();
+            if ( part.is_null() == false )
+                this->m_next -= part.size();
         } else
-            return part.isNull();
+            return part.is_null();
 
         return true;
     }

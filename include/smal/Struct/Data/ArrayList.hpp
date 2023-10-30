@@ -18,9 +18,9 @@ namespace ma
          *
          *
          * @param origin
-         * @param length
+         * @param size
          */
-        ArrayList(BaseOrigin* origin, usize length = 0);
+        ArrayList(BaseOrigin* origin, usize size = 0);
 
         /**
          *
@@ -40,7 +40,7 @@ namespace ma
          * @return usize
          */
         usize
-        capacity() const;
+        size() const;
 
         /**
          *
@@ -48,7 +48,7 @@ namespace ma
          * @return usize
          */
         usize
-        size() const;
+        count() const;
 
         /**
          *
@@ -57,7 +57,7 @@ namespace ma
          * @return False.
          */
         bool
-        isEmpty() const;
+        is_empty() const;
 
         /**
          *
@@ -66,7 +66,7 @@ namespace ma
          * @return False.
          */
         bool
-        isFull() const;
+        is_full() const;
 
         /**
          *
@@ -106,7 +106,7 @@ namespace ma
          */
         template <class Func>
         isize
-        indexOf(const Type& value, Func comp) const;
+        index_of(const Type& value, Func comp) const;
 
         /**
          *
@@ -116,7 +116,7 @@ namespace ma
          * @return isize
          */
         isize
-        indexOf(const Type& value) const;
+        index_of(const Type& value) const;
 
         /**
          *
@@ -127,7 +127,7 @@ namespace ma
          */
         template <class Func>
         void
-        forEach(Func oper) const;
+        for_each(Func oper) const;
 
         /**
          *
@@ -177,13 +177,13 @@ namespace ma
         /**
          *
          *
-         * @param length
+         * @param size
          *
          * @return True.
          * @return False.
          */
         bool
-        resize(usize length);
+        resize(usize size);
 
         /**
          *
@@ -274,7 +274,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        usize m_count;
     };
 } // namespace ma
 

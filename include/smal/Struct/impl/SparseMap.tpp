@@ -7,15 +7,15 @@ namespace ma
         : m_sparse {}
         , m_packed {}
         , m_array {}
-        , m_size {0}
+        , m_count {0}
     { }
 
     template <class Type, template <class> class Array>
-    SparseMap<Type, Array>::SparseMap(BaseOrigin* origin, usize length)
-        : m_sparse {origin, length}
-        , m_packed {origin, length}
-        , m_array {origin, length}
-        , m_size {0}
+    SparseMap<Type, Array>::SparseMap(BaseOrigin* origin, usize size)
+        : m_sparse {origin, size}
+        , m_packed {origin, size}
+        , m_array {origin, size}
+        , m_count {0}
     { }
 
     template <class Type, template <class> class Array>
@@ -23,35 +23,35 @@ namespace ma
         : m_sparse {}
         , m_packed {}
         , m_array {move(values)}
-        , m_size {0}
+        , m_count {0}
     { }
-
-    template <class Type, template <class> class Array>
-    usize
-    SparseMap<Type, Array>::capacity() const
-    {
-        return this->m_array.length();
-    }
 
     template <class Type, template <class> class Array>
     usize
     SparseMap<Type, Array>::size() const
     {
-        return this->m_size;
+        return this->m_array.size();
+    }
+
+    template <class Type, template <class> class Array>
+    usize
+    SparseMap<Type, Array>::count() const
+    {
+        return this->m_count;
     }
 
     template <class Type, template <class> class Array>
     bool
-    SparseMap<Type, Array>::isEmpty() const
+    SparseMap<Type, Array>::is_empty() const
     {
-        return this->m_size == 0;
+        return this->m_count == 0;
     }
 
     template <class Type, template <class> class Array>
     bool
-    SparseMap<Type, Array>::isFull() const
+    SparseMap<Type, Array>::is_full() const
     {
-        return this->m_size == this->m_array.length();
+        return this->m_count == this->m_array.size();
     }
 
     template <class Type, template <class> class Array>
@@ -61,12 +61,12 @@ namespace ma
     {
         usize index = 0;
 
-        if ( key >= this->m_sparse.length() )
+        if ( key >= this->m_sparse.size() )
             return false;
 
         index = this->m_sparse[key];
 
-        if ( index < this->m_size ) {
+        if ( index < this->m_count ) {
             if ( comp(this->m_packed[index], key) )
                 return true;
         }
@@ -86,16 +86,16 @@ namespace ma
     template <class Type, template <class> class Array>
     template <class Func>
     isize
-    SparseMap<Type, Array>::indexOf(usize key, Func comp) const
+    SparseMap<Type, Array>::index_of(usize key, Func comp) const
     {
         usize index = 0;
 
-        if ( key >= this->m_sparse.length() )
+        if ( key >= this->m_sparse.size() )
             return -1;
 
         index = this->m_sparse[key];
 
-        if ( index < this->m_size )
+        if ( index < this->m_count )
             return index;
 
         return -1;
@@ -103,9 +103,9 @@ namespace ma
 
     template <class Type, template <class> class Array>
     isize
-    SparseMap<Type, Array>::indexOf(usize key) const
+    SparseMap<Type, Array>::index_of(usize key) const
     {
-        return this->indexOf(key, [](auto& a, auto& b) {
+        return this->index_of(key, [](auto& a, auto& b) {
             return a == b;
         });
     }
@@ -113,16 +113,16 @@ namespace ma
     template <class Type, template <class> class Array>
     template <class Func>
     isize
-    SparseMap<Type, Array>::keyOf(usize index, Func comp) const
+    SparseMap<Type, Array>::key_of(usize index, Func comp) const
     {
         usize key = 0;
 
-        if ( index >= this->m_size )
+        if ( index >= this->m_count )
             return -1;
 
         key = this->m_packed[index];
 
-        if ( key < this->m_sparse.length() )
+        if ( key < this->m_sparse.size() )
             return key;
 
         return -1;
@@ -130,9 +130,9 @@ namespace ma
 
     template <class Type, template <class> class Array>
     isize
-    SparseMap<Type, Array>::keyOf(usize index) const
+    SparseMap<Type, Array>::key_of(usize index) const
     {
-        return this->keyOf(index, [](auto& a, auto& b) {
+        return this->key_of(index, [](auto& a, auto& b) {
             return a == b;
         });
     }
@@ -140,20 +140,20 @@ namespace ma
     template <class Type, template <class> class Array>
     template <class Func>
     void
-    SparseMap<Type, Array>::forEach(Func oper) const
+    SparseMap<Type, Array>::for_each(Func oper) const
     {
-        for ( usize i = 0; i < this->m_size; i++ )
-            oper(this->m_array[i], i, this->keyOf(i));
+        for ( usize i = 0; i < this->m_count; i++ )
+            oper(this->m_array[i], i, this->key_of(i));
     }
 
     template <class Type, template <class> class Array>
     SparseMap<Type, Array>
     SparseMap<Type, Array>::clone(BaseOrigin* origin) const
     {
-        SparseMap<Type, Array> other = {origin, this->m_size};
+        SparseMap<Type, Array> other = {origin, this->m_count};
 
-        for ( usize i = 0; i < this->m_size; i++ )
-            other.insert(this->keyOf(i), this->m_array[i]);
+        for ( usize i = 0; i < this->m_count; i++ )
+            other.insert(this->key_of(i), this->m_array[i]);
 
         return other;
     }
@@ -162,14 +162,14 @@ namespace ma
     bool
     SparseMap<Type, Array>::insert(usize key, const Type& value)
     {
-        usize idx = this->m_size;
+        usize idx = this->m_count;
 
         if ( this->contains(key) == true )
             return false;
 
-        if ( this->growTo(key) == true ) {
-            if ( this->isFull() == false ) {
-                this->m_size += 1;
+        if ( this->grow_to(key) == true ) {
+            if ( this->is_full() == false ) {
+                this->m_count += 1;
 
                 this->m_sparse[key] = idx;
                 this->m_packed[idx] = key;
@@ -187,14 +187,14 @@ namespace ma
     bool
     SparseMap<Type, Array>::insert(usize key, Type&& value)
     {
-        usize idx = this->m_size;
+        usize idx = this->m_count;
 
         if ( this->contains(key) == true )
             return false;
 
-        if ( this->growTo(key) == true ) {
-            if ( this->isFull() == false ) {
-                this->m_size += 1;
+        if ( this->grow_to(key) == true ) {
+            if ( this->is_full() == false ) {
+                this->m_count += 1;
 
                 this->m_sparse[key] = idx;
                 this->m_packed[idx] = key;
@@ -212,12 +212,12 @@ namespace ma
     bool
     SparseMap<Type, Array>::remove(usize key)
     {
-        usize pos = this->m_size - 1;
+        usize pos = this->m_count - 1;
         usize idx = 0;
         usize tmp = 0;
 
         if ( this->contains(key) == true ) {
-            this->m_size -= 1;
+            this->m_count -= 1;
 
             idx = this->m_sparse[key];
             tmp = this->m_packed[pos];
@@ -255,9 +255,9 @@ namespace ma
         usize curr = 0;
         usize next = 0;
 
-        Algo::sort(this->m_packed, this->m_size, comp);
+        Algo::sort(this->m_packed, this->m_count, comp);
 
-        for ( usize i = 0; i < this->m_size; i++ ) {
+        for ( usize i = 0; i < this->m_count; i++ ) {
             curr = i;
             next = this->m_sparse[this->m_packed[curr]];
 
@@ -348,23 +348,23 @@ namespace ma
 
     template <class Type, template <class> class Array>
     bool
-    SparseMap<Type, Array>::growTo(usize key)
+    SparseMap<Type, Array>::grow_to(usize key)
     {
-        usize idx = this->m_size;
+        usize idx = this->m_count;
         usize len = 0;
 
-        if ( idx == this->m_array.length() )
+        if ( idx == this->m_array.size() )
             if ( this->m_array.resize(idx * 1.5f + 16) == false )
                 return false;
 
-        while ( this->m_sparse.length() <= key ) {
-            len = this->m_sparse.length() * 1.5f + 16;
+        while ( this->m_sparse.size() <= key ) {
+            len = this->m_sparse.size() * 1.5f + 16;
 
             if ( this->m_sparse.resize(len) == false )
                 return false;
         }
 
-        if ( idx == this->m_packed.length() )
+        if ( idx == this->m_packed.size() )
             if ( this->m_packed.resize(idx * 1.5f + 16) == false )
                 return false;
 

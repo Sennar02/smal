@@ -18,18 +18,10 @@ namespace ma
          *
          *
          * @param memory
-         * @param length
+         * @param size
          * @param page
          */
-        PoolOrigin(void* memory, usize length, usize page = 0);
-
-        /**
-         *
-         *
-         * @return
-         */
-        usize
-        length() const;
+        PoolOrigin(void* memory, usize size, usize page = 0);
 
         /**
          *
@@ -38,6 +30,14 @@ namespace ma
          */
         usize
         size() const;
+
+        /**
+         *
+         *
+         * @return
+         */
+        usize
+        count() const;
 
         /**
          *
@@ -70,12 +70,12 @@ namespace ma
         /**
          *
          *
-         * @param length
+         * @param size
          *
          * @return
          */
         Page
-        reserve(usize length = 0);
+        reserve(usize size = 0);
 
         /**
          *
@@ -113,7 +113,7 @@ namespace ma
         /**
          *
          */
-        usize m_length;
+        usize m_size;
 
         /**
          *
@@ -123,7 +123,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        usize m_count;
 
         /**
          *

@@ -14,12 +14,12 @@ namespace ma
          * @tparam Func
          *
          * @param array
-         * @param size
+         * @param count
          * @param func
          */
         template <class Type, template <class> class Array, class Func>
         static void
-        sort(Array<Type>& array, usize size, Func func);
+        sort(Array<Type>& array, usize count, Func func);
 
     private:
         /**

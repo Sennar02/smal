@@ -81,40 +81,6 @@ namespace ma::Json
         /**
          *
          *
-         * @param depth
-         *
-         * @return True.
-         * @return False.
-         */
-        virtual bool
-        arrOpen(usize depth);
-
-        /**
-         *
-         *
-         * @param depth
-         * @param count
-         *
-         * @return True.
-         * @return False.
-         */
-        virtual bool
-        arrClose(usize depth, usize count);
-
-        /**
-         *
-         *
-         * @param depth
-         *
-         * @return True.
-         * @return False.
-         */
-        virtual bool
-        objOpen(usize depth);
-
-        /**
-         *
-         *
          * @param string
          * @param length
          *
@@ -122,7 +88,18 @@ namespace ma::Json
          * @return False.
          */
         virtual bool
-        objKey(const char* string, usize length);
+        name(const char* string, usize length);
+
+        /**
+         *
+         *
+         * @param depth
+         *
+         * @return True.
+         * @return False.
+         */
+        virtual bool
+        array_start(usize depth);
 
         /**
          *
@@ -134,7 +111,30 @@ namespace ma::Json
          * @return False.
          */
         virtual bool
-        objClose(usize depth, usize count);
+        array_stop(usize depth, usize count);
+
+        /**
+         *
+         *
+         * @param depth
+         *
+         * @return True.
+         * @return False.
+         */
+        virtual bool
+        object_start(usize depth);
+
+        /**
+         *
+         *
+         * @param depth
+         * @param count
+         *
+         * @return True.
+         * @return False.
+         */
+        virtual bool
+        object_stop(usize depth, usize count);
     };
 } // namespace ma::Json
 

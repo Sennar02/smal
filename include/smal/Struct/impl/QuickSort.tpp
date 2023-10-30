@@ -4,9 +4,9 @@ namespace ma
 {
     template <typename Type, template <class> class Array, class Func>
     void
-    QuickSort::sort(Array<Type>& array, usize size, Func comp)
+    QuickSort::sort(Array<Type>& array, usize count, Func comp)
     {
-        QuickSort::sort(array, 0, size - 1, comp);
+        QuickSort::sort(array, 0, count - 1, comp);
     }
 
     template <typename Type, template <class> class Array, class Func>

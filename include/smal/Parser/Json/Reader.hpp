@@ -34,7 +34,7 @@ namespace ma::Json
          * @return False.
          */
         static bool
-        forward(Client& client, String& string, const Lexeme& lexeme, usize depth);
+        match(Client& client, String& string, const Lexeme& lexeme, usize depth);
 
         /**
          *

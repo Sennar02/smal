@@ -5,31 +5,31 @@ namespace ma
 {
     PoolOrigin::PoolOrigin()
         : m_memory {0}
-        , m_length {0}
-        , m_list {0}
         , m_size {0}
+        , m_list {0}
+        , m_count {0}
     { }
 
-    PoolOrigin::PoolOrigin(void* memory, usize length, usize page)
+    PoolOrigin::PoolOrigin(void* memory, usize size, usize page)
         : m_memory {(char*) memory}
-        , m_length {length}
+        , m_size {size}
         , m_list {0}
-        , m_size {0}
+        , m_count {0}
         , m_page {0}
     {
-        this->prepare(Math::max(page, 8lu));
-    }
-
-    usize
-    PoolOrigin::length() const
-    {
-        return this->m_length;
+        this->prepare(page);
     }
 
     usize
     PoolOrigin::size() const
     {
         return this->m_size;
+    }
+
+    usize
+    PoolOrigin::count() const
+    {
+        return this->m_count;
     }
 
     usize
@@ -46,12 +46,12 @@ namespace ma
         char* addr = 0;
 
         if ( this->m_memory != 0 ) {
-            this->m_size = Math::div(this->m_length, this->m_page);
+            this->m_count = Math::div(this->m_size, this->m_page);
 
-            if ( this->m_size != 0 ) {
+            if ( this->m_count != 0 ) {
                 this->m_list = node;
 
-                for ( usize i = 0; i < this->m_size; i++ ) {
+                for ( usize i = 0; i < this->m_count; i++ ) {
                     addr = (char*) node + this->m_page;
                     next = (Node*) addr;
 
@@ -69,27 +69,31 @@ namespace ma
     bool
     PoolOrigin::prepare(usize page)
     {
-        if ( page >= sizeof(void*) )
+        usize min = sizeof(Node);
+
+        if ( page >= min )
             this->m_page = page;
+        else
+            this->m_page = min;
 
         return this->prepare();
     }
 
     Page
-    PoolOrigin::reserve(usize length)
+    PoolOrigin::reserve(usize size)
     {
         Page page = {this, this->m_list, this->m_page};
 
-        if ( length > this->m_page )
+        if ( size > this->m_page )
             return {};
 
-        if ( this->m_size != 0 ) {
-            this->m_size -= 1;
+        if ( this->m_count != 0 ) {
+            this->m_count -= 1;
             this->m_list = this->m_list->next;
 
             Memory::set(
                 page.memory(),
-                page.length(),
+                page.size(),
                 0);
 
             return page;
@@ -103,16 +107,17 @@ namespace ma
     {
         Node* node = (Node*) page.memory();
 
-        if ( page.origin() != this && page.origin() != 0 )
+        if ( page.origin() != this &&
+             page.origin() != 0 )
             return false;
 
-        if ( page.isNull() == false ) {
+        if ( page.is_null() == false ) {
             node->next = this->m_list;
 
             page = {};
 
             this->m_list = node;
-            this->m_size += 1;
+            this->m_count += 1;
         }
 
         return true;
@@ -123,14 +128,15 @@ namespace ma
     {
         Node* node = (Node*) page.memory();
 
-        if ( page.origin() != this && page.origin() != 0 )
+        if ( page.origin() != this &&
+             page.origin() != 0 )
             return false;
 
-        if ( page.isNull() == false ) {
+        if ( page.is_null() == false ) {
             node->next = this->m_list;
 
             this->m_list = node;
-            this->m_size += 1;
+            this->m_count += 1;
         }
 
         return true;
