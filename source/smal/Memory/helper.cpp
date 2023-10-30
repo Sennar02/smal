@@ -3,11 +3,11 @@
 namespace ma::Memory
 {
     void
-    set(void* memory, usize length, char value)
+    set(void* memory, usize size, char value)
     {
         char* dst = (char*) memory;
 
-        for ( usize i = 0; i < length; i++ )
+        for ( usize i = 0; i < size; i++ )
             dst[i] = value;
     }
 } // namespace ma::Memory

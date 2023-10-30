@@ -5,47 +5,47 @@ namespace ma
     template <class Type, template <class> class Array>
     ArrayList<Type, Array>::ArrayList()
         : m_array {}
-        , m_size {0}
+        , m_count {0}
     { }
 
     template <class Type, template <class> class Array>
-    ArrayList<Type, Array>::ArrayList(BaseOrigin* origin, usize length)
-        : m_array {origin, length}
-        , m_size {0}
+    ArrayList<Type, Array>::ArrayList(BaseOrigin* origin, usize size)
+        : m_array {origin, size}
+        , m_count {0}
     { }
 
     template <class Type, template <class> class Array>
     ArrayList<Type, Array>::ArrayList(const Array<Type>& values)
         : m_array {move(values)}
-        , m_size {0}
+        , m_count {0}
     { }
 
     template <class Type, template <class> class Array>
     usize
-    ArrayList<Type, Array>::capacity() const
+    ArrayList<Type, Array>::size() const
     {
-        return this->m_array.length();
+        return this->m_array.size();
     }
 
     template <class Type, template <class> class Array>
     usize
     ArrayList<Type, Array>::count() const
     {
-        return this->m_size;
+        return this->m_count;
     }
 
     template <class Type, template <class> class Array>
     bool
     ArrayList<Type, Array>::is_empty() const
     {
-        return this->m_size == 0;
+        return this->m_count == 0;
     }
 
     template <class Type, template <class> class Array>
     bool
     ArrayList<Type, Array>::is_full() const
     {
-        return this->m_size == this->m_array.length();
+        return this->m_count == this->m_array.size();
     }
 
     template <class Type, template <class> class Array>
@@ -53,7 +53,7 @@ namespace ma
     bool
     ArrayList<Type, Array>::contains(const Type& value, Func comp) const
     {
-        for ( usize i = 0; i < this->m_size; i++ ) {
+        for ( usize i = 0; i < this->m_count; i++ ) {
             if ( comp(this->m_array[i], value) == true )
                 return true;
         }
@@ -73,9 +73,9 @@ namespace ma
     template <class Type, template <class> class Array>
     template <class Func>
     isize
-    ArrayList<Type, Array>::indexOf(const Type& value, Func comp) const
+    ArrayList<Type, Array>::index_of(const Type& value, Func comp) const
     {
-        for ( usize i = 0; i < this->m_size; i++ ) {
+        for ( usize i = 0; i < this->m_count; i++ ) {
             if ( comp(this->m_array[i], value) == true )
                 return i;
         }
@@ -85,9 +85,9 @@ namespace ma
 
     template <class Type, template <class> class Array>
     isize
-    ArrayList<Type, Array>::indexOf(const Type& value) const
+    ArrayList<Type, Array>::index_of(const Type& value) const
     {
-        return this->indexOf(value, [](auto& a, auto& b) {
+        return this->index_of(value, [](auto& a, auto& b) {
             return a == b;
         });
     }
@@ -95,9 +95,9 @@ namespace ma
     template <class Type, template <class> class Array>
     template <class Func>
     void
-    ArrayList<Type, Array>::forEach(Func oper) const
+    ArrayList<Type, Array>::for_each(Func oper) const
     {
-        for ( usize i = 0; i < this->m_size; i++ )
+        for ( usize i = 0; i < this->m_count; i++ )
             oper(this->m_array[i], i);
     }
 
@@ -105,9 +105,9 @@ namespace ma
     ArrayList<Type, Array>
     ArrayList<Type, Array>::clone(BaseOrigin* origin) const
     {
-        ArrayList<Type, Array> other = {origin, this->m_size};
+        ArrayList<Type, Array> other = {origin, this->m_count};
 
-        for ( usize i = 0; i < this->m_size; i++ )
+        for ( usize i = 0; i < this->m_count; i++ )
             other.insert(this->m_array[i]);
 
         return other;
@@ -120,14 +120,14 @@ namespace ma
         usize place = 0;
 
         if ( this->is_full() == true )
-            this->resize(this->m_size * 1.5f + 16);
+            this->resize(this->m_count * 1.5f + 16);
 
         if ( this->is_full() == false ) {
-            place = this->limit(index, this->m_size + 1);
+            place = this->limit(index, this->m_count + 1);
 
-            this->m_size += 1;
+            this->m_count += 1;
 
-            for ( usize i = this->m_size - 1; i > place; i-- )
+            for ( usize i = this->m_count - 1; i > place; i-- )
                 this->m_array[i] = move(this->m_array[i - 1]);
 
             create(this->m_array[place], value);
@@ -145,14 +145,14 @@ namespace ma
         usize place = 0;
 
         if ( this->is_full() == true )
-            this->resize(this->m_size * 1.5f + 16);
+            this->resize(this->m_count * 1.5f + 16);
 
         if ( this->is_full() == false ) {
-            place = this->limit(index, this->m_size + 1);
+            place = this->limit(index, this->m_count + 1);
 
-            this->m_size += 1;
+            this->m_count += 1;
 
-            for ( usize i = this->m_size - 1; i > place; i-- )
+            for ( usize i = this->m_count - 1; i > place; i-- )
                 this->m_array[i] = move(this->m_array[i - 1]);
 
             create(this->m_array[place], move(value));
@@ -170,11 +170,11 @@ namespace ma
         usize place = 0;
 
         if ( this->is_empty() == false ) {
-            place = this->limit(index, this->m_size);
+            place = this->limit(index, this->m_count);
 
-            this->m_size -= 1;
+            this->m_count -= 1;
 
-            for ( usize i = place; i < this->m_size; i++ )
+            for ( usize i = place; i < this->m_count; i++ )
                 this->m_array[i] = move(this->m_array[i + 1]);
 
             return true;
@@ -185,9 +185,9 @@ namespace ma
 
     template <class Type, template <class> class Array>
     bool
-    ArrayList<Type, Array>::resize(usize length)
+    ArrayList<Type, Array>::resize(usize size)
     {
-        return this->m_array.resize(length);
+        return this->m_array.resize(size);
     }
 
     template <class Type, template <class> class Array>
@@ -195,7 +195,7 @@ namespace ma
     void
     ArrayList<Type, Array>::sort(Comp comp)
     {
-        Algo::sort(this->m_array, this->m_size, comp);
+        Algo::sort(this->m_array, this->m_count, comp);
     }
 
     template <class Type, template <class> class Array>
@@ -216,14 +216,14 @@ namespace ma
     Type&
     ArrayList<Type, Array>::find(isize index)
     {
-        return this->m_array[this->limit(index, this->m_size)];
+        return this->m_array[this->limit(index, this->m_count)];
     }
 
     template <class Type, template <class> class Array>
     const Type&
     ArrayList<Type, Array>::find(isize index) const
     {
-        return this->m_array[this->limit(index, this->m_size)];
+        return this->m_array[this->limit(index, this->m_count)];
     }
 
     template <class Type, template <class> class Array>

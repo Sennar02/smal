@@ -18,9 +18,9 @@ namespace ma
          *
          *
          * @param origin
-         * @param length
+         * @param size
          */
-        SparseMap(BaseOrigin* origin, usize length = 0);
+        SparseMap(BaseOrigin* origin, usize size = 0);
 
         /**
          *
@@ -40,7 +40,7 @@ namespace ma
          * @return usize
          */
         usize
-        capacity() const;
+        size() const;
 
         /**
          *
@@ -106,7 +106,7 @@ namespace ma
          */
         template <class Func>
         isize
-        indexOf(usize key, Func comp) const;
+        index_of(usize key, Func comp) const;
 
         /**
          *
@@ -116,7 +116,7 @@ namespace ma
          * @return isize
          */
         isize
-        indexOf(usize key) const;
+        index_of(usize key) const;
 
         /**
          *
@@ -130,7 +130,7 @@ namespace ma
          */
         template <class Func>
         isize
-        keyOf(usize index, Func comp) const;
+        key_of(usize index, Func comp) const;
 
         /**
          *
@@ -140,7 +140,7 @@ namespace ma
          * @return isize
          */
         isize
-        keyOf(usize index) const;
+        key_of(usize index) const;
 
         /**
          *
@@ -151,7 +151,7 @@ namespace ma
          */
         template <class Func>
         void
-        forEach(Func oper) const;
+        for_each(Func oper) const;
 
         /**
          *
@@ -319,7 +319,7 @@ namespace ma
          * @return False.
          */
         bool
-        growTo(usize key);
+        grow_to(usize key);
 
     private:
         /**
@@ -340,7 +340,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        usize m_count;
     };
 } // namespace ma
 

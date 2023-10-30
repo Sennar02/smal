@@ -106,13 +106,13 @@ namespace ma
     Type&
     PagedArray<Type>::operator[](usize index)
     {
-        return (Type&) *this->lookup(index * SIZE);
+        return *(Type*) this->lookup(index * SIZE);
     }
 
     template <class Type>
     const Type&
     PagedArray<Type>::operator[](usize index) const
     {
-        return (Type&) *this->lookup(index * SIZE);
+        return *(Type*) this->lookup(index * SIZE);
     }
 } // namespace ma

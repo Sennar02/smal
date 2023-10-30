@@ -17,7 +17,7 @@ namespace ma
         , m_count {0}
         , m_page {0}
     {
-        this->prepare(Math::max(page, 8lu));
+        this->prepare(page);
     }
 
     usize
@@ -69,8 +69,12 @@ namespace ma
     bool
     PoolOrigin::prepare(usize page)
     {
-        if ( page >= sizeof(void*) )
+        usize min = sizeof(Node);
+
+        if ( page >= min )
             this->m_page = page;
+        else
+            this->m_page = min;
 
         return this->prepare();
     }
@@ -103,7 +107,8 @@ namespace ma
     {
         Node* node = (Node*) page.memory();
 
-        if ( page.origin() != this && page.origin() != 0 )
+        if ( page.origin() != this &&
+             page.origin() != 0 )
             return false;
 
         if ( page.is_null() == false ) {
@@ -123,7 +128,8 @@ namespace ma
     {
         Node* node = (Node*) page.memory();
 
-        if ( page.origin() != this && page.origin() != 0 )
+        if ( page.origin() != this &&
+             page.origin() != 0 )
             return false;
 
         if ( page.is_null() == false ) {

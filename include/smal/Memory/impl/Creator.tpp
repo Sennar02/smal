@@ -9,10 +9,10 @@ namespace ma
         static usize size = sizeof(Type);
 
         Page  part = this->m_origin->reserve(size);
-        Type* item = (Type*) part.memory();
+        auto* item = part.memory();
 
         if ( part.is_null() == false )
-            new (item) Type {};
+            new ((Type*) item) Type {};
 
         return item;
     }
@@ -24,10 +24,10 @@ namespace ma
         static usize size = sizeof(Type);
 
         Page  part = this->m_origin->reserve(size);
-        Type* item = (Type*) part.memory();
+        auto* item = part.memory();
 
         if ( part.is_null() == false )
-            new (item) Type {forw<Args>(args)...};
+            new ((Type*) item) Type {forw<Args>(args)...};
 
         return item;
     }

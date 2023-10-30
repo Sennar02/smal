@@ -11,7 +11,7 @@ namespace ma
     { }
 
     PageTable::PageTable(const Page& page)
-        : PageTable((void*) page.memory(), page.size(), page.size())
+        : PageTable((char*) page.memory(), page.size(), page.size())
     { }
 
     PageTable::PageTable(void* memory, usize size, usize page)
@@ -58,11 +58,11 @@ namespace ma
     {
         char* memory = (char*) page.memory();
 
-        if ( key >= this->m_size )
+        if ( this->m_size <= key ||
+             this->m_page != page.size() )
             return false;
 
-        if ( page.size() == this->m_page &&
-             page.is_null() == false ) {
+        if ( page.is_null() == false ) {
             if ( this->m_memory[key] != 0 )
                 return false;
 

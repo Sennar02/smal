@@ -63,7 +63,8 @@ namespace ma
     {
         char* finish = part.memory() + part.size();
 
-        if ( part.origin() != this && part.origin() != 0 )
+        if ( part.origin() != this &&
+             part.origin() != 0 )
             return false;
 
         if ( this->m_next == finish ) {
@@ -82,7 +83,8 @@ namespace ma
     {
         char* finish = part.memory() + part.size();
 
-        if ( part.origin() != this && part.origin() != 0 )
+        if ( part.origin() != this &&
+             part.origin() != 0 )
             return false;
 
         if ( this->m_next == finish ) {
