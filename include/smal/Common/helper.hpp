@@ -22,10 +22,73 @@ namespace ma
         {
             using Result = Type;
         };
+
+        template <class Type>
+        struct RemovePtr
+        {
+            using Result = Type;
+        };
+
+        template <class Type>
+        struct RemovePtr<Type*>
+        {
+            using Result = Type;
+        };
+
+        template <class Ret, class... Args>
+        auto
+        funcType(Ret (*)(Args...)) -> Ret (*)(Args...)
+        { }
+
+        template <class Ret, class... Args, class... Rest>
+        auto
+        funcType(Ret (*)(Args...), Rest...) -> Ret (*)(Args...)
+        { }
+
+        template <class Type, class Ret, class... Args>
+        auto
+        funcType(Ret (Type::*)(Args...)) -> Ret (*)(Args...)
+        { }
+
+        template <class Type, class Ret, class... Args, class... Rest>
+        auto
+        funcType(Ret (Type::*)(Args...), Rest...) -> Ret (*)(Args...)
+        { }
+
+        template <class Type, class Ret, class... Args>
+        auto
+        funcType(Ret (Type::*)(Args...) const) -> Ret (*)(Args...)
+        { }
+
+        template <class Type, class Ret, class... Args, class... Rest>
+        auto
+        funcType(Ret (Type::*)(Args...) const, Rest...) -> Ret (*)(Args...)
+        { }
+
+        template <class Type, class Ret, class... Rest>
+        auto
+        funcType(Ret Type::*, Rest...) -> Ret (*)()
+        { }
+
+        template <class... Func>
+        struct FuncType
+        {
+        private:
+            using Decl = decltype(funcType(std::declval<Func>()...));
+
+        public:
+            using Result = typename RemovePtr<Decl>::Result;
+        };
     } // namespace impl
 
     template <class Type>
     using RemoveRef = typename impl::RemoveRef<Type>::Result;
+
+    template <class Type>
+    using RemovePtr = typename impl::RemovePtr<Type>::Result;
+
+    template <class... Func>
+    using FuncType = typename impl::FuncType<Func...>::Result;
 
     namespace Math
     {

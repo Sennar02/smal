@@ -5,4 +5,6 @@
 #include <smal/Common/define.hpp>
 #include <smal/Common/helper.hpp>
 
+#include <smal/Common/Func.hpp>
+
 #endif // SMAL_COMMON_IMPORT_HPP

@@ -20,6 +20,9 @@ namespace ma
 
     using usize = size_t;
     using isize = ssize_t;
+
+    template <class>
+    class Func;
 } // namespace ma
 
 #endif // SMAL_COMMON_DEFINE_HPP

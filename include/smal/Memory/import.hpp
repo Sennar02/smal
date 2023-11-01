@@ -11,8 +11,6 @@
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 #include <smal/Memory/Origin/StackOrigin.hpp>
 
-#include <smal/Memory/Creator.hpp>
-
 #include <smal/Memory/Array/FixedArray.hpp>
 #include <smal/Memory/Array/PagedArray.hpp>
 
