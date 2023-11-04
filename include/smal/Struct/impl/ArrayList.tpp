@@ -65,9 +65,11 @@ namespace ma
     bool
     ArrayList<Type, Array>::contains(const Type& value) const
     {
-        return this->contains(value, [](auto& a, auto& b) {
+        auto comp = [](auto& a, auto& b) {
             return a == b;
-        });
+        };
+
+        return this->contains(value, comp);
     }
 
     template <class Type, template <class> class Array>
@@ -87,9 +89,11 @@ namespace ma
     isize
     ArrayList<Type, Array>::index_of(const Type& value) const
     {
-        return this->index_of(value, [](auto& a, auto& b) {
+        auto comp = [](auto& a, auto& b) {
             return a == b;
-        });
+        };
+
+        return this->index_of(value, comp);
     }
 
     template <class Type, template <class> class Array>

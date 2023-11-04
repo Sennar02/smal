@@ -1,63 +1,37 @@
 #include <smal/Struct/import.hpp>
 
-static const ma::usize buflen = 8192;
-static const ma::usize paglen = 1024;
-
-static char buffer[buflen] = {0};
-
-namespace ma
+namespace app
 {
-    template <class Type>
-    using Each = ma::Func<void(const Type&, usize)>;
-} // namespace ma
+    using namespace ma;
+
+    static const usize size = 8192;
+    static const usize page = 512;
+
+    static char memory[size] = {0};
+} // namespace app
 
 int
 main(int argc, const char* argv[])
 {
-    ma::PoolOrigin                   pool = {buffer, buflen, paglen};
-    ma::ArrayList<ma::u32>           list = {&pool, 10};
-    ma::ArrayList<ma::Each<ma::u32>> each = {&pool, 10};
+    using namespace app;
 
-    auto comp = [](const ma::u32& value, const ma::u32& other) {
-        return value < other;
-    };
+    PoolOrigin        pool = {memory, size, page};
+    HashMap<u32, u32> nums = {&pool, 32};
 
-    auto mul = ma::func([](const ma::u32& v, ma::usize i) {
-        printf("%lu\n", i * v);
+    for ( ma::usize i = 0; i < nums.size(); i++ )
+        nums.insert(i, rand() % 1000);
+
+    if ( nums.contains(0) == false )
+        printf("Map: Doesn't contain 0\n");
+    else
+        printf("Map: Does contain 0\n");
+
+    nums.for_each([&nums](auto& iden, auto& value) {
+        printf("Map: %2u | %3u\n", iden, value);
+
+        if ( iden + 1 == nums.size() )
+            printf("Map: Finish\n");
     });
-
-    auto sum = ma::func([](const ma::u32& v, ma::usize i) {
-        printf("%lu\n", i + v);
-    });
-
-    for ( int i = 0; i < 10; i++ )
-        list.insert(rand() % 100);
-
-    each.insert(mul);
-    each.insert(sum);
-
-    list.for_each([&list](auto& v, auto i) {
-        printf("%lu | %u\n", i, v);
-
-        if ( list.count() == i + 1 )
-            printf("\n");
-    });
-
-    list.sort<ma::QuickSort>(comp);
-
-    list.for_each([&list](auto& v, auto i) {
-        printf("%lu | %u\n", i, v);
-
-        if ( list.count() == i + 1 )
-            printf("\n");
-    });
-
-    for ( ma::usize i = 0; i < each.count(); i++ ) {
-        list.for_each(each[i]);
-
-        if ( i + 1 != each.count() )
-            printf("\n");
-    }
 
     return 0;
 }

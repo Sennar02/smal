@@ -1,7 +1,7 @@
 project('smal', 'cpp',
     default_options: ['cpp_std=c++17'],
     version:         '1.0.0',
-    license:         'MIT'
+    license:         'MIT',
 )
 
 smal_header = include_directories('include')
@@ -12,9 +12,9 @@ smal_memory = static_library('smal-memory',
         'source/smal/Memory/Page.cpp',
         'source/smal/Memory/PageTable.cpp',
         'source/smal/Memory/Origin/PoolOrigin.cpp',
-        'source/smal/Memory/Origin/StackOrigin.cpp'
+        'source/smal/Memory/Origin/StackOrigin.cpp',
     ],
-    include_directories: [smal_header]
+    include_directories: [smal_header],
 )
 
 smal_parser = static_library('smal-parser',
@@ -25,18 +25,25 @@ smal_parser = static_library('smal-parser',
         'source/smal/Parser/Json/Reader.cpp',
         'source/smal/Parser/Json/Client.cpp',
     ],
-    include_directories: [smal_header]
+    include_directories: [smal_header],
+)
+
+smal_struct = static_library('smal-struct',
+    sources: [
+        'source/smal/Struct/Algo/Hashing.cpp',
+    ],
+    include_directories: [smal_header],
 )
 
 smal_depend = []
-smal_define = [smal_memory, smal_parser]
+smal_define = [smal_memory, smal_parser, smal_struct]
 
 executable('smal',
     sources: [
         'source/smal.cpp',
     ],
     include_directories: [smal_header],
-    link_with:           [smal_memory, smal_parser],
+    link_with:           [smal_define],
     link_args:           '-lm',
-    dependencies:        [smal_depend]
+    dependencies:        [smal_depend],
 )

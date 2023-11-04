@@ -8,8 +8,8 @@ namespace ma
     template <class Type, template <class> class Array>
     class ArrayList;
 
-    template <class Type, template <class> class Array>
-    class SparseMap;
+    template <class Iden, class Type, template <class> class Array>
+    class HashMap;
 } // namespace ma
 
 #endif // SMAL_STRUCT_DEFINE_HPP
