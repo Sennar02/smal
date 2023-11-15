@@ -1,5 +1,5 @@
-#ifndef SMAL_ENGINE_SCREEN_HPP
-#define SMAL_ENGINE_SCREEN_HPP
+#ifndef SMAL_ENGINE_SCREEN_SCREEN_HPP
+#define SMAL_ENGINE_SCREEN_SCREEN_HPP
 
 #include <smal/Engine/define.hpp>
 
@@ -9,6 +9,8 @@ namespace ma
     {
     public:
         Screen();
+
+        virtual ~Screen() = default;
 
         u16
         family() const;
@@ -55,4 +57,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_ENGINE_SCREEN_HPP
+#endif // SMAL_ENGINE_SCREEN_SCREEN_HPP

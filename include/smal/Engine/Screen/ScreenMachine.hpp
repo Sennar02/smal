@@ -1,13 +1,11 @@
-#ifndef SMAL_ENGINE_SCREEN_MACHINE_HPP
-#define SMAL_ENGINE_SCREEN_MACHINE_HPP
+#ifndef SMAL_ENGINE_SCREEN_SCREEN_MACHINE_HPP
+#define SMAL_ENGINE_SCREEN_SCREEN_MACHINE_HPP
 
-#include <smal/Engine/ScreenLocator.hpp>
-#include <smal/Engine/ScreenChanges.hpp>
+#include <smal/Engine/Screen/Screen.hpp>
 
 namespace ma
 {
     class ScreenMachine
-        : public HashMap<u32, Screen*>
     {
     public:
         ScreenMachine(BaseOrigin* origin, usize size = 0);
@@ -40,11 +38,11 @@ namespace ma
         active() const;
 
     private:
-        ScreenLocator m_locator;
-        ScreenChanges m_changes;
+        HashMap<u16, Screen*> m_holder;
+        HashMap<u32, u16>     m_change;
 
         Screen* m_active;
     };
 } // namespace ma
 
-#endif // SMAL_ENGINE_SCREEN_MACHINE_HPP
+#endif // SMAL_ENGINE_SCREEN_SCREEN_MACHINE_HPP

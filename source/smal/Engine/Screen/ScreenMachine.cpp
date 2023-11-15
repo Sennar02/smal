@@ -1,4 +1,4 @@
-#include <smal/Engine/ScreenMachine.hpp>
+#include <smal/Engine/Screen/ScreenMachine.hpp>
 
 namespace ma
 {
@@ -24,15 +24,15 @@ namespace ma
     } // namespace impl
 
     ScreenMachine::ScreenMachine(BaseOrigin* origin, usize size)
-        : m_locator {origin, size}
-        , m_changes {origin, size}
+        : m_holder {origin, size}
+        , m_change {origin, size}
         , m_active {0}
     { }
 
     bool
     ScreenMachine::insert(u16 family, Screen* screen)
     {
-        if ( this->m_locator.insert(family, screen) ) {
+        if ( this->m_holder.insert(family, screen) ) {
             if ( screen->attach() )
                 screen->set_family(family);
         }
@@ -47,18 +47,18 @@ namespace ma
                           .number;
 
         if ( coming != (u16) -1 )
-            return this->m_changes.insert(change, coming);
+            return this->m_change.insert(change, coming);
 
-        return this->m_changes.insert(change, status);
+        return this->m_change.insert(change, status);
     }
 
     bool
     ScreenMachine::remove(u16 family)
     {
-        if ( this->m_locator.contains(family) ) {
-            this->m_locator[family]->detach();
+        if ( this->m_holder.contains(family) ) {
+            this->m_holder[family]->detach();
 
-            return this->m_locator
+            return this->m_holder
                 .remove(family);
         }
 
@@ -71,7 +71,7 @@ namespace ma
         auto change = (impl::ScreenIden {active, status})
                           .number;
 
-        return this->m_changes.remove(change);
+        return this->m_change.remove(change);
     }
 
     bool
@@ -80,8 +80,8 @@ namespace ma
         if ( this->m_active != 0 )
             this->m_active->leave();
 
-        if ( this->m_locator.contains(family) ) {
-            this->m_active = this->m_locator[family];
+        if ( this->m_holder.contains(family) ) {
+            this->m_active = this->m_holder[family];
             this->m_active->enter();
         } else
             this->m_active = 0;
@@ -95,8 +95,8 @@ namespace ma
         auto change = (impl::ScreenIden {active, status})
                           .number;
 
-        if ( this->m_changes.contains(change) )
-            return this->launch(this->m_changes[change]);
+        if ( this->m_change.contains(change) )
+            return this->launch(this->m_change[change]);
 
         return false;
     }
@@ -108,7 +108,7 @@ namespace ma
             s->detach();
         };
 
-        this->m_locator.for_each(func);
+        this->m_holder.for_each(func);
 
         return true;
     }

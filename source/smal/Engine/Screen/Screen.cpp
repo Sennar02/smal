@@ -1,4 +1,4 @@
-#include <smal/Engine/Screen.hpp>
+#include <smal/Engine/Screen/Screen.hpp>
 
 namespace ma
 {

@@ -7,9 +7,6 @@ namespace ma
 {
     class Engine;
     class Screen;
-
-    class ScreenLocator;
-    class ScreenChanges;
     class ScreenMachine;
 } // namespace ma
 

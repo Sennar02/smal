@@ -39,10 +39,8 @@ smal_struct = static_library('smal-struct',
 smal_engine = static_library('smal-engine',
     sources: [
         'source/smal/Engine/Engine.cpp',
-        'source/smal/Engine/Screen.cpp',
-        'source/smal/Engine/ScreenLocator.cpp',
-        'source/smal/Engine/ScreenChanges.cpp',
-        'source/smal/Engine/ScreenMachine.cpp',
+        'source/smal/Engine/Screen/Screen.cpp',
+        'source/smal/Engine/Screen/ScreenMachine.cpp',
     ],
     include_directories: [smal_header],
 )

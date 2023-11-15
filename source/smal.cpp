@@ -2,14 +2,14 @@
 
 using namespace ma;
 
-enum Names
+enum Families
 {
     Title = 1,
     Level,
     Saver,
 };
 
-enum Exits
+enum Statuses
 {
     Default = 1,
     Cleanup,
@@ -22,14 +22,14 @@ public:
     void
     enter()
     {
-        this->set_status(Names::Level);
+        this->set_status(Statuses::Default);
     }
 
     u16
     handle(const sf::Event& event)
     {
         if ( event.type == sf::Event::Closed )
-            return Names::Saver;
+            return Statuses::Cleanup;
 
         if ( event.type == sf::Event::KeyReleased ) {
             if ( event.key.code == sf::Keyboard::Escape )
@@ -59,7 +59,7 @@ public:
     void
     enter()
     {
-        this->set_status(Names::Saver);
+        this->set_status(Families::Saver);
     }
 
     u16
@@ -126,20 +126,16 @@ main(int argc, const char* argv[])
         PoolOrigin pool = {memory, size * page, page};
         Engine     game = {&pool, 32};
 
-        TitleScreen title;
-        LevelScreen level;
-        SaverScreen saver;
+        game.screens().insert(Families::Title, new TitleScreen);
+        game.screens().insert(Families::Level, new LevelScreen);
+        game.screens().insert(Families::Saver, new SaverScreen);
 
-        game.screens().insert(Names::Title, &title);
-        game.screens().insert(Names::Level, &level);
-        game.screens().insert(Names::Saver, &saver);
-
-        game.screens().insert(Names::Title, Names::Level);
-        game.screens().insert(Names::Title, Names::Saver);
-        game.screens().insert(Names::Level, Names::Saver);
+        game.screens().insert(Families::Title, Statuses::Default, Families::Level);
+        game.screens().insert(Families::Title, Statuses::Cleanup, Families::Saver);
+        game.screens().insert(Families::Level, Families::Saver);
 
         if ( game.is_active() )
-            game.loop(Names::Title);
+            game.loop(Families::Title);
     }
 
     return 0;

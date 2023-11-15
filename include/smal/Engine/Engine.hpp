@@ -1,7 +1,7 @@
 #ifndef SMAL_ENGINE_ENGINE_HPP
 #define SMAL_ENGINE_ENGINE_HPP
 
-#include <smal/Engine/ScreenMachine.hpp>
+#include <smal/Engine/Screen/ScreenMachine.hpp>
 
 namespace ma
 {
@@ -35,17 +35,11 @@ namespace ma
         void
         render();
 
-    public:
-        // // Move after resource management
-        // sf::VideoMode win_vmode = {g_window_width, g_window_height};
-        // const char*   win_title = "smal";
-        // ma::usize     win_style = sf::Style::Default;
-
     private:
-        sf::RenderWindow  m_window;
-        sf::Clock         m_clock;
-        ScreenMachine m_screens;
-        bool          m_active;
+        sf::RenderWindow m_window;
+        sf::Clock        m_clock;
+        ScreenMachine    m_screens;
+        bool             m_active;
     };
 } // namespace ma
 
