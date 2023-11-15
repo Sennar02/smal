@@ -172,6 +172,60 @@ namespace ma
     template <class Iden, class Type, template <class> class Array>
     template <class Func>
     bool
+    HashMap<Iden, Type, Array>::insert(const Iden& iden, Type&& value, Func comp)
+    {
+        Entry entry = {
+            move(value), {iden, 0}
+        };
+
+        Node* node  = 0;
+        Type* item  = 0;
+        usize start = this->index(iden);
+        usize index = start;
+
+        if ( this->is_full() == true ) return false;
+
+        if ( this->contains(iden, comp) == false ) {
+            do {
+                node  = &this->m_nodes[index];
+                item  = &this->m_array[index];
+                index = this->next(index);
+
+                if ( node->dist == s_empty ) {
+                    this->m_count += 1;
+
+                    create(*item, move(entry.value));
+                    create(*node, entry.node);
+
+                    return true;
+                }
+
+                if ( node->dist < entry.node.dist ) {
+                    swap(*node, entry.node);
+                    swap(*item, entry.value);
+                }
+
+                entry.node.dist += 1;
+            } while ( start != index );
+        }
+
+        return false;
+    }
+
+    template <class Iden, class Type, template <class> class Array>
+    bool
+    HashMap<Iden, Type, Array>::insert(const Iden& iden, Type&& value)
+    {
+        auto comp = [](auto& value, auto& other) {
+            return value == other;
+        };
+
+        return this->insert(iden, move(value), comp);
+    }
+
+    template <class Iden, class Type, template <class> class Array>
+    template <class Func>
+    bool
     HashMap<Iden, Type, Array>::remove(const Iden& iden, Func comp)
     {
         Node* node  = 0;

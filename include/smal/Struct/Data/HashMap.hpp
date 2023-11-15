@@ -50,6 +50,13 @@ namespace ma
 
         template <class Func>
         bool
+        insert(const Iden& iden, Type&& value, Func comp);
+
+        bool
+        insert(const Iden& iden, Type&& value);
+
+        template <class Func>
+        bool
         remove(const Iden& iden, Func comp);
 
         bool

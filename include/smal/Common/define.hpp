@@ -15,8 +15,8 @@ namespace ma
     using i32 = int32_t;
     using i64 = int64_t;
 
-    using f32 = float;
-    using f64 = double;
+    using f32 = float_t;
+    using f64 = double_t;
 
     using usize = size_t;
     using isize = ssize_t;
