@@ -8,18 +8,19 @@ namespace ma
     class Screen
     {
     public:
-        Screen();
+        Screen(const HashMap<String, u16>& names,
+            const HashMap<String, u16>&    exits);
 
         virtual ~Screen() = default;
 
         u16
-        family() const;
+        code() const;
 
         u16
-        status() const;
+        exit() const;
 
         void
-        set_status(u16 status);
+        set_exit(u16 exit);
 
         virtual bool
         attach();
@@ -49,11 +50,15 @@ namespace ma
         friend class ScreenMachine;
 
         void
-        set_family(u16 family);
+        set_code(u16 code);
 
     private:
-        u16 m_family;
-        u16 m_status;
+        u16 m_code;
+        u16 m_exit;
+
+    protected:
+        const HashMap<String, u16>& names;
+        const HashMap<String, u16>& exits;
     };
 } // namespace ma
 

@@ -1,119 +1,9 @@
 #include <smal/Engine/import.hpp>
-
-using namespace ma;
-
-enum Families
-{
-    Title = 1,
-    Level,
-    Saver,
-};
-
-enum Statuses
-{
-    Default = 1,
-    Cleanup,
-};
-
-class TitleScreen
-    : public Screen
-{
-public:
-    void
-    enter()
-    {
-        this->set_status(Statuses::Default);
-    }
-
-    u16
-    handle(const sf::Event& event)
-    {
-        if ( event.type == sf::Event::Closed )
-            return Statuses::Cleanup;
-
-        if ( event.type == sf::Event::KeyReleased ) {
-            if ( event.key.code == sf::Keyboard::Escape )
-                return this->status();
-        }
-
-        return 0;
-    }
-
-    void
-    render(sf::RenderTarget& target)
-    {
-        auto size = target.getSize();
-        auto rect =
-            sf::RectangleShape {(sf::Vector2f) size};
-
-        rect.setFillColor(sf::Color::Green);
-
-        target.draw(rect);
-    }
-};
-
-class LevelScreen
-    : public Screen
-{
-public:
-    void
-    enter()
-    {
-        this->set_status(Families::Saver);
-    }
-
-    u16
-    handle(const sf::Event& event)
-    {
-        if ( event.type == sf::Event::Closed )
-            return this->status();
-
-        if ( event.type == sf::Event::KeyReleased ) {
-            if ( event.key.code == sf::Keyboard::Escape )
-                return this->status();
-        }
-
-        return 0;
-    }
-
-    void
-    render(sf::RenderTarget& target)
-    {
-        auto size = target.getSize();
-        auto rect =
-            sf::RectangleShape {(sf::Vector2f) size};
-
-        rect.setFillColor(sf::Color::Red);
-
-        target.draw(rect);
-    }
-};
-
-class SaverScreen
-    : public Screen
-{
-public:
-    void
-    enter()
-    {
-        printf("Saving...\n");
-    }
-
-    u16
-    handle()
-    {
-        return -1;
-    }
-
-    u16
-    handle(const sf::Event& event)
-    {
-        return -1;
-    }
-};
+#include <screen.hpp>
+#include <loader.hpp>
 
 static const usize size = 128;
-static const usize page = 1024 * 128;
+static const usize page = 1024 * 4;
 
 static char* memory = 0;
 
@@ -122,21 +12,63 @@ main(int argc, const char* argv[])
 {
     memory = (char*) calloc(size, page);
 
+    char  buffer[4096] = {0};
+    usize length       = 0;
+
     {
         PoolOrigin pool = {memory, size * page, page};
         Engine     game = {&pool, 32};
+        Loader     load = {&pool};
 
-        game.screens().insert(Families::Title, new TitleScreen);
-        game.screens().insert(Families::Level, new LevelScreen);
-        game.screens().insert(Families::Saver, new SaverScreen);
+        auto* file = fopen("../assets/machine.json", "r");
 
-        game.screens().insert(Families::Title, Statuses::Default, Families::Level);
-        game.screens().insert(Families::Title, Statuses::Cleanup, Families::Saver);
-        game.screens().insert(Families::Level, Families::Saver);
+        if ( file != 0 )
+            length = fread(buffer, 1, 4096, file);
+
+        printf("\x1b[32m%s\x1b[0m", buffer);
+
+        String json = {buffer, length};
+
+        Json::Reader::read(load, json);
+
+        printf("Definitions:\n");
+        printf(" - Names:\n");
+        load.names.for_each([](auto& key, auto& val) {
+            printf("   - %10s | %u\n", key.memory(), val);
+        });
+
+        printf(" - Exits:\n");
+        load.exits.for_each([](auto& str, auto& val) {
+            printf("   - %10s | %u\n", str.memory(), val);
+        });
+
+        game.screens().insert(load.names["Title"], new TitleScreen {load.names, load.exits});
+        game.screens().insert(load.names["Level"], new LevelScreen {load.names, load.exits});
+        game.screens().insert(load.names["Exit"], new ExitScreen {load.names, load.exits});
+
+        printf("Transitions:\n");
+        load.table.for_each([&game](auto& val, usize idx) {
+            printf(" - %4u:%05u | %u\n", val.active, val.exit, val.coming);
+
+            game.screens().insert(
+                val.active,
+                val.exit,
+                val.coming);
+        });
 
         if ( game.is_active() )
-            game.loop(Families::Title);
+            game.loop(load.names["Title"]);
     }
 
     return 0;
 }
+
+namespace ma
+{
+    template <>
+    usize
+    hash(const String& value)
+    {
+        return hash(value.memory());
+    }
+} // namespace ma

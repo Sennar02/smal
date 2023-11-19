@@ -96,7 +96,7 @@ namespace ma
         {
             union
             {
-                Iden iden;
+                Iden iden = {};
             };
 
             usize dist = s_empty;

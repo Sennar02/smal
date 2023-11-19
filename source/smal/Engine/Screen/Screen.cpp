@@ -2,33 +2,36 @@
 
 namespace ma
 {
-    Screen::Screen()
-        : m_family {(u16) -1}
-        , m_status {(u16) -1}
+    Screen::Screen(const HashMap<String, u16>& names,
+        const HashMap<String, u16>&            exits)
+        : m_code {(u16) -1}
+        , m_exit {(u16) -1}
+        , names {names}
+        , exits {exits}
     { }
 
     u16
-    Screen::family() const
+    Screen::code() const
     {
-        return this->m_family;
+        return this->m_code;
     }
 
     u16
-    Screen::status() const
+    Screen::exit() const
     {
-        return this->m_status;
+        return this->m_exit;
     }
 
     void
-    Screen::set_status(u16 status)
+    Screen::set_exit(u16 exit)
     {
-        this->m_status = status;
+        this->m_exit = exit;
     }
 
     void
-    Screen::set_family(u16 family)
+    Screen::set_code(u16 code)
     {
-        this->m_family = family;
+        this->m_code = code;
     }
 
     bool

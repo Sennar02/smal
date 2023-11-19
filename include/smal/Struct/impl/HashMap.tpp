@@ -104,8 +104,7 @@ namespace ma
     {
         const Node* node = 0;
 
-        if ( this->is_empty() == true )
-            return;
+        if ( this->is_empty() == true ) return;
 
         for ( usize i = 0; i < this->size(); i++ ) {
             node = &this->m_nodes[i];
@@ -309,10 +308,10 @@ namespace ma
     const Type&
     HashMap<Iden, Type, Array>::find(const Iden& iden, Func comp) const
     {
-        Node* node  = 0;
-        Type* item  = 0;
-        usize start = this->index(iden);
-        usize index = start;
+        const Node* node  = 0;
+        const Type* item  = 0;
+        usize       start = this->index(iden);
+        usize       index = start;
 
         if ( this->contains(iden, comp) == true ) {
             do {

@@ -46,6 +46,8 @@ namespace ma::Json
         const char* memory = lexeme.memory();
         usize       length = lexeme.length();
 
+        ((char*) memory)[length] = 0;
+
         return client.string(memory, length);
     }
 

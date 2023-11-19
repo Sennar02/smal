@@ -8,43 +8,43 @@ namespace ma::Json
     bool
     Client::string(const char* string, usize length)
     {
-        return true;
+        return false;
     }
 
     bool
     Client::number(usize value)
     {
-        return true;
+        return false;
     }
 
     bool
     Client::number(isize value)
     {
-        return true;
+        return false;
     }
 
     bool
     Client::number(f64 value)
     {
-        return true;
+        return false;
     }
 
     bool
     Client::boolean(bool value)
     {
-        return true;
+        return false;
     }
 
     bool
     Client::null()
     {
-        return true;
+        return false;
     }
 
     bool
     Client::name(const char* string, usize length)
     {
-        return true;
+        return false;
     }
 
     bool

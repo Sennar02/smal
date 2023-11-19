@@ -16,13 +16,13 @@ namespace ma
     }
 
     void
-    Engine::loop(u16 family, usize frames)
+    Engine::loop(u16 code, usize frames)
     {
         sf::Time  slice = sf::seconds(1.f / frames);
         sf::Time  delta;
         sf::Event event;
 
-        this->m_active = this->m_screens.launch(family);
+        this->m_active = this->m_screens.launch(code);
 
         if ( this->m_active ) {
             this->m_window.create(
@@ -69,16 +69,16 @@ namespace ma
     Engine::handle()
     {
         Screen* screen = this->m_screens.active();
-        u16     family = 0;
-        u16     status = 0;
+        u16     code = 0;
+        u16     exit = 0;
 
         if ( screen != 0 ) {
-            family = screen->family();
-            status = screen->handle();
+            code = screen->code();
+            exit = screen->handle();
 
-            if ( status != 0 ) {
+            if ( exit != 0 ) {
                 this->m_active = this->m_screens.launch(
-                    family, status);
+                    code, exit);
             }
         } else
             this->m_active = false;
@@ -88,16 +88,16 @@ namespace ma
     Engine::handle(const sf::Event& event)
     {
         Screen* screen = this->m_screens.active();
-        u16     family = 0;
-        u16     status = 0;
+        u16     code = 0;
+        u16     exit = 0;
 
         if ( screen != 0 ) {
-            family = screen->family();
-            status = screen->handle(event);
+            code = screen->code();
+            exit = screen->handle(event);
 
-            if ( status != 0 ) {
+            if ( exit != 0 ) {
                 this->m_active = this->m_screens.launch(
-                    family, status);
+                    code, exit);
             }
         } else
             this->m_active = false;

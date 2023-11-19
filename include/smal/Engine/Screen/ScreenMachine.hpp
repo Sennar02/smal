@@ -11,22 +11,22 @@ namespace ma
         ScreenMachine(BaseOrigin* origin, usize size = 0);
 
         bool
-        insert(u16 family, Screen* screen);
+        insert(u16 code, Screen* screen);
 
         bool
-        insert(u16 active, u16 status, u16 coming = -1);
+        insert(u16 active, u16 exit, u16 coming = -1);
 
         bool
-        remove(u16 family);
+        remove(u16 code);
 
         bool
-        remove(u16 active, u16 status);
+        remove(u16 active, u16 exit);
 
         bool
-        launch(u16 family);
+        launch(u16 code);
 
         bool
-        launch(u16 family, u16 status);
+        launch(u16 code, u16 exit);
 
         bool
         finish();

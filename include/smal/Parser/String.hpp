@@ -58,6 +58,17 @@ namespace ma
         bool
         contains(char byte, usize count = -1, usize first = 0) const;
 
+        /**
+         *
+         *
+         * @param other
+         *
+         * @return True.
+         * @return False.
+         */
+        bool
+        operator==(const String& other) const;
+
     private:
         /**
          *

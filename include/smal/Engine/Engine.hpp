@@ -14,7 +14,7 @@ namespace ma
         is_active() const;
 
         void
-        loop(u16 family, usize frames = 60);
+        loop(u16 code, usize frames = 60);
 
         ScreenMachine&
         screens();

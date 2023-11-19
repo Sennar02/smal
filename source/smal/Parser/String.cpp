@@ -52,4 +52,10 @@ namespace ma
 
         return false;
     }
+
+    bool
+    String::operator==(const String& other) const
+    {
+        return this->equals(other);
+    }
 } // namespace ma

@@ -7,9 +7,9 @@ namespace ma
         union ScreenIden
         {
         public:
-            ScreenIden(u16 family, u16 status)
-                : m_family {family}
-                , m_status {status}
+            ScreenIden(u16 code, u16 exit)
+                : m_family {code}
+                , m_status {exit}
             { }
 
             u32 number;
@@ -30,58 +30,58 @@ namespace ma
     { }
 
     bool
-    ScreenMachine::insert(u16 family, Screen* screen)
+    ScreenMachine::insert(u16 code, Screen* screen)
     {
-        if ( this->m_holder.insert(family, screen) ) {
+        if ( this->m_holder.insert(code, screen) ) {
             if ( screen->attach() )
-                screen->set_family(family);
+                screen->set_code(code);
         }
 
-        return screen->family() == family;
+        return screen->code() == code;
     }
 
     bool
-    ScreenMachine::insert(u16 active, u16 status, u16 coming)
+    ScreenMachine::insert(u16 active, u16 exit, u16 coming)
     {
-        auto change = (impl::ScreenIden {active, status})
+        auto change = (impl::ScreenIden {active, exit})
                           .number;
 
         if ( coming != (u16) -1 )
             return this->m_change.insert(change, coming);
 
-        return this->m_change.insert(change, status);
+        return this->m_change.insert(change, exit);
     }
 
     bool
-    ScreenMachine::remove(u16 family)
+    ScreenMachine::remove(u16 code)
     {
-        if ( this->m_holder.contains(family) ) {
-            this->m_holder[family]->detach();
+        if ( this->m_holder.contains(code) ) {
+            this->m_holder[code]->detach();
 
             return this->m_holder
-                .remove(family);
+                .remove(code);
         }
 
         return false;
     }
 
     bool
-    ScreenMachine::remove(u16 active, u16 status)
+    ScreenMachine::remove(u16 active, u16 exit)
     {
-        auto change = (impl::ScreenIden {active, status})
+        auto change = (impl::ScreenIden {active, exit})
                           .number;
 
         return this->m_change.remove(change);
     }
 
     bool
-    ScreenMachine::launch(u16 family)
+    ScreenMachine::launch(u16 code)
     {
         if ( this->m_active != 0 )
             this->m_active->leave();
 
-        if ( this->m_holder.contains(family) ) {
-            this->m_active = this->m_holder[family];
+        if ( this->m_holder.contains(code) ) {
+            this->m_active = this->m_holder[code];
             this->m_active->enter();
         } else
             this->m_active = 0;
@@ -90,9 +90,9 @@ namespace ma
     }
 
     bool
-    ScreenMachine::launch(u16 active, u16 status)
+    ScreenMachine::launch(u16 active, u16 exit)
     {
-        auto change = (impl::ScreenIden {active, status})
+        auto change = (impl::ScreenIden {active, exit})
                           .number;
 
         if ( this->m_change.contains(change) )
