@@ -1,7 +1,7 @@
-#ifndef SMAL_PARSER_STRING_HPP
-#define SMAL_PARSER_STRING_HPP
+#ifndef SMAL_COMMON_STRING_HPP
+#define SMAL_COMMON_STRING_HPP
 
-#include <smal/Parser/define.hpp>
+#include <smal/Common/define.hpp>
 
 namespace ma
 {
@@ -11,10 +11,10 @@ namespace ma
         /**
          *
          *
-         * @param string
-         * @param length
+         * @param memory
+         * @param size
          */
-        String(const char* string = 0, usize length = 0);
+        String(const char* memory = 0, usize size = g_max_usize);
 
         /**
          *
@@ -22,7 +22,7 @@ namespace ma
          * @return
          */
         usize
-        length() const;
+        size() const;
 
         /**
          *
@@ -43,7 +43,7 @@ namespace ma
          * @return False.
          */
         bool
-        equals(const String& other, usize count = -1, usize first = 0) const;
+        equals(const String& other, usize count = g_max_usize, usize first = 0) const;
 
         /**
          *
@@ -56,7 +56,7 @@ namespace ma
          * @return False.
         */
         bool
-        contains(char byte, usize count = -1, usize first = 0) const;
+        contains(char byte, usize count = g_max_usize, usize first = 0) const;
 
         /**
          *
@@ -73,13 +73,13 @@ namespace ma
         /**
          *
          */
-        const char* m_string;
+        const char* m_memory;
 
         /**
          *
          */
-        usize m_length;
+        usize m_size;
     };
 } // namespace ma
 
-#endif // SMAL_PARSER_STRING_HPP
+#endif // SMAL_COMMON_STRING_HPP

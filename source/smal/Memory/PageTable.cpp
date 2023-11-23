@@ -20,37 +20,37 @@ namespace ma
         , m_count {0}
         , m_page {page}
     {
-        this->m_size /= sizeof(Node);
+        m_size /= sizeof(Node);
     }
 
     usize
     PageTable::size() const
     {
-        return this->m_size;
+        return m_size;
     }
 
     usize
     PageTable::count() const
     {
-        return this->m_count;
+        return m_count;
     }
 
     usize
     PageTable::page() const
     {
-        return this->m_page;
+        return m_page;
     }
 
     bool
     PageTable::is_empty() const
     {
-        return this->m_count == 0;
+        return m_count == 0;
     }
 
     bool
     PageTable::is_full() const
     {
-        return this->m_count == this->m_size;
+        return m_count == m_size;
     }
 
     bool
@@ -58,16 +58,16 @@ namespace ma
     {
         char* memory = (char*) page.memory();
 
-        if ( this->m_size <= key ||
-             this->m_page != page.size() )
+        if ( m_size <= key ||
+             m_page != page.size() )
             return false;
 
         if ( page.is_null() == false ) {
-            if ( this->m_memory[key] != 0 )
+            if ( m_memory[key] != 0 )
                 return false;
 
-            this->m_count += 1;
-            this->m_memory[key] = memory;
+            m_count += 1;
+            m_memory[key] = memory;
 
             return true;
         }
@@ -80,12 +80,12 @@ namespace ma
     {
         char* memory = 0;
 
-        if ( key < this->m_size ) {
-            if ( this->m_memory[key] != 0 ) {
-                memory = this->m_memory[key];
+        if ( key < m_size ) {
+            if ( m_memory[key] != 0 ) {
+                memory = m_memory[key];
 
-                this->m_count -= 1;
-                this->m_memory[key] = 0;
+                m_count -= 1;
+                m_memory[key] = 0;
             }
         }
 
@@ -95,9 +95,9 @@ namespace ma
     char*
     PageTable::lookup(usize index) const
     {
-        usize page = Math::div(index, this->m_page);
-        usize byte = Math::mod(index, this->m_page);
+        usize page = Math::div(index, m_page);
+        usize byte = Math::mod(index, m_page);
 
-        return this->m_memory[page] + byte;
+        return m_memory[page] + byte;
     }
 } // namespace ma

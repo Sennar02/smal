@@ -17,42 +17,42 @@ namespace ma
         , m_count {0}
         , m_page {0}
     {
-        this->prepare(page);
+        prepare(page);
     }
 
     usize
     PoolOrigin::size() const
     {
-        return this->m_size;
+        return m_size;
     }
 
     usize
     PoolOrigin::count() const
     {
-        return this->m_count;
+        return m_count;
     }
 
     usize
     PoolOrigin::page() const
     {
-        return this->m_page;
+        return m_page;
     }
 
     bool
     PoolOrigin::prepare()
     {
-        Node* node = (Node*) this->m_memory;
+        Node* node = (Node*) m_memory;
         Node* next = 0;
         char* addr = 0;
 
-        if ( this->m_memory != 0 ) {
-            this->m_count = Math::div(this->m_size, this->m_page);
+        if ( m_memory != 0 ) {
+            m_count = Math::div(m_size, m_page);
 
-            if ( this->m_count != 0 ) {
-                this->m_list = node;
+            if ( m_count != 0 ) {
+                m_list = node;
 
-                for ( usize i = 0; i < this->m_count; i++ ) {
-                    addr = (char*) node + this->m_page;
+                for ( usize i = 0; i < m_count; i++ ) {
+                    addr = (char*) node + m_page;
                     next = (Node*) addr;
 
                     node->next = next;
@@ -72,24 +72,24 @@ namespace ma
         usize min = sizeof(Node);
 
         if ( page >= min )
-            this->m_page = page;
+            m_page = page;
         else
-            this->m_page = min;
+            m_page = min;
 
-        return this->prepare();
+        return prepare();
     }
 
     Page
     PoolOrigin::reserve(usize size)
     {
-        Page page = {this, this->m_list, this->m_page};
+        Page page = {this, m_list, m_page};
 
-        if ( size > this->m_page )
+        if ( size > m_page )
             return {};
 
-        if ( this->m_count != 0 ) {
-            this->m_count -= 1;
-            this->m_list = this->m_list->next;
+        if ( m_count != 0 ) {
+            m_count -= 1;
+            m_list = m_list->next;
 
             Memory::set(
                 page.memory(),
@@ -112,12 +112,12 @@ namespace ma
             return false;
 
         if ( page.is_null() == false ) {
-            node->next = this->m_list;
+            node->next = m_list;
 
             page = {};
 
-            this->m_list = node;
-            this->m_count += 1;
+            m_list = node;
+            m_count += 1;
         }
 
         return true;
@@ -133,10 +133,10 @@ namespace ma
             return false;
 
         if ( page.is_null() == false ) {
-            node->next = this->m_list;
+            node->next = m_list;
 
-            this->m_list = node;
-            this->m_count += 1;
+            m_list = node;
+            m_count += 1;
         }
 
         return true;

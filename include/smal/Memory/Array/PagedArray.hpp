@@ -84,6 +84,12 @@ namespace ma
 
         /**
          *
+         */
+        void
+        clear();
+
+        /**
+         *
          *
          * @return
          */

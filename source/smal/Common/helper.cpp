@@ -1,6 +1,6 @@
-#include <smal/Struct/Algo/Hashing.hpp>
+#include <smal/Common/helper.hpp>
 
-namespace ma
+namespace ma::Math
 {
     template <>
     usize
@@ -101,4 +101,4 @@ namespace ma
 
         return res;
     }
-} // namespace ma
+} // namespace ma::Math

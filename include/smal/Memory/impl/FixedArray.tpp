@@ -16,10 +16,10 @@ namespace ma
         Page page = origin->reserve(size * SIZE);
 
         if ( page.is_null() == false ) {
-            this->m_memory = page.memory();
-            this->m_size   = page.size();
+            m_memory = page.memory();
+            m_size   = page.size();
 
-            this->m_size /= SIZE;
+            m_size /= SIZE;
         }
     }
 
@@ -37,7 +37,7 @@ namespace ma
     usize
     FixedArray<Type>::size() const
     {
-        return this->m_size;
+        return m_size;
     }
 
     template <class Type>
@@ -48,16 +48,21 @@ namespace ma
     }
 
     template <class Type>
+    void
+    FixedArray<Type>::clear()
+    { }
+
+    template <class Type>
     Type&
     FixedArray<Type>::operator[](usize index)
     {
-        return (Type&) this->m_memory[index * SIZE];
+        return (Type&) m_memory[index * SIZE];
     }
 
     template <class Type>
     const Type&
     FixedArray<Type>::operator[](usize index) const
     {
-        return (Type&) this->m_memory[index * SIZE];
+        return (Type&) m_memory[index * SIZE];
     }
 } // namespace ma

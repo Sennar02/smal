@@ -59,6 +59,12 @@ namespace ma
 
         /**
          *
+         */
+        void
+        clear();
+
+        /**
+         *
          *
          * @param index
          *

@@ -1,6 +1,8 @@
 #ifndef SMAL_COMMON_HELPER_HPP
 #define SMAL_COMMON_HELPER_HPP
 
+#include <smal/Common/define.hpp>
+
 namespace ma
 {
     namespace impl
@@ -119,6 +121,10 @@ namespace ma
         template <class Type>
         Type
         abs(Type a);
+
+        template <class Type>
+        usize
+        hash(const Type& value);
     } // namespace Math
 
     template <class Type>

@@ -5,55 +5,18 @@ project('smal', 'cpp',
 )
 
 smal_header = include_directories('include')
+smal_depend = []
+smal_define = []
 
-smal_memory = static_library('smal-memory',
-    sources: [
-        'source/smal/Memory/helper.cpp',
-        'source/smal/Memory/Page.cpp',
-        'source/smal/Memory/PageTable.cpp',
-        'source/smal/Memory/Origin/PoolOrigin.cpp',
-        'source/smal/Memory/Origin/StackOrigin.cpp',
-    ],
-    include_directories: [smal_header],
-)
+subdir('source/smal/Common')
+subdir('source/smal/Memory')
+# subdir('source/smal/Parser')
+# subdir('source/smal/Struct')
+# subdir('source/smal/Engine')
 
-smal_parser = static_library('smal-parser',
-    sources: [
-        'source/smal/Parser/String.cpp',
-        'source/smal/Parser/Json/Lexeme.cpp',
-        'source/smal/Parser/Json/Lexer.cpp',
-        'source/smal/Parser/Json/Reader.cpp',
-        'source/smal/Parser/Json/Client.cpp',
-    ],
-    include_directories: [smal_header],
-)
-
-smal_struct = static_library('smal-struct',
-    sources: [
-        'source/smal/Struct/Algo/Hashing.cpp',
-    ],
-    include_directories: [smal_header],
-)
-
-
-smal_engine = static_library('smal-engine',
-    sources: [
-        'source/smal/Engine/Engine.cpp',
-        'source/smal/Engine/Screen/Screen.cpp',
-        'source/smal/Engine/Screen/ScreenMachine.cpp',
-    ],
-    include_directories: [smal_header],
-)
-
-smal_depend = [
-    dependency('sfml-graphics', required: true),
-]
-smal_define = [
-    smal_memory,
-    smal_parser,
-    smal_struct,
-    smal_engine,
-]
+foreach def : smal_define
+    message(' - ', def.name())
+endforeach
 
 executable('smal',
     sources: [

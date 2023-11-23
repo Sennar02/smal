@@ -6,13 +6,13 @@
 namespace ma
 {
     template <class Ret, class... Args>
-    class Func<Ret(Args...)>
+    class Function<Ret(Args...)>
     {
     public:
         /**
          *
          */
-        Func();
+        Function();
 
         /**
          *
@@ -29,7 +29,7 @@ namespace ma
          * @return True.
          * @return False.
          */
-        template <auto Call>
+        template <auto Func>
         bool
         bind();
 
@@ -41,21 +41,21 @@ namespace ma
          * @return True.
          * @return False.
          */
-        template <auto Call, class Type>
+        template <auto Func, class Type>
         bool
         bind(Type* inst);
 
         /**
          *
          *
-         * @param call
+         * @param func
          *
          * @return True.
          * @return False.
          */
-        template <class Call>
+        template <class Func>
         bool
-        bind(Call&& call);
+        bind(Func&& func);
 
         /**
          *
@@ -111,7 +111,7 @@ namespace ma
         operator()(Args... args, Rest... rest) const;
 
     private:
-        using Action = Ret(void*, Args...);
+        using Proto = Ret(void*, Args...);
 
         /**
          *
@@ -121,22 +121,22 @@ namespace ma
         /**
          *
          */
-        Action* m_action;
+        Proto* m_action;
     };
 
-    template <auto Call>
+    template <auto Func>
     auto
-    func();
+    function();
 
-    template <auto Call, class Type>
+    template <auto Func, class Type>
     auto
-    func(Type* inst);
+    function(Type* inst);
 
-    template <class Call>
+    template <class Func>
     auto
-    func(Call&& call);
+    function(Func&& func);
 } // namespace ma
 
-#include <smal/Common/impl/Func.tpp>
+#include <smal/Common/impl/Function.tpp>
 
 #endif // SMAL_COMMON_FUNC_HPP

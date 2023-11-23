@@ -21,8 +21,39 @@ namespace ma
     using usize = size_t;
     using isize = ssize_t;
 
+    static const usize g_max_u8    = (usize) UINT8_MAX;
+    static const usize g_max_u16   = (usize) UINT16_MAX;
+    static const usize g_max_u32   = (usize) UINT32_MAX;
+    static const usize g_max_u64   = (usize) UINT64_MAX;
+    static const usize g_max_usize = (usize) SIZE_MAX;
+
+    static const isize g_max_i8    = (isize) (g_max_u8 / 2);
+    static const isize g_max_i16   = (isize) (g_max_u16 / 2);
+    static const isize g_max_i32   = (isize) (g_max_u32 / 2);
+    static const isize g_max_i64   = (isize) (g_max_u64 / 2);
+    static const isize g_max_isize = (isize) (g_max_usize / 2);
+
+    static const usize g_min_u8    = (usize) 0;
+    static const usize g_min_u16   = (usize) 0;
+    static const usize g_min_u32   = (usize) 0;
+    static const usize g_min_u64   = (usize) 0;
+    static const usize g_min_usize = (usize) 0;
+
+    static const isize g_min_i8    = (isize) (-g_max_i8 - 1);
+    static const isize g_min_i16   = (isize) (-g_max_i16 - 1);
+    static const isize g_min_i32   = (isize) (-g_max_i32 - 1);
+    static const isize g_min_i64   = (isize) (-g_max_i64 - 1);
+    static const isize g_min_isize = (isize) (-g_max_isize - 1);
+
     template <class>
-    class Func;
+    class Function;
+
+    class String;
+
+    class File;
+    class FileSystem;
+    class FileReader;
+    class FileWriter;
 } // namespace ma
 
 #endif // SMAL_COMMON_DEFINE_HPP

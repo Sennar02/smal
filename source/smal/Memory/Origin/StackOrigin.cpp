@@ -18,23 +18,23 @@ namespace ma
     usize
     StackOrigin::size() const
     {
-        return this->m_size;
+        return m_size;
     }
 
     usize
     StackOrigin::count() const
     {
         usize diff =
-            this->m_next - this->m_memory;
+            m_next - m_memory;
 
-        return this->m_size - diff;
+        return m_size - diff;
     }
 
     bool
     StackOrigin::prepare()
     {
-        this->m_next =
-            this->m_memory;
+        m_next =
+            m_memory;
 
         return true;
     }
@@ -42,10 +42,10 @@ namespace ma
     Page
     StackOrigin::reserve(usize size)
     {
-        Page part = {this, this->m_next, size};
+        Page part = {this, m_next, size};
 
-        if ( size < this->count() ) {
-            this->m_next += size;
+        if ( size < count() ) {
+            m_next += size;
 
             Memory::set(
                 part.memory(),
@@ -67,9 +67,9 @@ namespace ma
              part.origin() != 0 )
             return false;
 
-        if ( this->m_next == finish ) {
+        if ( m_next == finish ) {
             if ( part.is_null() == false )
-                this->m_next -= part.size();
+                m_next -= part.size();
 
             part = {};
         } else
@@ -87,9 +87,9 @@ namespace ma
              part.origin() != 0 )
             return false;
 
-        if ( this->m_next == finish ) {
+        if ( m_next == finish ) {
             if ( part.is_null() == false )
-                this->m_next -= part.size();
+                m_next -= part.size();
         } else
             return part.is_null();
 
