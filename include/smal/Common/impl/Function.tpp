@@ -3,17 +3,74 @@
 
 namespace ma
 {
+    template <auto Func>
+    auto
+    function()
+    {
+        Function f =
+            {bind<Func>};
+
+        return f;
+    }
+
+    template <auto Func, class Type>
+    auto
+    function(Type* inst)
+    {
+        Function f =
+            {bind<Func>, inst};
+
+        return f;
+    }
+
+    template <class Func>
+    auto
+    function(Func&& func)
+    {
+        Function f =
+            {move(func)};
+
+        return f;
+    }
+
     template <class Ret, class... Args>
     Function<Ret(Args...)>::Function()
         : m_memory {0}
-        , m_action {0}
+        , m_func {0}
     { }
+
+    template <class Ret, class... Args>
+    template <auto Func>
+    Function<Ret(Args...)>::Function(Bind<Func>)
+        : m_memory {0}
+        , m_func {0}
+    {
+        bind<Func>();
+    }
+
+    template <class Ret, class... Args>
+    template <auto Func, class Type>
+    Function<Ret(Args...)>::Function(Bind<Func>, Type* inst)
+        : m_memory {0}
+        , m_func {0}
+    {
+        bind<Func>(inst);
+    }
+
+    template <class Ret, class... Args>
+    template <class Func>
+    Function<Ret(Args...)>::Function(Func&& func)
+        : m_memory {0}
+        , m_func {0}
+    {
+        bind<Func>(move(func));
+    }
 
     template <class Ret, class... Args>
     bool
     Function<Ret(Args...)>::is_bound() const
     {
-        return m_action != 0;
+        return m_func != 0;
     }
 
     template <class Ret, class... Args>
@@ -23,7 +80,7 @@ namespace ma
     {
         m_memory = 0;
 
-        m_action = [](void* memory, Args... args) -> Ret {
+        m_func = [](void* memory, Args... args) -> Ret {
             auto func = Func;
 
             return (*func)(forw<Args>(args)...);
@@ -39,11 +96,11 @@ namespace ma
     {
         m_memory = (void*) inst;
 
-        m_action = [](void* memory, Args... args) -> Ret {
+        m_func = [](void* memory, Args... args) -> Ret {
             auto func = Func;
-            auto inst = (Type*) memory;
+            auto subj = (Type*) memory;
 
-            return (inst->*func)(forw<Args>(args)...);
+            return (subj->*func)(forw<Args>(args)...);
         };
 
         return true;
@@ -56,7 +113,7 @@ namespace ma
     {
         create(*(Func*) m_memory, move(func));
 
-        m_action = [](void* memory, Args... args) -> Ret {
+        m_func = [](void* memory, Args... args) -> Ret {
             auto func = (Func*) memory;
 
             return (*func)(forw<Args>(args)...);
@@ -70,7 +127,7 @@ namespace ma
     Function<Ret(Args...)>::clear()
     {
         m_memory = 0;
-        m_action = 0;
+        m_func   = 0;
 
         return true;
     }
@@ -80,7 +137,7 @@ namespace ma
     Ret
     Function<Ret(Args...)>::invoke(Args... args, Rest... rest)
     {
-        return m_action(m_memory, forw<Args>(args)...);
+        return m_func(m_memory, forw<Args>(args)...);
     }
 
     template <class Ret, class... Args>
@@ -88,7 +145,7 @@ namespace ma
     const Ret
     Function<Ret(Args...)>::invoke(Args... args, Rest... rest) const
     {
-        return m_action(m_memory, forw<Args>(args)...);
+        return m_func(m_memory, forw<Args>(args)...);
     }
 
     template <class Ret, class... Args>
@@ -96,7 +153,7 @@ namespace ma
     Ret
     Function<Ret(Args...)>::operator()(Args... args, Rest... rest)
     {
-        return invoke(forw<Args>(args)...);
+        return m_func(m_memory, forw<Args>(args)...);
     }
 
     template <class Ret, class... Args>
@@ -104,48 +161,6 @@ namespace ma
     const Ret
     Function<Ret(Args...)>::operator()(Args... args, Rest... rest) const
     {
-        return invoke(forw<Args>(args)...);
-    }
-
-    template <auto Func>
-    auto
-    function()
-    {
-        using Decl = decltype(Func);
-
-        auto result =
-            Function<FuncType<Decl>> {};
-
-        result.template bind<Func>();
-
-        return result;
-    }
-
-    template <auto Func, class Type>
-    auto
-    function(Type* inst)
-    {
-        using Decl = decltype(Func);
-
-        auto result =
-            Function<FuncType<Decl>> {};
-
-        result.template bind<Func>(inst);
-
-        return result;
-    }
-
-    template <class Func>
-    auto
-    function(Func&& func)
-    {
-        using Decl = decltype(&Func::operator());
-
-        auto result =
-            Function<FuncType<Decl>> {};
-
-        result.bind(move(func));
-
-        return result;
+        return m_func(m_memory, forw<Args>(args)...);
     }
 } // namespace ma

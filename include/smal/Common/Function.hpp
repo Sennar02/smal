@@ -5,6 +5,27 @@
 
 namespace ma
 {
+    /**
+     *
+     */
+    template <auto Func>
+    auto
+    function();
+
+    /**
+     *
+     */
+    template <auto Func, class Type>
+    auto
+    function(Type* inst);
+
+    /**
+     *
+     */
+    template <class Func>
+    auto
+    function(Func&& func);
+
     template <class Ret, class... Args>
     class Function<Ret(Args...)>
     {
@@ -16,18 +37,30 @@ namespace ma
 
         /**
          *
+         */
+        template <auto Func>
+        Function(Bind<Func>);
+
+        /**
          *
-         * @return True.
-         * @return False.
+         */
+        template <auto Func, class Type>
+        Function(Bind<Func>, Type* inst);
+
+        /**
+         *
+         */
+        template <class Func>
+        Function(Func&& func);
+
+        /**
+         *
          */
         bool
         is_bound() const;
 
         /**
          *
-         *
-         * @return True.
-         * @return False.
          */
         template <auto Func>
         bool
@@ -35,11 +68,6 @@ namespace ma
 
         /**
          *
-         *
-         * @param inst
-         *
-         * @return True.
-         * @return False.
          */
         template <auto Func, class Type>
         bool
@@ -47,11 +75,6 @@ namespace ma
 
         /**
          *
-         *
-         * @param func
-         *
-         * @return True.
-         * @return False.
          */
         template <class Func>
         bool
@@ -59,19 +82,12 @@ namespace ma
 
         /**
          *
-         *
-         * @return True.
-         * @return False.
          */
         bool
         clear();
 
         /**
          *
-         *
-         * @param args
-         *
-         * @return
          */
         template <class... Rest>
         Ret
@@ -79,10 +95,6 @@ namespace ma
 
         /**
          *
-         *
-         * @param args
-         *
-         * @return
          */
         template <class... Rest>
         const Ret
@@ -90,10 +102,6 @@ namespace ma
 
         /**
          *
-         *
-         * @param args
-         *
-         * @return
          */
         template <class... Rest>
         Ret
@@ -101,17 +109,13 @@ namespace ma
 
         /**
          *
-         *
-         * @param args
-         *
-         * @return
          */
         template <class... Rest>
         const Ret
         operator()(Args... args, Rest... rest) const;
 
     private:
-        using Proto = Ret(void*, Args...);
+        using Call = Ret (*)(void*, Args...);
 
         /**
          *
@@ -121,20 +125,20 @@ namespace ma
         /**
          *
          */
-        Proto* m_action;
+        Call m_func;
     };
 
     template <auto Func>
-    auto
-    function();
+    Function(Bind<Func>)
+        -> Function<FuncType<decltype(Func)>>;
 
     template <auto Func, class Type>
-    auto
-    function(Type* inst);
+    Function(Bind<Func>, Type*)
+        -> Function<FuncType<decltype(Func)>>;
 
     template <class Func>
-    auto
-    function(Func&& func);
+    Function(Func&&)
+        -> Function<FuncType<decltype(&Func::operator())>>;
 } // namespace ma
 
 #include <smal/Common/impl/Function.tpp>

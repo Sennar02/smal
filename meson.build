@@ -9,7 +9,7 @@ smal_depend = []
 smal_define = []
 
 subdir('source/smal/Common')
-subdir('source/smal/Memory')
+# subdir('source/smal/Memory')
 # subdir('source/smal/Parser')
 # subdir('source/smal/Struct')
 # subdir('source/smal/Engine')

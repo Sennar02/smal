@@ -6,11 +6,6 @@ extern "C"
     // clang-format off
     #include <stddef.h>
     #include <stdint.h>
-    #include <stdlib.h>
-
-    #include <string.h>
-    #include <stdio.h>
-    #include <time.h>
     #include <math.h>
     // clang-format on
 }

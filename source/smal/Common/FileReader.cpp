@@ -1,6 +1,5 @@
 #include <smal/Common/FileReader.hpp>
-#include <smal/Common/String.hpp>
-#include <smal/Common/File.hpp>
+#include <smal/Common/FileIStream.hpp>
 
 namespace ma
 {
@@ -38,7 +37,7 @@ namespace ma
     }
 
     usize
-    FileReader::read(File& stream)
+    FileReader::read(FileIStream& stream)
     {
         if ( m_memory != 0 && m_size != 0 ) {
             m_count = stream.read(m_memory, m_size);

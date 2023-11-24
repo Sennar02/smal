@@ -1,8 +1,8 @@
 smal_common = static_library('smal-common',
     sources: [
         'String.cpp',
-        'File.cpp',
-        'FileSystem.cpp',
+        'FileIStream.cpp',
+        'FileOStream.cpp',
         'FileReader.cpp',
         'FileWriter.cpp',
         'helper.cpp',

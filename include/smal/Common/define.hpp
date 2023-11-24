@@ -45,15 +45,26 @@ namespace ma
     static const isize g_min_i64   = (isize) (-g_max_i64 - 1);
     static const isize g_min_isize = (isize) (-g_max_isize - 1);
 
+    class String;
+
+    class FileIStream;
+    class FileOStream;
+    class FileReader;
+    class FileWriter;
+
     template <class>
     class Function;
 
-    class String;
+    template <auto>
+    class Bind
+    {
+    public:
+        Bind() = default;
+    };
 
-    class File;
-    class FileSystem;
-    class FileReader;
-    class FileWriter;
+    template <auto Func>
+    inline static const Bind<Func>
+        bind = {};
 } // namespace ma
 
 #endif // SMAL_COMMON_DEFINE_HPP

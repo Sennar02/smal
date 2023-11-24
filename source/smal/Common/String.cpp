@@ -1,6 +1,8 @@
 #include <smal/Common/String.hpp>
 #include <smal/Common/helper.hpp>
 
+#include <string.h> // strlen
+
 namespace ma
 {
     String::String(const char* memory, usize size)
@@ -28,21 +30,20 @@ namespace ma
     bool
     String::equals(const String& other, usize count, usize first) const
     {
-        char c1 = 0;
-        char c2 = 0;
+        char a = 0, b = 0;
 
         if ( count == g_max_usize )
             count = m_size - first;
 
         for ( usize i = first; i < count; i++ ) {
-            c1 = m_memory[i];
-            c2 = other.m_memory[i];
+            a = m_memory[i];
+            b = other.m_memory[i];
 
-            if ( c1 == 0 || c1 != c2 )
+            if ( a == 0 || a != b )
                 break;
         }
 
-        return c1 == c2;
+        return a == b;
     }
 
     bool
@@ -69,6 +70,9 @@ namespace ma
     usize
     Math::hash(const String& value)
     {
-        return hash<const char*>(value.memory());
+        const char* string =
+            value.memory();
+
+        return hash(string);
     }
 } // namespace ma
