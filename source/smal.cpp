@@ -1,27 +1,22 @@
 #include <smal/Memory/import.hpp>
+
 #include <stdio.h> // printf
 
 using namespace ma;
 
-static const usize g_pool_size              = 2048;
-static const usize g_pool_page              = 128;
-static char*       g_pool_buff[g_pool_size] = {0};
-
 int
 main(int argc, const char* argv[])
 {
-    PoolAlloc pool = {
-        g_pool_buff,
-        g_pool_size,
-        g_pool_page,
-    };
+    static Memory s_memory = {g_MiB * 4};
+    static usize  s_size   = 64;
 
-    auto* piece = pool.acquire();
+    auto  alloc = s_memory.create<PoolAlloc>(g_KiB * 2, s_size);
+    auto* block = alloc.acquire();
 
-    if ( piece == 0 ) return 1;
+    if ( block == 0 ) return 1;
 
-    for ( usize i = 0; i < g_pool_page; i++ ) {
-        printf("%2hhx ", piece[i]);
+    for ( usize i = 0; i < s_size; i++ ) {
+        printf("%2hhx ", block[i]);
 
         if ( (i + 1) % 16 == 0 )
             printf("\n");

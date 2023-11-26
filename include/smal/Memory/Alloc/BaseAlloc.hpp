@@ -40,7 +40,7 @@ namespace ma
          *
          */
         virtual bool
-        contains(void* addr);
+        contains(void* memory);
 
         /**
          *
@@ -58,7 +58,7 @@ namespace ma
          *
          */
         virtual bool
-        release(char* addr) = 0;
+        release(void* memory) = 0;
 
     protected:
         /**

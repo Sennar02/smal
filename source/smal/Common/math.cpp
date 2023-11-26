@@ -1,7 +1,19 @@
-#include <smal/Common/helper.hpp>
+#include <smal/Common/math.hpp>
 
-namespace ma::Math
+namespace ma
 {
+    f64
+    floor(usize num, usize den)
+    {
+        return num / den;
+    }
+
+    f64
+    ceil(usize num, usize den)
+    {
+        return num / den + 1;
+    }
+
     template <>
     usize
     hash(const char& value)
@@ -101,4 +113,4 @@ namespace ma::Math
 
         return res;
     }
-} // namespace ma::Math
+} // namespace ma

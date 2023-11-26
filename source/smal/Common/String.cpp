@@ -1,5 +1,5 @@
 #include <smal/Common/String.hpp>
-#include <smal/Common/helper.hpp>
+#include <smal/Common/math.hpp>
 
 #include <string.h> // strlen
 
@@ -68,7 +68,7 @@ namespace ma
 
     template <>
     usize
-    Math::hash(const String& value)
+    hash(const String& value)
     {
         const char* string =
             value.memory();

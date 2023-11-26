@@ -5,27 +5,6 @@
 
 namespace ma
 {
-    /**
-     *
-     */
-    template <auto Func>
-    auto
-    function();
-
-    /**
-     *
-     */
-    template <auto Func, class Type>
-    auto
-    function(Type* inst);
-
-    /**
-     *
-     */
-    template <class Func>
-    auto
-    function(Func&& func);
-
     template <class Ret, class... Args>
     class Function<Ret(Args...)>
     {
@@ -130,15 +109,36 @@ namespace ma
 
     template <auto Func>
     Function(Bind<Func>)
-        -> Function<FuncType<decltype(Func)>>;
+        -> Function<FuncSignat<decltype(Func)>>;
 
     template <auto Func, class Type>
     Function(Bind<Func>, Type*)
-        -> Function<FuncType<decltype(Func)>>;
+        -> Function<FuncSignat<decltype(Func)>>;
 
     template <class Func>
     Function(Func&&)
-        -> Function<FuncType<decltype(&Func::operator())>>;
+        -> Function<FuncSignat<decltype(&Func::operator())>>;
+
+    /**
+     *
+     */
+    template <auto Func>
+    auto
+    function();
+
+    /**
+     *
+     */
+    template <auto Func, class Type>
+    auto
+    function(Type* inst);
+
+    /**
+     *
+     */
+    template <class Func>
+    auto
+    function(Func&& func);
 } // namespace ma
 
 #include <smal/Common/impl/Function.tpp>

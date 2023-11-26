@@ -3,7 +3,14 @@
 
 #include <smal/Common/depend.hpp>
 #include <smal/Common/define.hpp>
-#include <smal/Common/helper.hpp>
+
+#include <smal/Common/traits/declared.hpp>
+#include <smal/Common/traits/RemoveRef.hpp>
+#include <smal/Common/traits/RemovePtr.hpp>
+#include <smal/Common/traits/FuncSignat.hpp>
+
+#include <smal/Common/util.hpp>
+#include <smal/Common/math.hpp>
 
 #include <smal/Common/String.hpp>
 

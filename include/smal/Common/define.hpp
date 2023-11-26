@@ -45,6 +45,9 @@ namespace ma
     static const isize g_min_i64   = (isize) (-g_max_i64 - 1);
     static const isize g_min_isize = (isize) (-g_max_isize - 1);
 
+    static const f64 g_inf = INFINITY;
+    static const f64 g_nan = NAN;
+
     class String;
 
     class FileIStream;

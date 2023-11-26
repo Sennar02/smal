@@ -47,7 +47,7 @@ namespace ma
          *
          */
         bool
-        release(char* addr);
+        release(void* memory);
 
     private:
         struct Node
@@ -55,6 +55,7 @@ namespace ma
             Node* next;
         };
 
+    private:
         /**
          *
          */

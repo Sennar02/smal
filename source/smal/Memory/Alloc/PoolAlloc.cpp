@@ -1,20 +1,18 @@
 #include <smal/Memory/Alloc/PoolAlloc.hpp>
-#include <smal/Memory/helper.hpp>
+#include <smal/Memory/util.hpp>
 
 namespace ma
 {
     PoolAlloc::PoolAlloc()
         : BaseAlloc(0, 0)
+        , m_page {1}
     { }
 
     PoolAlloc::PoolAlloc(void* memory, usize size, usize page)
         : BaseAlloc(memory, size)
-        , m_page {page}
+        , m_page {1}
     {
-        if ( m_page == 0 )
-            m_page = m_size;
-
-        prepare();
+        prepare(page);
     }
 
     usize
@@ -47,13 +45,14 @@ namespace ma
     bool
     PoolAlloc::prepare(usize page)
     {
-        if ( page < sizeof(Node) )
-            page = sizeof(Node);
+        if ( m_page == page ) return true;
 
-        if ( m_page != page )
-            return prepare();
+        m_page = page;
 
-        return true;
+        if ( m_page < sizeof(Node) )
+            m_page = sizeof(Node);
+
+        return prepare();
     }
 
     char*
@@ -65,7 +64,7 @@ namespace ma
         if ( m_page >= size && count != 0 ) {
             m_list = m_list->next;
 
-            return (char*) memory_set(
+            return memory_set(
                 addr, m_page, 0);
         }
 
@@ -73,11 +72,13 @@ namespace ma
     }
 
     bool
-    PoolAlloc::release(char* addr)
+    PoolAlloc::release(void* memory)
     {
+        char* addr = (char*) memory;
         Node* node = (Node*) addr;
 
-        if ( contains(addr) ) return false;
+        if ( contains(addr) == false )
+            return false;
 
         if ( addr != 0 ) {
             node->next = m_list;

@@ -1,13 +1,15 @@
-#include <smal/Memory/helper.hpp>
+#include <smal/Memory/util.hpp>
 
 namespace ma
 {
-    void*
+    char*
     memory_set(void* memory, usize size, char byte)
     {
-        for ( usize i = 0; i < size; i++ )
-            ((char*) memory)[i] = byte;
+        char* buffer = (char*) memory;
 
-        return memory;
+        for ( usize i = 0; i < size; i++ )
+            buffer[i] = byte;
+
+        return buffer;
     }
 } // namespace ma

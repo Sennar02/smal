@@ -5,7 +5,7 @@ smal_common = static_library('smal-common',
         'FileOStream.cpp',
         'FileReader.cpp',
         'FileWriter.cpp',
-        'helper.cpp',
+        'math.cpp',
     ],
     include_directories: [smal_header],
 )

@@ -8,7 +8,7 @@ namespace ma
     /**
      *
      */
-    void*
+    char*
     memory_set(void* memory, usize size, char byte);
 } // namespace ma
 

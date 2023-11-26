@@ -26,11 +26,15 @@ namespace ma
     }
 
     bool
-    BaseAlloc::contains(void* addr)
+    BaseAlloc::contains(void* memory)
     {
-        char* memory = (char*) addr;
+        char* addr = (char*) memory;
 
-        return memory >= m_memory &&
-               memory < m_memory + m_size;
+        if ( addr != 0 ) {
+            return addr < m_memory + m_size &&
+                   addr >= m_memory;
+        }
+
+        return true;
     }
 } // namespace ma

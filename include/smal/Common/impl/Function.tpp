@@ -1,38 +1,8 @@
 #include <smal/Common/Function.hpp>
-#include <smal/Common/helper.hpp>
+#include <smal/Common/util.hpp>
 
 namespace ma
 {
-    template <auto Func>
-    auto
-    function()
-    {
-        Function f =
-            {bind<Func>};
-
-        return f;
-    }
-
-    template <auto Func, class Type>
-    auto
-    function(Type* inst)
-    {
-        Function f =
-            {bind<Func>, inst};
-
-        return f;
-    }
-
-    template <class Func>
-    auto
-    function(Func&& func)
-    {
-        Function f =
-            {move(func)};
-
-        return f;
-    }
-
     template <class Ret, class... Args>
     Function<Ret(Args...)>::Function()
         : m_memory {0}
@@ -162,5 +132,35 @@ namespace ma
     Function<Ret(Args...)>::operator()(Args... args, Rest... rest) const
     {
         return m_func(m_memory, forw<Args>(args)...);
+    }
+
+    template <auto Func>
+    auto
+    function()
+    {
+        Function f =
+            {bind<Func>};
+
+        return f;
+    }
+
+    template <auto Func, class Type>
+    auto
+    function(Type* inst)
+    {
+        Function f =
+            {bind<Func>, inst};
+
+        return f;
+    }
+
+    template <class Func>
+    auto
+    function(Func&& func)
+    {
+        Function f =
+            {move(func)};
+
+        return f;
     }
 } // namespace ma
