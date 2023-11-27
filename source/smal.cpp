@@ -4,22 +4,50 @@
 
 using namespace ma;
 
+static const usize s_mem_len = g_MiB * 4;
+static void*       s_mem_ptr = 0;
+
 int
 main(int argc, const char* argv[])
 {
-    static Memory s_memory = {g_MiB * 4};
-    static usize  s_size   = 64;
+    s_mem_ptr = calloc(1, s_mem_len);
 
-    auto  alloc = s_memory.create<PoolAlloc>(g_KiB * 2, s_size);
-    auto* block = alloc.acquire();
+    Bucket<int> bucket = {s_mem_ptr, s_mem_len};
+    Handle<int> handle = bucket.acquire();
 
-    if ( block == 0 ) return 1;
+    if ( bucket.release(handle) )
+        printf("Released handle.\n");
 
-    for ( usize i = 0; i < s_size; i++ ) {
-        printf("%2hhx ", block[i]);
+    PageAlloc       alloc = {s_mem_ptr, s_mem_len, sizeof(int) * 16};
+    PagedBlock<int> block = {alloc, 32};
 
-        if ( (i + 1) % 16 == 0 )
+    for ( usize i = 0; i < block.size(); ) {
+        printf("%u ", block[i]);
+
+        if ( ++i % 16 == 0 )
             printf("\n");
+    }
+
+    if ( block.resize(64) ) {
+        printf("\n");
+
+        for ( usize i = 0; i < block.size(); ) {
+            printf("%u ", block[i]);
+
+            if ( ++i % 16 == 0 )
+                printf("\n");
+        }
+    }
+
+    if ( block.resize(15) ) {
+        printf("\n");
+
+        for ( usize i = 0; i < block.size(); ) {
+            printf("%u ", block[i]);
+
+            if ( ++i % 16 == 0 )
+                printf("\n");
+        }
     }
 
     return 0;

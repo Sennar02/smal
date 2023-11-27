@@ -6,10 +6,10 @@
 namespace ma
 {
     f64
-    floor(usize num, usize den);
+    floor(f64 num, f64 den);
 
     f64
-    ceil(usize num, usize den);
+    ceil(f64 num, f64 den);
 
     template <class Type>
     usize

@@ -1,29 +1,29 @@
-#ifndef SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
-#define SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
+#ifndef SMAL_MEMORY_ALLOC_AREA_ALLOC_HPP
+#define SMAL_MEMORY_ALLOC_AREA_ALLOC_HPP
 
 #include <smal/Memory/Alloc/BaseAlloc.hpp>
 
 namespace ma
 {
-    class PoolAlloc
+    class AreaAlloc
         : public BaseAlloc
     {
     public:
         /**
          *
          */
-        PoolAlloc();
+        AreaAlloc();
 
         /**
          *
          */
-        PoolAlloc(void* memory, usize size, usize page = 0);
+        AreaAlloc(void* memory, usize size);
 
         /**
          *
          */
         usize
-        page() const;
+        avail() const;
 
         /**
          *
@@ -34,14 +34,8 @@ namespace ma
         /**
          *
          */
-        bool
-        prepare(usize page);
-
-        /**
-         *
-         */
         char*
-        acquire(usize size = 0);
+        acquire(usize size);
 
         /**
          *
@@ -49,23 +43,30 @@ namespace ma
         bool
         release(void* memory);
 
+        /**
+         *
+         */
+        bool
+        release();
+
     private:
-        struct Node
+        struct Head
         {
-            Node* next;
+            usize size;
         };
 
+        /**
+         *
+         */
+        static const usize s_head_size =
+            sizeof(Head);
+
     private:
         /**
          *
          */
-        Node* m_list;
-
-        /**
-         *
-         */
-        usize m_page;
+        char* m_cursor;
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
+#endif // SMAL_MEMORY_ALLOC_AREA_ALLOC_HPP

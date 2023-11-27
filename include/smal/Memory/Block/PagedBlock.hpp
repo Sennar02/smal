@@ -1,33 +1,34 @@
-#ifndef SMAL_MEMORY_BUFFER_FIXED_BUFFER_HPP
-#define SMAL_MEMORY_BUFFER_FIXED_BUFFER_HPP
+#ifndef SMAL_MEMORY_BLOCK_PAGED_BLOCK_HPP
+#define SMAL_MEMORY_BLOCK_PAGED_BLOCK_HPP
 
-#include <smal/Memory/define.hpp>
+#include <smal/Memory/Alloc/PageTable.hpp>
+#include <smal/Memory/Alloc/PageAlloc.hpp>
 
 namespace ma
 {
     template <class Type>
-    class FixedBuffer
+    class PagedBlock
     {
     public:
         /**
          *
          */
-        FixedBuffer();
+        PagedBlock();
 
         /**
          *
          */
-        FixedBuffer(BaseAlloc& alloc, usize size = 0);
+        PagedBlock(PageAlloc& alloc, usize size = 0);
 
         /**
          *
          */
-        FixedBuffer(void* memory, usize size);
+        PagedBlock(PageAlloc& alloc, PageTable& table);
 
         /**
          *
          */
-        virtual ~FixedBuffer();
+        virtual ~PagedBlock();
 
         /**
          *
@@ -44,8 +45,26 @@ namespace ma
         /**
          *
          */
+        bool
+        expand(usize pages);
+
+        /**
+         *
+         */
+        bool
+        shrink(usize pages);
+
+        /**
+         *
+         */
         void
         clear();
+
+        /**
+         *
+         */
+        const PageTable&
+        table() const;
 
         /**
          *
@@ -63,22 +82,22 @@ namespace ma
         /**
          *
          */
-        static const usize g_type_size =
+        static const usize s_type_size =
             sizeof(Type);
 
     private:
         /**
          *
          */
-        char* m_memory;
+        PageAlloc* m_alloc;
 
         /**
          *
          */
-        usize m_size;
+        PageTable m_table;
     };
 } // namespace ma
 
-#include <smal/Memory/Buffer/impl/FixedBuffer.tpp>
+#include <smal/Memory/Block/impl/PagedBlock.tpp>
 
-#endif // SMAL_MEMORY_BUFFER_FIXED_BUFFER_HPP
+#endif // SMAL_MEMORY_BLOCK_PAGED_BLOCK_HPP

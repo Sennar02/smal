@@ -3,15 +3,29 @@
 namespace ma
 {
     f64
-    floor(usize num, usize den)
+    floor(f64 num, f64 den)
     {
-        return num / den;
+        f64 div = g_inf;
+
+        if ( den != 0 )
+            div = (usize) (num / den);
+
+        return div;
     }
 
     f64
-    ceil(usize num, usize den)
+    ceil(f64 num, f64 den)
     {
-        return num / den + 1;
+        f64 div = g_inf;
+
+        if ( den != 0 ) {
+            div = (usize) (num / den);
+
+            if ( div != num / den )
+                return div + 1;
+        }
+
+        return div;
     }
 
     template <>

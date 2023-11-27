@@ -45,6 +45,12 @@ namespace ma
         /**
          *
          */
+        virtual usize
+        avail() const = 0;
+
+        /**
+         *
+         */
         virtual bool
         prepare() = 0;
 
@@ -59,6 +65,12 @@ namespace ma
          */
         virtual bool
         release(void* memory) = 0;
+
+        /**
+         *
+         */
+        virtual bool
+        release() = 0;
 
     protected:
         /**

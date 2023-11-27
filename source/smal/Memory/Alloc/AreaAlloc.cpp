@@ -1,22 +1,28 @@
-#include <smal/Memory/Alloc/StackAlloc.hpp>
+#include <smal/Memory/Alloc/AreaAlloc.hpp>
 #include <smal/Memory/util.hpp>
 
 namespace ma
 {
-    StackAlloc::StackAlloc()
+    AreaAlloc::AreaAlloc()
         : BaseAlloc(0, 0)
         , m_cursor {0}
     { }
 
-    StackAlloc::StackAlloc(void* memory, usize size)
+    AreaAlloc::AreaAlloc(void* memory, usize size)
         : BaseAlloc(memory, size)
         , m_cursor {0}
     {
         prepare();
     }
 
+    usize
+    AreaAlloc::avail() const
+    {
+        return m_size - (m_cursor - m_memory);
+    }
+
     bool
-    StackAlloc::prepare()
+    AreaAlloc::prepare()
     {
         m_cursor =
             m_memory;
@@ -25,29 +31,29 @@ namespace ma
     }
 
     char*
-    StackAlloc::acquire(usize size)
+    AreaAlloc::acquire(usize size)
     {
-        char* addr = m_cursor + g_head_size;
+        char* addr = m_cursor + s_head_size;
         Head* head = (Head*) m_cursor;
 
-        size += g_head_size;
+        size += s_head_size;
 
         if ( m_cursor + size < m_memory + m_size ) {
-            head->size = size - g_head_size;
+            head->size = size - s_head_size;
             m_cursor += size;
 
             return memory_set(
-                addr, size - g_head_size, 0);
+                addr, size - s_head_size, 0);
         }
 
         return 0;
     }
 
     bool
-    StackAlloc::release(void* memory)
+    AreaAlloc::release(void* memory)
     {
         char* addr = (char*) memory;
-        Head* head = (Head*) (addr - g_head_size);
+        Head* head = (Head*) (addr - s_head_size);
 
         if ( contains(addr) == false )
             return false;
@@ -60,5 +66,11 @@ namespace ma
         }
 
         return true;
+    }
+
+    bool
+    AreaAlloc::release()
+    {
+        return prepare();
     }
 } // namespace ma
