@@ -4,22 +4,25 @@
 
 using namespace ma;
 
-static const usize s_mem_len = g_MiB * 4;
-static void*       s_mem_ptr = 0;
-
 int
 main(int argc, const char* argv[])
 {
-    s_mem_ptr = calloc(1, s_mem_len);
+    Origin origin = {g_MiB * 4};
 
-    Bucket<int> bucket = {s_mem_ptr, s_mem_len};
+    Bucket<int> bucket = {origin.memory(), origin.size()};
     Handle<int> handle = bucket.acquire();
 
     if ( bucket.release(handle) )
         printf("Released handle.\n");
 
-    PoolAlloc       alloc = {s_mem_ptr, s_mem_len, sizeof(int) * 16};
-    PagedBlock<int> block = {alloc, 32};
+    StackAlloc      alloc = {origin.memory(), origin.size()};
+    PagedBlock<int> block = {alloc, 0, 128};
+
+    printf("avail = %lu\n", alloc.avail());
+
+    block.resize(256);
+
+    printf("avail = %lu\n", alloc.avail());
 
     for ( usize i = 0; i < block.size(); ) {
         printf("%u ", block[i]);
@@ -28,41 +31,9 @@ main(int argc, const char* argv[])
             printf("\n");
     }
 
-    if ( block.resize(64) ) {
-        printf("\n");
+    block.resize(0);
 
-        for ( usize i = 0; i < block.size(); ) {
-            printf("%u ", block[i]);
-
-            if ( ++i % 16 == 0 )
-                printf("\n");
-        }
-    }
-
-    if ( block.resize(15) ) {
-        printf("\n");
-
-        for ( usize i = 0; i < block.size(); ) {
-            printf("%u ", block[i]);
-
-            if ( ++i % 16 == 0 )
-                printf("\n");
-        }
-    }
-
-    if ( block.resize(15) ) {
-        printf("\n");
-
-        for ( usize i = 0; i < block.size(); ) {
-            printf("%u ", block[i]);
-
-            if ( ++i % 16 == 0 )
-                printf("\n");
-        }
-    }
-
-    if ( block.resize(0) )
-        printf("\n");
+    printf("avail = %lu\n", alloc.avail());
 
     return 0;
 }

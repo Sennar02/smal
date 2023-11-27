@@ -13,6 +13,8 @@ namespace ma
     static const usize g_MB = g_KB * g_KB;
     static const usize g_GB = g_MB * g_KB;
 
+    class Origin;
+
     class BaseAlloc;
     class PoolAlloc;
     class StackAlloc;

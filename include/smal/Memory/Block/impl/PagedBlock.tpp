@@ -79,6 +79,9 @@ namespace ma
         usize page = m_table.page();
         char* addr = 0;
 
+        if ( m_table.count() + pages > m_table.size() )
+            return false;
+
         for ( usize i = 0; i < pages; i++ ) {
             addr = m_alloc->acquire(page);
 
@@ -96,6 +99,9 @@ namespace ma
     PagedBlock<Type>::shrink(usize pages)
     {
         char* addr = 0;
+
+        if ( m_table.count() - pages < 0 )
+            return false;
 
         for ( usize i = 0; i < pages; i++ ) {
             addr = m_table.pull();

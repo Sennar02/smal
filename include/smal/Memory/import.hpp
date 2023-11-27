@@ -6,6 +6,8 @@
 
 #include <smal/Memory/util.hpp>
 
+#include <smal/Memory/Origin.hpp>
+
 #include <smal/Memory/Alloc/BaseAlloc.hpp>
 #include <smal/Memory/Alloc/PoolAlloc.hpp>
 #include <smal/Memory/Alloc/StackAlloc.hpp>
