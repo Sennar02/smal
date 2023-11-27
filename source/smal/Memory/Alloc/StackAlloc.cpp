@@ -1,14 +1,14 @@
-#include <smal/Memory/Alloc/AreaAlloc.hpp>
+#include <smal/Memory/Alloc/StackAlloc.hpp>
 #include <smal/Memory/util.hpp>
 
 namespace ma
 {
-    AreaAlloc::AreaAlloc()
+    StackAlloc::StackAlloc()
         : BaseAlloc(0, 0)
         , m_cursor {0}
     { }
 
-    AreaAlloc::AreaAlloc(void* memory, usize size)
+    StackAlloc::StackAlloc(void* memory, usize size)
         : BaseAlloc(memory, size)
         , m_cursor {0}
     {
@@ -16,13 +16,13 @@ namespace ma
     }
 
     usize
-    AreaAlloc::avail() const
+    StackAlloc::avail() const
     {
         return m_size - (m_cursor - m_memory);
     }
 
     bool
-    AreaAlloc::prepare()
+    StackAlloc::prepare()
     {
         m_cursor =
             m_memory;
@@ -31,7 +31,7 @@ namespace ma
     }
 
     char*
-    AreaAlloc::acquire(usize size)
+    StackAlloc::acquire(usize size)
     {
         char* addr = m_cursor + s_head_size;
         Head* head = (Head*) m_cursor;
@@ -50,7 +50,7 @@ namespace ma
     }
 
     bool
-    AreaAlloc::release(void* memory)
+    StackAlloc::release(void* memory)
     {
         char* addr = (char*) memory;
         Head* head = (Head*) (addr - s_head_size);
@@ -69,7 +69,7 @@ namespace ma
     }
 
     bool
-    AreaAlloc::release()
+    StackAlloc::release()
     {
         return prepare();
     }

@@ -1,23 +1,23 @@
-#ifndef SMAL_MEMORY_ALLOC_AREA_ALLOC_HPP
-#define SMAL_MEMORY_ALLOC_AREA_ALLOC_HPP
+#ifndef SMAL_MEMORY_ALLOC_STACK_ALLOC_HPP
+#define SMAL_MEMORY_ALLOC_STACK_ALLOC_HPP
 
 #include <smal/Memory/Alloc/BaseAlloc.hpp>
 
 namespace ma
 {
-    class AreaAlloc
+    class StackAlloc
         : public BaseAlloc
     {
     public:
         /**
          *
          */
-        AreaAlloc();
+        StackAlloc();
 
         /**
          *
          */
-        AreaAlloc(void* memory, usize size);
+        StackAlloc(void* memory, usize size);
 
         /**
          *
@@ -69,4 +69,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_AREA_ALLOC_HPP
+#endif // SMAL_MEMORY_ALLOC_STACK_ALLOC_HPP

@@ -1,23 +1,23 @@
-#ifndef SMAL_MEMORY_ALLOC_PAGE_ALLOC_HPP
-#define SMAL_MEMORY_ALLOC_PAGE_ALLOC_HPP
+#ifndef SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
+#define SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
 
 #include <smal/Memory/Alloc/BaseAlloc.hpp>
 
 namespace ma
 {
-    class PageAlloc
+    class PoolAlloc
         : public BaseAlloc
     {
     public:
         /**
          *
          */
-        PageAlloc();
+        PoolAlloc();
 
         /**
          *
          */
-        PageAlloc(void* memory, usize size, usize page = 0);
+        PoolAlloc(void* memory, usize size, usize page = 0);
 
         /**
          *
@@ -85,4 +85,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_PAGE_ALLOC_HPP
+#endif // SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP

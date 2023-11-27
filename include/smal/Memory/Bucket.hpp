@@ -7,7 +7,7 @@ namespace ma
 {
     template <class Type>
     class Bucket
-        : private PageAlloc
+        : private PoolAlloc
     {
     public:
         /**

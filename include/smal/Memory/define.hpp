@@ -14,10 +14,8 @@ namespace ma
     static const usize g_GB = g_MB * g_KB;
 
     class BaseAlloc;
-    class PageAlloc;
-    class AreaAlloc;
-
-    class Memory;
+    class PoolAlloc;
+    class StackAlloc;
 
     template <class Type>
     class Bucket;
@@ -26,10 +24,15 @@ namespace ma
     class Handle;
 
     template <class Type>
+    class BaseBlock;
+
+    template <class Type>
     class FixedBlock;
 
     template <class Type>
     class PagedBlock;
+
+    class PageTable;
 } // namespace ma
 
 #endif // SMAL_MEMORY_DEFINE_HPP

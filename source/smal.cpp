@@ -18,7 +18,7 @@ main(int argc, const char* argv[])
     if ( bucket.release(handle) )
         printf("Released handle.\n");
 
-    PageAlloc       alloc = {s_mem_ptr, s_mem_len, sizeof(int) * 16};
+    PoolAlloc       alloc = {s_mem_ptr, s_mem_len, sizeof(int) * 16};
     PagedBlock<int> block = {alloc, 32};
 
     for ( usize i = 0; i < block.size(); ) {
@@ -49,6 +49,20 @@ main(int argc, const char* argv[])
                 printf("\n");
         }
     }
+
+    if ( block.resize(15) ) {
+        printf("\n");
+
+        for ( usize i = 0; i < block.size(); ) {
+            printf("%u ", block[i]);
+
+            if ( ++i % 16 == 0 )
+                printf("\n");
+        }
+    }
+
+    if ( block.resize(0) )
+        printf("\n");
 
     return 0;
 }

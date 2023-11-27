@@ -9,49 +9,64 @@ namespace ma
     { }
 
     template <class Type>
-    PagedBlock<Type>::PagedBlock(PageAlloc& alloc, usize size)
+    PagedBlock<Type>::PagedBlock(PoolAlloc& alloc, usize size)
         : m_alloc {&alloc}
-        , m_table {alloc.acquire(), alloc.page(), alloc.page()}
+        , m_table {}
     {
+        char* addr = alloc.acquire();
+        usize page = alloc.page();
+
+        if ( addr != 0 )
+            m_table = {addr, page, page};
+
         resize(size);
     }
 
     template <class Type>
-    PagedBlock<Type>::PagedBlock(PageAlloc& alloc, PageTable& table)
+    PagedBlock<Type>::PagedBlock(BaseAlloc& alloc, usize size, usize page)
         : m_alloc {&alloc}
-        , m_table {table}
-    { }
+        , m_table {}
+    {
+        char* addr = alloc.acquire(page);
+
+        if ( addr != 0 )
+            m_table = {addr, page, page};
+
+        resize(size);
+    }
 
     template <class Type>
     PagedBlock<Type>::~PagedBlock()
     {
-        clear();
+        shrink(m_table.count());
     }
 
     template <class Type>
     usize
     PagedBlock<Type>::size() const
     {
-        usize count = m_table.count();
+        usize pages = m_table.count();
         usize items = m_table.page() / s_type_size;
 
-        return count * items;
+        return pages * items;
     }
 
     template <class Type>
     bool
     PagedBlock<Type>::resize(usize size)
     {
-        usize count = m_table.count();
+        usize pages = m_table.count();
         usize items = m_table.page() / s_type_size;
 
         if ( items != 0 ) {
             size = ceil(size, items);
 
-            if ( count < size )
-                return expand(size - count);
+            if ( pages == size ) return true;
+
+            if ( pages < size )
+                return expand(size - pages);
             else
-                return shrink(count - size);
+                return shrink(pages - size);
         }
 
         return false;
@@ -61,43 +76,37 @@ namespace ma
     bool
     PagedBlock<Type>::expand(usize pages)
     {
-        char* addr   = 0;
-        bool  result = true;
+        usize page = m_table.page();
+        char* addr = 0;
 
         for ( usize i = 0; i < pages; i++ ) {
-            addr   = m_alloc->acquire();
-            result = m_table.insert(m_table.count(), addr);
+            addr = m_alloc->acquire(page);
 
-            if ( result == false )
-                m_alloc->release(addr), i = pages;
+            if ( addr != 0 )
+                m_table.push(addr);
+            else
+                return false;
         }
 
-        return result;
+        return true;
     }
 
     template <class Type>
     bool
     PagedBlock<Type>::shrink(usize pages)
     {
-        char* addr   = 0;
-        bool  result = true;
+        char* addr = 0;
 
         for ( usize i = 0; i < pages; i++ ) {
-            addr   = m_table.remove(m_table.count() - 1);
-            result = m_alloc->release(addr);
+            addr = m_table.pull();
 
-            if ( result == false )
-                i = pages;
+            if ( addr != 0 )
+                m_alloc->release(addr);
+            else
+                return false;
         }
 
-        return result;
-    }
-
-    template <class Type>
-    void
-    PagedBlock<Type>::clear()
-    {
-        shrink(m_table.count());
+        return true;
     }
 
     template <class Type>

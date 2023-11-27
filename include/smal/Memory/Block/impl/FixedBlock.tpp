@@ -22,12 +22,6 @@ namespace ma
     }
 
     template <class Type>
-    FixedBlock<Type>::FixedBlock(void* memory, usize size)
-        : m_memory {(char*) memory}
-        , m_size {size}
-    { }
-
-    template <class Type>
     FixedBlock<Type>::~FixedBlock()
     { }
 
@@ -44,11 +38,6 @@ namespace ma
     {
         return false;
     }
-
-    template <class Type>
-    void
-    FixedBlock<Type>::clear()
-    { }
 
     template <class Type>
     Type&

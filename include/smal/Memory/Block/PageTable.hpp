@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_ALLOC_PAGE_TABLE_HPP
-#define SMAL_MEMORY_ALLOC_PAGE_TABLE_HPP
+#ifndef SMAL_MEMORY_BLOCK_PAGE_TABLE_HPP
+#define SMAL_MEMORY_BLOCK_PAGE_TABLE_HPP
 
 #include <smal/Memory/define.hpp>
 
@@ -8,6 +8,11 @@ namespace ma
     class PageTable
     {
     public:
+        /**
+         *
+        */
+        PageTable();
+
         /**
          *
          */
@@ -47,13 +52,13 @@ namespace ma
          *
          */
         bool
-        insert(usize index, void* memory);
+        push(void* memory);
 
         /**
          *
          */
         char*
-        remove(usize index);
+        pull();
 
         /**
          *
@@ -99,4 +104,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_PAGE_TABLE_HPP
+#endif // SMAL_MEMORY_BLOCK_PAGE_TABLE_HPP

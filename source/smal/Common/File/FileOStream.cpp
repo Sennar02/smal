@@ -1,11 +1,10 @@
-#include <smal/Common/FileOStream.hpp>
+#include <smal/Common/File/FileOStream.hpp>
 
 #include <stdio.h> // fopen, fclose, fwrite
 
 namespace ma
 {
-    static const char* g_file_mode =
-        "a";
+    static const char* g_file_mode = "a";
 
     FileOStream::FileOStream()
         : m_source {0}

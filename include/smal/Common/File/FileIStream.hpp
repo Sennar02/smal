@@ -1,5 +1,5 @@
-#ifndef SMAL_COMMON_FILE_ISTREAM_HPP
-#define SMAL_COMMON_FILE_ISTREAM_HPP
+#ifndef SMAL_COMMON_FILE_FILE_ISTREAM_HPP
+#define SMAL_COMMON_FILE_FILE_ISTREAM_HPP
 
 #include <smal/Common/String.hpp>
 
@@ -44,4 +44,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_COMMON_FILE_ISTREAM_HPP
+#endif // SMAL_COMMON_FILE_FILE_ISTREAM_HPP

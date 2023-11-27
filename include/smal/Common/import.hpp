@@ -14,10 +14,10 @@
 
 #include <smal/Common/String.hpp>
 
-#include <smal/Common/FileIStream.hpp>
-#include <smal/Common/FileOStream.hpp>
-#include <smal/Common/FileReader.hpp>
-#include <smal/Common/FileWriter.hpp>
+#include <smal/Common/File/FileIStream.hpp>
+#include <smal/Common/File/FileOStream.hpp>
+#include <smal/Common/File/FileReader.hpp>
+#include <smal/Common/File/FileWriter.hpp>
 
 #include <smal/Common/Function.hpp>
 

@@ -1,12 +1,13 @@
 #ifndef SMAL_MEMORY_BLOCK_FIXED_BLOCK_HPP
 #define SMAL_MEMORY_BLOCK_FIXED_BLOCK_HPP
 
-#include <smal/Memory/define.hpp>
+#include <smal/Memory/Block/BaseBlock.hpp>
 
 namespace ma
 {
     template <class Type>
     class FixedBlock
+        : public BaseBlock<Type>
     {
     public:
         /**
@@ -17,12 +18,7 @@ namespace ma
         /**
          *
          */
-        FixedBlock(BaseAlloc& alloc, usize size = 0);
-
-        /**
-         *
-         */
-        FixedBlock(void* memory, usize size);
+        FixedBlock(BaseAlloc& alloc, usize size);
 
         /**
          *
@@ -40,12 +36,6 @@ namespace ma
          */
         bool
         resize(usize size);
-
-        /**
-         *
-         */
-        void
-        clear();
 
         /**
          *

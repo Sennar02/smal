@@ -1,5 +1,5 @@
-#ifndef SMAL_COMMON_FILE_WRITER_HPP
-#define SMAL_COMMON_FILE_WRITER_HPP
+#ifndef SMAL_COMMON_FILE_FILE_WRITER_HPP
+#define SMAL_COMMON_FILE_FILE_WRITER_HPP
 
 #include <smal/Common/define.hpp>
 
@@ -21,4 +21,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_COMMON_FILE_WRITER_HPP
+#endif // SMAL_COMMON_FILE_FILE_WRITER_HPP

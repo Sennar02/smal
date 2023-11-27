@@ -1,5 +1,5 @@
-#ifndef SMAL_COMMON_FILE_READER_HPP
-#define SMAL_COMMON_FILE_READER_HPP
+#ifndef SMAL_COMMON_FILE_FILE_READER_HPP
+#define SMAL_COMMON_FILE_FILE_READER_HPP
 
 #include <smal/Common/define.hpp>
 
@@ -61,4 +61,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_COMMON_FILE_READER_HPP
+#endif // SMAL_COMMON_FILE_FILE_READER_HPP

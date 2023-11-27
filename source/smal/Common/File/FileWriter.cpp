@@ -1,5 +1,5 @@
-#include <smal/Common/FileWriter.hpp>
-#include <smal/Common/FileOStream.hpp>
+#include <smal/Common/File/FileWriter.hpp>
+#include <smal/Common/File/FileOStream.hpp>
 
 namespace ma
 {

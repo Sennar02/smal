@@ -4,14 +4,14 @@ namespace ma
 {
     template <class Type>
     Bucket<Type>::Bucket(void* memory, usize size)
-        : PageAlloc(memory, size, s_type_size)
+        : PoolAlloc(memory, size, s_type_size)
     { }
 
     template <class Type>
     Handle<Type>
     Bucket<Type>::acquire()
     {
-        return {this, PageAlloc::acquire()};
+        return {this, PoolAlloc::acquire()};
     }
 
     template <class Type>
@@ -20,7 +20,7 @@ namespace ma
     {
         bool result = false;
 
-        if ( PageAlloc::release(handle.memory()) )
+        if ( PoolAlloc::release(handle.memory()) )
             handle = {0, 0}, result = true;
 
         return result;

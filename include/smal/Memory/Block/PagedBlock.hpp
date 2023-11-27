@@ -1,13 +1,15 @@
 #ifndef SMAL_MEMORY_BLOCK_PAGED_BLOCK_HPP
 #define SMAL_MEMORY_BLOCK_PAGED_BLOCK_HPP
 
-#include <smal/Memory/Alloc/PageTable.hpp>
-#include <smal/Memory/Alloc/PageAlloc.hpp>
+#include <smal/Memory/Block/BaseBlock.hpp>
+#include <smal/Memory/Block/PageTable.hpp>
+#include <smal/Memory/Alloc/PoolAlloc.hpp>
 
 namespace ma
 {
     template <class Type>
     class PagedBlock
+        : public BaseBlock<Type>
     {
     public:
         /**
@@ -18,12 +20,12 @@ namespace ma
         /**
          *
          */
-        PagedBlock(PageAlloc& alloc, usize size = 0);
+        PagedBlock(PoolAlloc& alloc, usize size);
 
         /**
          *
          */
-        PagedBlock(PageAlloc& alloc, PageTable& table);
+        PagedBlock(BaseAlloc& alloc, usize size, usize page);
 
         /**
          *
@@ -41,24 +43,6 @@ namespace ma
          */
         bool
         resize(usize size);
-
-        /**
-         *
-         */
-        bool
-        expand(usize pages);
-
-        /**
-         *
-         */
-        bool
-        shrink(usize pages);
-
-        /**
-         *
-         */
-        void
-        clear();
 
         /**
          *
@@ -85,11 +69,23 @@ namespace ma
         static const usize s_type_size =
             sizeof(Type);
 
+        /**
+         *
+         */
+        bool
+        expand(usize pages);
+
+        /**
+         *
+         */
+        bool
+        shrink(usize pages);
+
     private:
         /**
          *
          */
-        PageAlloc* m_alloc;
+        BaseAlloc* m_alloc;
 
         /**
          *

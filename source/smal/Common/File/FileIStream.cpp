@@ -1,11 +1,10 @@
-#include <smal/Common/FileIStream.hpp>
+#include <smal/Common/File/FileIStream.hpp>
 
 #include <stdio.h> // fopen, fclose, fread
 
 namespace ma
 {
-    static const char* g_file_mode =
-        "r";
+    static const char* g_file_mode = "r";
 
     FileIStream::FileIStream()
         : m_source {0}

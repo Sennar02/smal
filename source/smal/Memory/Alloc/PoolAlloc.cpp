@@ -1,15 +1,15 @@
-#include <smal/Memory/Alloc/PageAlloc.hpp>
+#include <smal/Memory/Alloc/PoolAlloc.hpp>
 #include <smal/Memory/util.hpp>
 
 namespace ma
 {
-    PageAlloc::PageAlloc()
+    PoolAlloc::PoolAlloc()
         : BaseAlloc(0, 0)
         , m_page {1}
         , m_count {0}
     { }
 
-    PageAlloc::PageAlloc(void* memory, usize size, usize page)
+    PoolAlloc::PoolAlloc(void* memory, usize size, usize page)
         : BaseAlloc(memory, size)
         , m_page {1}
         , m_count {0}
@@ -18,19 +18,19 @@ namespace ma
     }
 
     usize
-    PageAlloc::page() const
+    PoolAlloc::page() const
     {
         return m_page;
     }
 
     usize
-    PageAlloc::avail() const
+    PoolAlloc::avail() const
     {
         return m_count * m_page;
     }
 
     bool
-    PageAlloc::prepare()
+    PoolAlloc::prepare()
     {
         Node* node = (Node*) m_memory;
         Node* next = 0;
@@ -51,7 +51,7 @@ namespace ma
     }
 
     bool
-    PageAlloc::prepare(usize page)
+    PoolAlloc::prepare(usize page)
     {
         if ( m_page == page ) return true;
 
@@ -64,7 +64,7 @@ namespace ma
     }
 
     char*
-    PageAlloc::acquire(usize size)
+    PoolAlloc::acquire(usize size)
     {
         char* addr = (char*) m_list;
 
@@ -80,7 +80,7 @@ namespace ma
     }
 
     bool
-    PageAlloc::release(void* memory)
+    PoolAlloc::release(void* memory)
     {
         char* addr = (char*) memory;
         Node* node = (Node*) addr;
@@ -99,7 +99,7 @@ namespace ma
     }
 
     bool
-    PageAlloc::release()
+    PoolAlloc::release()
     {
         return prepare();
     }

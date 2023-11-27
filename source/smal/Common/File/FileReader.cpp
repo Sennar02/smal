@@ -1,5 +1,5 @@
-#include <smal/Common/FileReader.hpp>
-#include <smal/Common/FileIStream.hpp>
+#include <smal/Common/File/FileReader.hpp>
+#include <smal/Common/File/FileIStream.hpp>
 
 namespace ma
 {

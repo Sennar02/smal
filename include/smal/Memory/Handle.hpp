@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_HANDLE_HPP
 #define SMAL_MEMORY_HANDLE_HPP
 
-#include <smal/Memory/Alloc/PageAlloc.hpp>
+#include <smal/Memory/define.hpp>
 
 namespace ma
 {

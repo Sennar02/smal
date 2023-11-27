@@ -55,19 +55,17 @@ namespace ma
     class FileReader;
     class FileWriter;
 
+    template <auto>
+    struct Bind;
+
     template <class>
     class Function;
 
-    template <auto>
-    class Bind
-    {
-    public:
-        Bind() = default;
-    };
+    template <class>
+    class Array;
 
     template <auto Func>
-    inline static const Bind<Func>
-        bind = {};
+    static inline Bind<Func> bind;
 } // namespace ma
 
 #endif // SMAL_COMMON_DEFINE_HPP

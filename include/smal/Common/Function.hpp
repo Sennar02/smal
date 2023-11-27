@@ -2,9 +2,14 @@
 #define SMAL_COMMON_FUNC_HPP
 
 #include <smal/Common/define.hpp>
+#include <smal/Common/traits/FuncSignat.hpp>
 
 namespace ma
 {
+    template <auto>
+    class Bind
+    { };
+
     template <class Ret, class... Args>
     class Function<Ret(Args...)>
     {
