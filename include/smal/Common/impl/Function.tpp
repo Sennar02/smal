@@ -136,7 +136,7 @@ namespace ma
 
     template <auto Func>
     auto
-    function()
+    func()
     {
         Function f =
             {bind<Func>};
@@ -146,7 +146,7 @@ namespace ma
 
     template <auto Func, class Type>
     auto
-    function(Type* inst)
+    func(Type* inst)
     {
         Function f =
             {bind<Func>, inst};
@@ -156,7 +156,7 @@ namespace ma
 
     template <class Func>
     auto
-    function(Func&& func)
+    func(Func&& func)
     {
         Function f =
             {move(func)};

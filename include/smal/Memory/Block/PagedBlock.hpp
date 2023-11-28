@@ -20,12 +20,7 @@ namespace ma
         /**
          *
          */
-        PagedBlock(PoolAlloc& alloc, usize size);
-
-        /**
-         *
-         */
-        PagedBlock(BaseAlloc& alloc, usize size, usize page);
+        PagedBlock(const PoolAlloc& alloc, usize size);
 
         /**
          *
@@ -68,7 +63,6 @@ namespace ma
          */
         static const usize s_type_size =
             sizeof(Type);
-
         /**
          *
          */
@@ -85,7 +79,7 @@ namespace ma
         /**
          *
          */
-        BaseAlloc* m_alloc;
+        PoolAlloc m_alloc;
 
         /**
          *

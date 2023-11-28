@@ -129,21 +129,21 @@ namespace ma
      */
     template <auto Func>
     auto
-    function();
+    func();
 
     /**
      *
      */
     template <auto Func, class Type>
     auto
-    function(Type* inst);
+    func(Type* inst);
 
     /**
      *
      */
     template <class Func>
     auto
-    function(Func&& func);
+    func(Func&& func);
 } // namespace ma
 
 #include <smal/Common/impl/Function.tpp>

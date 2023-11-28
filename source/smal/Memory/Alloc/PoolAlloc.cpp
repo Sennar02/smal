@@ -68,6 +68,8 @@ namespace ma
     {
         char* addr = (char*) m_list;
 
+        if ( size == 0 ) return 0;
+
         if ( m_page >= size && m_count != 0 ) {
             m_count -= 1;
             m_list = m_list->next;

@@ -16,8 +16,12 @@ namespace ma
     class Origin;
 
     class BaseAlloc;
+    class NullAlloc;
     class PoolAlloc;
     class StackAlloc;
+
+    template <class Alloc>
+    class ProxyAlloc;
 
     template <class Type>
     class Bucket;

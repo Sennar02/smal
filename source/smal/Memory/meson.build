@@ -1,6 +1,7 @@
 smal_memory = static_library('smal-memory',
     sources: [
         'Alloc/BaseAlloc.cpp',
+        'Alloc/NullAlloc.cpp',
         'Alloc/PoolAlloc.cpp',
         'Alloc/StackAlloc.cpp',
         'Block/PageTable.cpp',

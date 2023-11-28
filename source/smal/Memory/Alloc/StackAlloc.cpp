@@ -36,9 +36,11 @@ namespace ma
         char* addr = m_cursor + s_head_size;
         Head* head = (Head*) m_cursor;
 
+        if ( size == 0 ) return 0;
+
         size += s_head_size;
 
-        if ( m_cursor + size < m_memory + m_size ) {
+        if ( m_cursor + size <= m_memory + m_size ) {
             head->size = size - s_head_size;
             m_cursor += size;
 

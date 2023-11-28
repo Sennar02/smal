@@ -4,30 +4,17 @@ namespace ma
 {
     template <class Type>
     PagedBlock<Type>::PagedBlock()
-        : m_alloc {0}
+        : m_alloc {}
         , m_table {}
     { }
 
     template <class Type>
-    PagedBlock<Type>::PagedBlock(PoolAlloc& alloc, usize size)
-        : m_alloc {&alloc}
+    PagedBlock<Type>::PagedBlock(const PoolAlloc& alloc, usize size)
+        : m_alloc {alloc}
         , m_table {}
     {
-        char* addr = alloc.acquire();
-        usize page = alloc.page();
-
-        if ( addr != 0 )
-            m_table = {addr, page, page};
-
-        resize(size);
-    }
-
-    template <class Type>
-    PagedBlock<Type>::PagedBlock(BaseAlloc& alloc, usize size, usize page)
-        : m_alloc {&alloc}
-        , m_table {}
-    {
-        char* addr = alloc.acquire(page);
+        usize page = m_alloc.page();
+        char* addr = m_alloc.acquire(page);
 
         if ( addr != 0 )
             m_table = {addr, page, page};
@@ -83,7 +70,7 @@ namespace ma
             return false;
 
         for ( usize i = 0; i < pages; i++ ) {
-            addr = m_alloc->acquire(page);
+            addr = m_alloc.acquire(page);
 
             if ( addr != 0 )
                 m_table.push(addr);
@@ -107,7 +94,7 @@ namespace ma
             addr = m_table.pull();
 
             if ( addr != 0 )
-                m_alloc->release(addr);
+                m_alloc.release(addr);
             else
                 return false;
         }

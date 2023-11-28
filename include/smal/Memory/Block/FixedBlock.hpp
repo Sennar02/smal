@@ -18,7 +18,7 @@ namespace ma
         /**
          *
          */
-        FixedBlock(BaseAlloc& alloc, usize size);
+        FixedBlock(const BaseAlloc& alloc, usize size);
 
         /**
          *

@@ -9,8 +9,10 @@
 #include <smal/Memory/Origin.hpp>
 
 #include <smal/Memory/Alloc/BaseAlloc.hpp>
+#include <smal/Memory/Alloc/NullAlloc.hpp>
 #include <smal/Memory/Alloc/PoolAlloc.hpp>
 #include <smal/Memory/Alloc/StackAlloc.hpp>
+#include <smal/Memory/Alloc/ProxyAlloc.hpp>
 
 #include <smal/Memory/Block/BaseBlock.hpp>
 #include <smal/Memory/Block/FixedBlock.hpp>
