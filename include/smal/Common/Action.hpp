@@ -1,5 +1,5 @@
-#ifndef SMAL_COMMON_FUNC_HPP
-#define SMAL_COMMON_FUNC_HPP
+#ifndef SMAL_COMMON_ACTION_HPP
+#define SMAL_COMMON_ACTION_HPP
 
 #include <smal/Common/define.hpp>
 #include <smal/Common/traits/FuncSignat.hpp>
@@ -11,31 +11,31 @@ namespace ma
     { };
 
     template <class Ret, class... Args>
-    class Function<Ret(Args...)>
+    class Action<Ret(Args...)>
     {
     public:
         /**
          *
          */
-        Function();
+        Action();
 
         /**
          *
          */
         template <auto Func>
-        Function(Bind<Func>);
+        Action(Bind<Func>);
 
         /**
          *
          */
         template <auto Func, class Type>
-        Function(Bind<Func>, Type* inst);
+        Action(Bind<Func>, Type* inst);
 
         /**
          *
          */
         template <class Func>
-        Function(Func&& func);
+        Action(Func&& func);
 
         /**
          *
@@ -113,39 +113,39 @@ namespace ma
     };
 
     template <auto Func>
-    Function(Bind<Func>)
-        -> Function<FuncSignat<decltype(Func)>>;
+    Action(Bind<Func>)
+        -> Action<FuncSignat<decltype(Func)>>;
 
     template <auto Func, class Type>
-    Function(Bind<Func>, Type*)
-        -> Function<FuncSignat<decltype(Func)>>;
+    Action(Bind<Func>, Type*)
+        -> Action<FuncSignat<decltype(Func)>>;
 
     template <class Func>
-    Function(Func&&)
-        -> Function<FuncSignat<decltype(&Func::operator())>>;
+    Action(Func&&)
+        -> Action<FuncSignat<decltype(&Func::operator())>>;
 
     /**
      *
      */
     template <auto Func>
     auto
-    func();
+    action();
 
     /**
      *
      */
     template <auto Func, class Type>
     auto
-    func(Type* inst);
+    action(Type* inst);
 
     /**
      *
      */
     template <class Func>
     auto
-    func(Func&& func);
+    action(Func&& func);
 } // namespace ma
 
-#include <smal/Common/impl/Function.tpp>
+#include <smal/Common/impl/Action.tpp>
 
-#endif // SMAL_COMMON_FUNC_HPP
+#endif // SMAL_COMMON_ACTION_HPP

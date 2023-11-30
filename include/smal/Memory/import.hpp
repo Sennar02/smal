@@ -19,7 +19,6 @@
 #include <smal/Memory/Block/PagedBlock.hpp>
 #include <smal/Memory/Block/PageTable.hpp>
 
-#include <smal/Memory/Handle.hpp>
 #include <smal/Memory/Bucket.hpp>
 
 #endif // SMAL_MEMORY_IMPORT_HPP

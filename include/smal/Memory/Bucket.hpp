@@ -1,15 +1,19 @@
 #ifndef SMAL_MEMORY_BUCKET_HPP
 #define SMAL_MEMORY_BUCKET_HPP
 
-#include <smal/Memory/Handle.hpp>
+#include <smal/Memory/Alloc/PoolAlloc.hpp>
 
 namespace ma
 {
     template <class Type>
     class Bucket
-        : private PoolAlloc
     {
     public:
+        /**
+         *
+         */
+        Bucket();
+
         /**
          *
          */
@@ -18,14 +22,14 @@ namespace ma
         /**
          *
          */
-        Handle<Type>
+        Type*
         acquire();
 
         /**
          *
          */
         bool
-        release(Handle<Type>& handle);
+        release(Type* addr);
 
     private:
         /**
@@ -33,6 +37,12 @@ namespace ma
          */
         static const usize s_type_size =
             sizeof(Type);
+
+    private:
+        /**
+         *
+         */
+        PoolAlloc m_alloc;
     };
 } // namespace ma
 

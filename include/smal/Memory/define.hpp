@@ -27,9 +27,6 @@ namespace ma
     class Bucket;
 
     template <class Type>
-    class Handle;
-
-    template <class Type>
     class BaseBlock;
 
     template <class Type>

@@ -25,11 +25,6 @@ namespace ma
         /**
          *
          */
-        virtual ~PagedBlock();
-
-        /**
-         *
-         */
         usize
         size() const;
 

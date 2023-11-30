@@ -28,37 +28,37 @@ namespace ma
         /**
          *
          */
-        usize
+        virtual usize
         avail() const;
 
         /**
          *
          */
-        bool
-        prepare();
-
-        /**
-         *
-         */
-        bool
+        virtual bool
         prepare(usize page);
 
         /**
          *
          */
-        char*
-        acquire(usize size = 0);
+        virtual bool
+        prepare();
 
         /**
          *
          */
-        bool
+        virtual char*
+        acquire(usize size = g_max_usize);
+
+        /**
+         *
+         */
+        virtual bool
         release(void* memory);
 
         /**
          *
          */
-        bool
+        virtual bool
         release();
 
     private:

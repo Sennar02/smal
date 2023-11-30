@@ -59,7 +59,7 @@ namespace ma
     struct Bind;
 
     template <class>
-    class Function;
+    class Action;
 
     template <class>
     class Array;

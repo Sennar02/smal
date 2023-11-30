@@ -19,6 +19,6 @@
 #include <smal/Common/File/FileReader.hpp>
 #include <smal/Common/File/FileWriter.hpp>
 
-#include <smal/Common/Function.hpp>
+#include <smal/Common/Action.hpp>
 
 #endif // SMAL_COMMON_IMPORT_HPP

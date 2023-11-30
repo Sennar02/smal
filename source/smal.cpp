@@ -1,20 +1,35 @@
 #include <smal/Struct/import.hpp>
-
-#include <stdio.h> // printf
+#include <stdio.h>
 
 using namespace ma;
 
 int
 main(int argc, const char* argv[])
 {
-    Origin     origin = {g_MiB * 4};
-    StackAlloc alloc  = {origin.memory(), origin.size()};
+    Origin     mem   = {g_MiB * 4};
+    StackAlloc alloc = {mem.memory(), mem.size()};
 
-    ProxyAlloc<PoolAlloc> proxy = {alloc, g_KiB};
+    // clang-format off
+    ArrayList<int, PagedBlock> array = {
+        ProxyAlloc<PoolAlloc> {alloc, g_KiB}, 100, 5
+    };
+    // clang-format on
 
-    ArrayList<int, PagedBlock> list = {proxy, 100};
+    array.insert(10, 0);
 
-    printf("%lu\n", list.size());
+    array.for_each(Action {[](int& x, usize i, const ArrayList<int, PagedBlock>& self) {
+        if ( i == 0 )
+            printf("{\n");
+
+        printf("  %2lu | %i\n", i, x);
+
+        if ( i + 1 == self.count() )
+            printf("}\n");
+    }});
+
+    array.clear(Action {[](int x, usize i) {
+        destroy(x);
+    }});
 
     return 0;
 }

@@ -66,10 +66,12 @@ namespace ma
     char*
     PageTable::pull()
     {
-        if ( m_count > 0 )
-            return m_memory[--m_count];
+        char* addr = 0;
 
-        return 0;
+        if ( m_count > 0 )
+            swap(m_memory[--m_count], addr);
+
+        return addr;
     }
 
     char*

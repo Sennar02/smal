@@ -1,17 +1,17 @@
-#include <smal/Common/Function.hpp>
+#include <smal/Common/Action.hpp>
 #include <smal/Common/util.hpp>
 
 namespace ma
 {
     template <class Ret, class... Args>
-    Function<Ret(Args...)>::Function()
+    Action<Ret(Args...)>::Action()
         : m_memory {0}
         , m_func {0}
     { }
 
     template <class Ret, class... Args>
     template <auto Func>
-    Function<Ret(Args...)>::Function(Bind<Func>)
+    Action<Ret(Args...)>::Action(Bind<Func>)
         : m_memory {0}
         , m_func {0}
     {
@@ -20,7 +20,7 @@ namespace ma
 
     template <class Ret, class... Args>
     template <auto Func, class Type>
-    Function<Ret(Args...)>::Function(Bind<Func>, Type* inst)
+    Action<Ret(Args...)>::Action(Bind<Func>, Type* inst)
         : m_memory {0}
         , m_func {0}
     {
@@ -29,7 +29,7 @@ namespace ma
 
     template <class Ret, class... Args>
     template <class Func>
-    Function<Ret(Args...)>::Function(Func&& func)
+    Action<Ret(Args...)>::Action(Func&& func)
         : m_memory {0}
         , m_func {0}
     {
@@ -38,7 +38,7 @@ namespace ma
 
     template <class Ret, class... Args>
     bool
-    Function<Ret(Args...)>::is_bound() const
+    Action<Ret(Args...)>::is_bound() const
     {
         return m_func != 0;
     }
@@ -46,7 +46,7 @@ namespace ma
     template <class Ret, class... Args>
     template <auto Func>
     bool
-    Function<Ret(Args...)>::bind()
+    Action<Ret(Args...)>::bind()
     {
         m_memory = 0;
 
@@ -62,7 +62,7 @@ namespace ma
     template <class Ret, class... Args>
     template <auto Func, class Type>
     bool
-    Function<Ret(Args...)>::bind(Type* inst)
+    Action<Ret(Args...)>::bind(Type* inst)
     {
         m_memory = (void*) inst;
 
@@ -79,7 +79,7 @@ namespace ma
     template <class Ret, class... Args>
     template <class Func>
     bool
-    Function<Ret(Args...)>::bind(Func&& func)
+    Action<Ret(Args...)>::bind(Func&& func)
     {
         create(*(Func*) m_memory, move(func));
 
@@ -94,7 +94,7 @@ namespace ma
 
     template <class Ret, class... Args>
     bool
-    Function<Ret(Args...)>::clear()
+    Action<Ret(Args...)>::clear()
     {
         m_memory = 0;
         m_func   = 0;
@@ -105,7 +105,7 @@ namespace ma
     template <class Ret, class... Args>
     template <class... Rest>
     Ret
-    Function<Ret(Args...)>::invoke(Args... args, Rest... rest)
+    Action<Ret(Args...)>::invoke(Args... args, Rest... rest)
     {
         return m_func(m_memory, forw<Args>(args)...);
     }
@@ -113,7 +113,7 @@ namespace ma
     template <class Ret, class... Args>
     template <class... Rest>
     const Ret
-    Function<Ret(Args...)>::invoke(Args... args, Rest... rest) const
+    Action<Ret(Args...)>::invoke(Args... args, Rest... rest) const
     {
         return m_func(m_memory, forw<Args>(args)...);
     }
@@ -121,7 +121,7 @@ namespace ma
     template <class Ret, class... Args>
     template <class... Rest>
     Ret
-    Function<Ret(Args...)>::operator()(Args... args, Rest... rest)
+    Action<Ret(Args...)>::operator()(Args... args, Rest... rest)
     {
         return m_func(m_memory, forw<Args>(args)...);
     }
@@ -129,38 +129,29 @@ namespace ma
     template <class Ret, class... Args>
     template <class... Rest>
     const Ret
-    Function<Ret(Args...)>::operator()(Args... args, Rest... rest) const
+    Action<Ret(Args...)>::operator()(Args... args, Rest... rest) const
     {
         return m_func(m_memory, forw<Args>(args)...);
     }
 
     template <auto Func>
     auto
-    func()
+    action()
     {
-        Function f =
-            {bind<Func>};
-
-        return f;
+        return {bind<Func>};
     }
 
     template <auto Func, class Type>
     auto
-    func(Type* inst)
+    action(Type* inst)
     {
-        Function f =
-            {bind<Func>, inst};
-
-        return f;
+        return {bind<Func>, inst};
     }
 
     template <class Func>
     auto
-    func(Func&& func)
+    action(Func&& func)
     {
-        Function f =
-            {move(func)};
-
-        return f;
+        return {move(func)};
     }
 } // namespace ma

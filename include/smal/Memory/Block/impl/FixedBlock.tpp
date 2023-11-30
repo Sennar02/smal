@@ -23,10 +23,6 @@ namespace ma
     }
 
     template <class Type>
-    FixedBlock<Type>::~FixedBlock()
-    { }
-
-    template <class Type>
     usize
     FixedBlock<Type>::size() const
     {

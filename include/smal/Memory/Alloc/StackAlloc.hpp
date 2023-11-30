@@ -22,31 +22,31 @@ namespace ma
         /**
          *
          */
-        usize
+        virtual usize
         avail() const;
 
         /**
          *
          */
-        bool
+        virtual bool
         prepare();
 
         /**
          *
          */
-        char*
+        virtual char*
         acquire(usize size);
 
         /**
          *
          */
-        bool
+        virtual bool
         release(void* memory);
 
         /**
          *
          */
-        bool
+        virtual bool
         release();
 
     private:

@@ -37,7 +37,8 @@ namespace ma
 
         if ( node != 0 ) {
             m_count = m_size / m_page;
-            m_list  = node;
+            m_list  = (Node*)
+                memory_set(m_memory, m_size, 0);
 
             for ( usize i = 0; i < m_count - 1; i++ ) {
                 next = (Node*) ((char*) node + m_page);
@@ -69,13 +70,13 @@ namespace ma
         char* addr = (char*) m_list;
 
         if ( size == 0 ) return 0;
+        if ( size == g_max_usize ) size = 0;
 
         if ( m_page >= size && m_count != 0 ) {
             m_count -= 1;
             m_list = m_list->next;
 
-            return memory_set(
-                addr, m_page, 0);
+            return memory_set(addr, m_page, 0);
         }
 
         return 0;
@@ -85,12 +86,15 @@ namespace ma
     PoolAlloc::release(void* memory)
     {
         char* addr = (char*) memory;
-        Node* node = (Node*) addr;
+        Node* node = 0;
 
         if ( contains(addr) == false )
             return false;
 
         if ( addr != 0 ) {
+            node = (Node*)
+                memory_set(addr, m_page, 0);
+
             m_count += 1;
 
             node->next = m_list;

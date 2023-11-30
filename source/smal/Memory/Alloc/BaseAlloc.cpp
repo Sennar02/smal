@@ -5,7 +5,9 @@ namespace ma
     BaseAlloc::BaseAlloc(void* memory, usize size)
         : m_memory {(char*) memory}
         , m_size {size}
-    { }
+    {
+        if ( memory == 0 ) m_size = 0;
+    }
 
     usize
     BaseAlloc::size() const

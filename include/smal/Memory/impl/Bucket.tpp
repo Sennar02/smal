@@ -3,26 +3,26 @@
 namespace ma
 {
     template <class Type>
-    Bucket<Type>::Bucket(void* memory, usize size)
-        : PoolAlloc(memory, size, s_type_size)
+    Bucket<Type>::Bucket()
+        : m_alloc {}
     { }
 
     template <class Type>
-    Handle<Type>
+    Bucket<Type>::Bucket(void* memory, usize size)
+        : m_alloc {memory, size, s_type_size}
+    { }
+
+    template <class Type>
+    Type*
     Bucket<Type>::acquire()
     {
-        return {this, PoolAlloc::acquire()};
+        return (Type*) m_alloc.acquire();
     }
 
     template <class Type>
     bool
-    Bucket<Type>::release(Handle<Type>& handle)
+    Bucket<Type>::release(Type* addr)
     {
-        bool result = false;
-
-        if ( PoolAlloc::release(handle.memory()) )
-            handle = {0, 0}, result = true;
-
-        return result;
+        return m_alloc.release(addr);
     }
 } // namespace ma

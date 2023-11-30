@@ -23,17 +23,11 @@ namespace ma
     }
 
     template <class Type>
-    PagedBlock<Type>::~PagedBlock()
-    {
-        shrink(m_table.count());
-    }
-
-    template <class Type>
     usize
     PagedBlock<Type>::size() const
     {
         usize pages = m_table.count();
-        usize items = m_table.page() / s_type_size;
+        usize items = m_alloc.page() / s_type_size;
 
         return pages * items;
     }
@@ -43,7 +37,7 @@ namespace ma
     PagedBlock<Type>::resize(usize size)
     {
         usize pages = m_table.count();
-        usize items = m_table.page() / s_type_size;
+        usize items = m_alloc.page() / s_type_size;
 
         if ( items != 0 ) {
             size = ceil(size, items);
@@ -63,10 +57,13 @@ namespace ma
     bool
     PagedBlock<Type>::expand(usize pages)
     {
-        usize page = m_table.page();
+        usize page = m_alloc.page();
         char* addr = 0;
 
         if ( m_table.count() + pages > m_table.size() )
+            return false;
+
+        if ( m_alloc.avail() / page < pages )
             return false;
 
         for ( usize i = 0; i < pages; i++ ) {
