@@ -17,13 +17,13 @@ namespace ma
         /**
          *
          */
-        ArrayList(const Block<Type>& block, usize count = 0);
+        ArrayList(const Block<Type>& block, u32 count = 0);
 
         /**
          *
          */
         template <class Alloc>
-        ArrayList(const Alloc& alloc, usize size, usize count = 0);
+        ArrayList(const Alloc& alloc, u32 size, u32 count = 0);
 
         /**
          *
@@ -33,13 +33,13 @@ namespace ma
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
          *
          */
-        usize
+        u32
         count() const;
 
         /**
@@ -57,22 +57,22 @@ namespace ma
         /**
          *
          */
-        template <class... Args>
-        usize
-        index_of(const Type& value, const Action<bool(Args...)>& func) const;
+        template <class Func>
+        u32
+        index_of(const Type& value, Func&& func) const;
 
         /**
          *
          */
-        usize
+        u32
         index_of(const Type& value) const;
 
         /**
          *
          */
-        template <class... Args>
+        template <class Func>
         bool
-        contains(const Type& value, const Action<bool(Args...)>& func) const;
+        contains(const Type& value, Func&& func) const;
 
         /**
          *
@@ -83,22 +83,22 @@ namespace ma
         /**
          *
          */
-        template <class... Args>
+        template <class Func>
         void
-        for_each(const Action<void(Args...)>& func) const;
+        for_each(Func&& func) const;
 
         /**
          *
          */
         bool
-        resize(usize size);
+        resize(u32 size);
 
         /**
          *
          */
-        template <class... Args>
+        template <class Func>
         bool
-        clear(const Action<void(Args...)>& func);
+        clear(Func&& func);
 
         /**
          *
@@ -110,25 +110,25 @@ namespace ma
          *
          */
         bool
-        insert(const Type& value, isize index = g_max_usize);
+        insert(const Type& value, i32 index = g_max_u32);
 
         /**
          *
          */
         bool
-        remove(isize index = g_max_usize);
+        remove(i32 index = g_max_u32);
 
         /**
          *
          */
         Type&
-        find(isize index);
+        find(i32 index);
 
         /**
          *
          */
         const Type&
-        find(isize index) const;
+        find(i32 index) const;
 
         /**
          *
@@ -140,13 +140,13 @@ namespace ma
          *
          */
         Type&
-        operator[](isize index);
+        operator[](i32 index);
 
         /**
          *
          */
         const Type&
-        operator[](isize index) const;
+        operator[](i32 index) const;
 
     private:
         /**
@@ -157,7 +157,7 @@ namespace ma
         /**
          *
          */
-        usize m_count;
+        u32 m_count;
     };
 
     template <class Type, template <class> class Block>
@@ -165,7 +165,7 @@ namespace ma
         -> ArrayList<Type, Block>;
 
     template <class Type, template <class> class Block>
-    ArrayList(const Block<Type>&, usize)
+    ArrayList(const Block<Type>&, u32)
         -> ArrayList<Type, Block>;
 } // namespace ma
 

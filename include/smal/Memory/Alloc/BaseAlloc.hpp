@@ -11,7 +11,7 @@ namespace ma
         /**
          *
          */
-        BaseAlloc(void* memory, usize size);
+        BaseAlloc(void* memory, u32 size);
 
         /**
          *
@@ -21,7 +21,7 @@ namespace ma
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
@@ -45,7 +45,7 @@ namespace ma
         /**
          *
          */
-        virtual usize
+        virtual u32
         avail() const = 0;
 
         /**
@@ -58,7 +58,7 @@ namespace ma
          *
          */
         virtual char*
-        acquire(usize size) = 0;
+        acquire(u32 size) = 0;
 
         /**
          *
@@ -81,7 +81,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        u32 m_size;
     };
 } // namespace ma
 

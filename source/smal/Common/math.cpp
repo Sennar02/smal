@@ -2,24 +2,24 @@
 
 namespace ma
 {
-    f64
-    floor(f64 num, f64 den)
+    f32
+    floor(f32 num, f32 den)
     {
-        f64 div = g_inf;
+        f32 div = g_inf;
 
         if ( den != 0 )
-            div = (usize) (num / den);
+            div = (u32) (num / den);
 
         return div;
     }
 
-    f64
-    ceil(f64 num, f64 den)
+    f32
+    ceil(f32 num, f32 den)
     {
-        f64 div = g_inf;
+        f32 div = g_inf;
 
         if ( den != 0 ) {
-            div = (usize) (num / den);
+            div = (u32) (num / den);
 
             if ( div != num / den )
                 return div + 1;
@@ -29,81 +29,81 @@ namespace ma
     }
 
     template <>
-    usize
+    u32
     hash(const char& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const unsigned char& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const short& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const unsigned short& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const int& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const unsigned int& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const long& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const unsigned long& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const long long& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(const unsigned long long& value)
     {
         return value;
     }
 
     template <>
-    usize
+    u32
     hash(char* const& value)
     {
         const char* str = value;
-        usize       res = 5381;
+        u32       res = 5381;
 
         while ( u8 chr = *str++ ) {
             res = (res << 5) + res;
@@ -114,11 +114,11 @@ namespace ma
     }
 
     template <>
-    usize
+    u32
     hash(const char* const& value)
     {
         const char* str = value;
-        usize       res = 5381;
+        u32       res = 5381;
 
         while ( u8 chr = *str++ ) {
             res = (res << 5) + res;

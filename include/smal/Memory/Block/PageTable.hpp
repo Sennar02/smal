@@ -16,24 +16,24 @@ namespace ma
         /**
          *
          */
-        PageTable(void* memory, usize size, usize page);
+        PageTable(void* memory, u32 size, u32 page);
 
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
          *
          */
-        usize
+        u32
         count() const;
 
         /**
          *
          */
-        usize
+        u32
         page() const;
 
         /**
@@ -64,13 +64,13 @@ namespace ma
          *
          */
         char*
-        find(usize index) const;
+        find(u32 index) const;
 
         /**
          *
          */
         char*
-        convert(usize index, usize size) const;
+        convert(u32 index, u32 size) const;
 
     private:
         using Node = char*;
@@ -78,8 +78,8 @@ namespace ma
         /**
          *
          */
-        static const usize s_node_size =
-            sizeof(Node);
+        static const u32 s_node_size
+            = sizeof(Node);
 
     private:
         /**
@@ -90,17 +90,17 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        u32 m_size;
 
         /**
          *
          */
-        usize m_page;
+        u32 m_page;
 
         /**
          *
          */
-        usize m_count;
+        u32 m_count;
     };
 } // namespace ma
 

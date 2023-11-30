@@ -8,7 +8,7 @@ namespace ma
     { }
 
     template <class Type>
-    Bucket<Type>::Bucket(void* memory, usize size)
+    Bucket<Type>::Bucket(void* memory, u32 size)
         : m_alloc {memory, size, s_type_size}
     { }
 

@@ -2,17 +2,12 @@
 #define SMAL_COMMON_ACTION_HPP
 
 #include <smal/Common/define.hpp>
-#include <smal/Common/traits/FuncSignat.hpp>
+#include <smal/Common/traits/Signature.hpp>
 
 namespace ma
 {
-    template <auto>
-    class Bind
-    { };
-
     template <class Ret, class... Args>
-    class Action<Ret(Args...)>
-    {
+    class Action<Ret(Args...)> {
     public:
         /**
          *
@@ -75,13 +70,6 @@ namespace ma
          */
         template <class... Rest>
         Ret
-        invoke(Args... args, Rest... rest);
-
-        /**
-         *
-         */
-        template <class... Rest>
-        const Ret
         invoke(Args... args, Rest... rest) const;
 
         /**
@@ -89,18 +77,12 @@ namespace ma
          */
         template <class... Rest>
         Ret
-        operator()(Args... args, Rest... rest);
-
-        /**
-         *
-         */
-        template <class... Rest>
-        const Ret
         operator()(Args... args, Rest... rest) const;
 
     private:
         using Call = Ret (*)(void*, Args...);
 
+    private:
         /**
          *
          */
@@ -114,15 +96,15 @@ namespace ma
 
     template <auto Func>
     Action(Bind<Func>)
-        -> Action<FuncSignat<decltype(Func)>>;
+        -> Action<Signature<Func>>;
 
     template <auto Func, class Type>
     Action(Bind<Func>, Type*)
-        -> Action<FuncSignat<decltype(Func)>>;
+        -> Action<Signature<Func>>;
 
     template <class Func>
     Action(Func&&)
-        -> Action<FuncSignat<decltype(&Func::operator())>>;
+        -> Action<Signature<&Func::operator()>>;
 
     /**
      *

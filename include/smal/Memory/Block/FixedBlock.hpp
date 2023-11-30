@@ -18,38 +18,38 @@ namespace ma
         /**
          *
          */
-        FixedBlock(const BaseAlloc& alloc, usize size);
+        FixedBlock(const BaseAlloc& alloc, u32 size);
 
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
          *
          */
         bool
-        resize(usize size);
+        resize(u32 size);
 
         /**
          *
          */
         Type&
-        operator[](usize index);
+        operator[](u32 index);
 
         /**
          *
          */
         const Type&
-        operator[](usize index) const;
+        operator[](u32 index) const;
 
     private:
         /**
          *
          */
-        static const usize s_type_size =
-            sizeof(Type);
+        static const u32 s_type_size
+            = sizeof(Type);
 
     private:
         /**
@@ -60,7 +60,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        u32 m_size;
     };
 } // namespace ma
 

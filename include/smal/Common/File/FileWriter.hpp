@@ -16,7 +16,7 @@ namespace ma
         /**
          *
          */
-        usize
+        u32
         write(FileOStream& stream, const String& string);
     };
 } // namespace ma

@@ -2,14 +2,15 @@
 
 namespace ma
 {
-    BaseAlloc::BaseAlloc(void* memory, usize size)
+    BaseAlloc::BaseAlloc(void* memory, u32 size)
         : m_memory {(char*) memory}
         , m_size {size}
     {
-        if ( memory == 0 ) m_size = 0;
+        if ( memory == 0 )
+            m_size = 0;
     }
 
-    usize
+    u32
     BaseAlloc::size() const
     {
         return m_size;

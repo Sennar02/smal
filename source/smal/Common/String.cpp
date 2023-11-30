@@ -5,17 +5,17 @@
 
 namespace ma
 {
-    String::String(const char* memory, usize size)
+    String::String(const char* memory, u32 size)
         : m_memory {memory}
         , m_size {size}
     {
         if ( m_memory == 0 ) m_memory = "";
 
-        if ( m_size == g_max_usize )
+        if ( m_size == g_max_u32 )
             m_size = strlen(m_memory);
     }
 
-    usize
+    u32
     String::size() const
     {
         return m_size;
@@ -28,14 +28,14 @@ namespace ma
     }
 
     bool
-    String::equals(const String& other, usize count, usize first) const
+    String::equals(const String& other, u32 count, u32 first) const
     {
         char a = 0, b = 0;
 
-        if ( count == g_max_usize )
+        if ( count == g_max_u32 )
             count = m_size - first;
 
-        for ( usize i = first; i < count; i++ ) {
+        for ( u32 i = first; i < count; i++ ) {
             a = m_memory[i];
             b = other.m_memory[i];
 
@@ -47,12 +47,12 @@ namespace ma
     }
 
     bool
-    String::contains(char byte, usize count, usize first) const
+    String::contains(char byte, u32 count, u32 first) const
     {
-        if ( count == g_max_usize )
+        if ( count == g_max_u32 )
             count = m_size - first;
 
-        for ( usize i = first; i < count; i++ ) {
+        for ( u32 i = first; i < count; i++ ) {
             if ( m_memory[i] == byte )
                 return true;
         }
@@ -67,7 +67,7 @@ namespace ma
     }
 
     template <>
-    usize
+    u32
     hash(const String& value)
     {
         const char* string =

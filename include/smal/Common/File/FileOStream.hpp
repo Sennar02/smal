@@ -33,8 +33,8 @@ namespace ma
         /**
          *
          */
-        usize
-        write(const char* memory, usize size);
+        u32
+        write(const char* memory, u32 size);
 
     private:
         /**

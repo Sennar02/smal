@@ -3,7 +3,7 @@
 
 namespace ma
 {
-    Origin::Origin(usize size)
+    Origin::Origin(u32 size)
         : m_memory {(char*) calloc(1, size)}
         , m_size {size}
     { }
@@ -13,7 +13,7 @@ namespace ma
         free(m_memory);
     }
 
-    usize
+    u32
     Origin::size() const
     {
         return m_size;

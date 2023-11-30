@@ -5,14 +5,14 @@
 
 namespace ma
 {
-    f64
-    floor(f64 num, f64 den);
+    f32
+    floor(f32 num, f32 den);
 
-    f64
-    ceil(f64 num, f64 den);
+    f32
+    ceil(f32 num, f32 den);
 
     template <class Type>
-    usize
+    u32
     hash(const Type& value);
 } // namespace ma
 

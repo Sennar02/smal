@@ -21,6 +21,19 @@ namespace ma
     using usize = size_t;
     using isize = ssize_t;
 
+    class String;
+
+    class FileIStream;
+    class FileOStream;
+    class FileReader;
+    class FileWriter;
+
+    template <class>
+    class Action;
+
+    template <auto>
+    struct Bind;
+
     static const usize g_max_u8    = (usize) UINT8_MAX;
     static const usize g_max_u16   = (usize) UINT16_MAX;
     static const usize g_max_u32   = (usize) UINT32_MAX;
@@ -48,24 +61,15 @@ namespace ma
     static const f64 g_inf = INFINITY;
     static const f64 g_nan = NAN;
 
-    class String;
-
-    class FileIStream;
-    class FileOStream;
-    class FileReader;
-    class FileWriter;
-
     template <auto>
-    struct Bind;
-
-    template <class>
-    class Action;
-
-    template <class>
-    class Array;
+    class Bind {
+        public:
+            Bind() = default;
+    };
 
     template <auto Func>
-    static inline Bind<Func> bind;
+    static inline Bind<Func>
+        bind = {};
 } // namespace ma
 
 #endif // SMAL_COMMON_DEFINE_HPP

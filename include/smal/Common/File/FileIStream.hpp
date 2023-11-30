@@ -33,8 +33,8 @@ namespace ma
         /**
          *
          */
-        usize
-        read(char* memory, usize size);
+        u32
+        read(char* memory, u32 size);
 
     private:
         /**

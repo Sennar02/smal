@@ -105,14 +105,6 @@ namespace ma
     template <class Ret, class... Args>
     template <class... Rest>
     Ret
-    Action<Ret(Args...)>::invoke(Args... args, Rest... rest)
-    {
-        return m_func(m_memory, forw<Args>(args)...);
-    }
-
-    template <class Ret, class... Args>
-    template <class... Rest>
-    const Ret
     Action<Ret(Args...)>::invoke(Args... args, Rest... rest) const
     {
         return m_func(m_memory, forw<Args>(args)...);
@@ -121,14 +113,6 @@ namespace ma
     template <class Ret, class... Args>
     template <class... Rest>
     Ret
-    Action<Ret(Args...)>::operator()(Args... args, Rest... rest)
-    {
-        return m_func(m_memory, forw<Args>(args)...);
-    }
-
-    template <class Ret, class... Args>
-    template <class... Rest>
-    const Ret
     Action<Ret(Args...)>::operator()(Args... args, Rest... rest) const
     {
         return m_func(m_memory, forw<Args>(args)...);
@@ -138,20 +122,20 @@ namespace ma
     auto
     action()
     {
-        return {bind<Func>};
+        return Action {bind<Func>};
     }
 
     template <auto Func, class Type>
     auto
     action(Type* inst)
     {
-        return {bind<Func>, inst};
+        return Action {bind<Func>, inst};
     }
 
     template <class Func>
     auto
     action(Func&& func)
     {
-        return {move(func)};
+        return Action {move(func)};
     }
 } // namespace ma

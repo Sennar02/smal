@@ -9,7 +9,7 @@ namespace ma
         , m_count {0}
     { }
 
-    PoolAlloc::PoolAlloc(void* memory, usize size, usize page)
+    PoolAlloc::PoolAlloc(void* memory, u32 size, u32 page)
         : BaseAlloc(memory, size)
         , m_page {1}
         , m_count {0}
@@ -17,13 +17,13 @@ namespace ma
         prepare(page);
     }
 
-    usize
+    u32
     PoolAlloc::page() const
     {
         return m_page;
     }
 
-    usize
+    u32
     PoolAlloc::avail() const
     {
         return m_count * m_page;
@@ -40,7 +40,7 @@ namespace ma
             m_list  = (Node*)
                 memory_set(m_memory, m_size, 0);
 
-            for ( usize i = 0; i < m_count - 1; i++ ) {
+            for ( u32 i = 0; i < m_count - 1; i++ ) {
                 next = (Node*) ((char*) node + m_page);
 
                 node->next = next;
@@ -52,7 +52,7 @@ namespace ma
     }
 
     bool
-    PoolAlloc::prepare(usize page)
+    PoolAlloc::prepare(u32 page)
     {
         if ( m_page == page ) return true;
 
@@ -65,12 +65,12 @@ namespace ma
     }
 
     char*
-    PoolAlloc::acquire(usize size)
+    PoolAlloc::acquire(u32 size)
     {
         char* addr = (char*) m_list;
 
         if ( size == 0 ) return 0;
-        if ( size == g_max_usize ) size = 0;
+        if ( size == g_max_u32 ) size = 0;
 
         if ( m_page >= size && m_count != 0 ) {
             m_count -= 1;

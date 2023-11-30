@@ -11,12 +11,12 @@ namespace ma
         /**
          *
          */
-        String(const char* memory = 0, usize size = g_max_usize);
+        String(const char* memory = 0, u32 size = g_max_u32);
 
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
@@ -29,13 +29,13 @@ namespace ma
          *
          */
         bool
-        equals(const String& other, usize count = g_max_usize, usize first = 0) const;
+        equals(const String& other, u32 count = g_max_u32, u32 first = 0) const;
 
         /**
          *
         */
         bool
-        contains(char byte, usize count = g_max_usize, usize first = 0) const;
+        contains(char byte, u32 count = g_max_u32, u32 first = 0) const;
 
         /**
          *
@@ -52,7 +52,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        u32 m_size;
     };
 } // namespace ma
 

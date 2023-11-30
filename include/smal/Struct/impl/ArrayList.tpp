@@ -10,7 +10,7 @@ namespace ma
 
     template <class Type, template <class> class Block>
     template <class Alloc>
-    ArrayList<Type, Block>::ArrayList(const Alloc& alloc, usize size, usize count)
+    ArrayList<Type, Block>::ArrayList(const Alloc& alloc, u32 size, u32 count)
         : m_block {}
         , m_count {0}
     {
@@ -26,7 +26,7 @@ namespace ma
     }
 
     template <class Type, template <class> class Block>
-    ArrayList<Type, Block>::ArrayList(const Block<Type>& block, usize count)
+    ArrayList<Type, Block>::ArrayList(const Block<Type>& block, u32 count)
         : m_block {block}
         , m_count {0}
     {
@@ -37,14 +37,14 @@ namespace ma
     }
 
     template <class Type, template <class> class Block>
-    usize
+    u32
     ArrayList<Type, Block>::size() const
     {
         return m_block.size();
     }
 
     template <class Type, template <class> class Block>
-    usize
+    u32
     ArrayList<Type, Block>::count() const
     {
         return m_count;
@@ -65,20 +65,20 @@ namespace ma
     }
 
     template <class Type, template <class> class Block>
-    template <class... Args>
-    usize
-    ArrayList<Type, Block>::index_of(const Type& value, const Action<bool(Args...)>& func) const
+    template <class Func>
+    u32
+    ArrayList<Type, Block>::index_of(const Type& value, Func&& func) const
     {
-        for ( usize i = 0; i < m_count; i++ ) {
+        for ( u32 i = 0; i < m_count; i++ ) {
             if ( func(m_block[i], value) == true )
                 return i;
         }
 
-        return g_max_usize;
+        return g_max_u32;
     }
 
     template <class Type, template <class> class Block>
-    usize
+    u32
     ArrayList<Type, Block>::index_of(const Type& value) const
     {
         Action func = {[](const Type& block, const Type& value) {
@@ -89,11 +89,11 @@ namespace ma
     }
 
     template <class Type, template <class> class Block>
-    template <class... Args>
+    template <class Func>
     bool
-    ArrayList<Type, Block>::contains(const Type& value, const Action<bool(Args...)>& func) const
+    ArrayList<Type, Block>::contains(const Type& value, Func&& func) const
     {
-        return index_of(value, func) != g_max_usize;
+        return index_of(value, func) != g_max_u32;
     }
 
     template <class Type, template <class> class Block>
@@ -108,29 +108,29 @@ namespace ma
     }
 
     template <class Type, template <class> class Block>
-    template <class... Args>
+    template <class Func>
     void
-    ArrayList<Type, Block>::for_each(const Action<void(Args...)>& func) const
+    ArrayList<Type, Block>::for_each(Func&& func) const
     {
-        for ( usize i = 0; i < m_count; i++ )
+        for ( u32 i = 0; i < m_count; i++ )
             func((Type&) m_block[i], i, *this);
     }
 
     template <class Type, template <class> class Block>
     bool
-    ArrayList<Type, Block>::resize(usize size)
+    ArrayList<Type, Block>::resize(u32 size)
     {
         return m_block.resize(size);
     }
 
     template <class Type, template <class> class Block>
-    template <class... Args>
+    template <class Func>
     bool
-    ArrayList<Type, Block>::clear(const Action<void(Args...)>& func)
+    ArrayList<Type, Block>::clear(Func&& func)
     {
         using Self = ArrayList<Type, Block>;
 
-        for ( usize i = 0; i < m_count; i++ )
+        for ( u32 i = 0; i < m_count; i++ )
             func(m_block[i], i, (const Self&) *this);
 
         return m_block.resize(0);
@@ -145,16 +145,16 @@ namespace ma
 
     template <class Type, template <class> class Block>
     bool
-    ArrayList<Type, Block>::insert(const Type& value, isize index)
+    ArrayList<Type, Block>::insert(const Type& value, i32 index)
     {
-        usize place = index;
+        u32 place = index;
 
         if ( is_full() == false ) {
             if ( place > m_count ) place = m_count;
             if ( index < 0 ) place = m_count + index;
             if ( place > m_count ) place = 0;
 
-            for ( usize i = m_count; i > place; i-- )
+            for ( u32 i = m_count; i > place; i-- )
                 m_block[i] = move(m_block[i - 1]);
 
             m_count += 1;
@@ -168,9 +168,9 @@ namespace ma
 
     template <class Type, template <class> class Block>
     bool
-    ArrayList<Type, Block>::remove(isize index)
+    ArrayList<Type, Block>::remove(i32 index)
     {
-        usize place = index;
+        u32 place = index;
 
         if ( is_empty() == false ) {
             if ( place > m_count ) place = m_count;
@@ -179,7 +179,7 @@ namespace ma
 
             m_count -= 1;
 
-            for ( usize i = place; i < m_count; i++ )
+            for ( u32 i = place; i < m_count; i++ )
                 m_block[i] = move(m_block[i + 1]);
 
             return true;
@@ -190,9 +190,9 @@ namespace ma
 
     template <class Type, template <class> class Block>
     Type&
-    ArrayList<Type, Block>::find(isize index)
+    ArrayList<Type, Block>::find(i32 index)
     {
-        usize place = index;
+        u32 place = index;
 
         if ( index < 0 )
             place = m_count + index;
@@ -202,9 +202,9 @@ namespace ma
 
     template <class Type, template <class> class Block>
     const Type&
-    ArrayList<Type, Block>::find(isize index) const
+    ArrayList<Type, Block>::find(i32 index) const
     {
-        usize place = index;
+        u32 place = index;
 
         if ( index < 0 )
             place = m_count + index;
@@ -221,14 +221,14 @@ namespace ma
 
     template <class Type, template <class> class Block>
     Type&
-    ArrayList<Type, Block>::operator[](isize index)
+    ArrayList<Type, Block>::operator[](i32 index)
     {
         return find(index);
     }
 
     template <class Type, template <class> class Block>
     const Type&
-    ArrayList<Type, Block>::operator[](isize index) const
+    ArrayList<Type, Block>::operator[](i32 index) const
     {
         return find(index);
     }

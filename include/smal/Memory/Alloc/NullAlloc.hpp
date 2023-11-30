@@ -17,12 +17,12 @@ namespace ma
         /**
          *
          */
-        NullAlloc(void* memory, usize size);
+        NullAlloc(void* memory, u32 size);
 
         /**
          *
          */
-        virtual usize
+        virtual u32
         avail() const;
 
         /**
@@ -35,7 +35,7 @@ namespace ma
          *
          */
         virtual char*
-        acquire(usize size);
+        acquire(u32 size);
 
         /**
          *

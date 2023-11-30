@@ -20,19 +20,19 @@ namespace ma
         /**
          *
          */
-        PagedBlock(const PoolAlloc& alloc, usize size);
+        PagedBlock(const PoolAlloc& alloc, u32 size);
 
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
          *
          */
         bool
-        resize(usize size);
+        resize(u32 size);
 
         /**
          *
@@ -44,31 +44,31 @@ namespace ma
          *
          */
         Type&
-        operator[](usize index);
+        operator[](u32 index);
 
         /**
          *
          */
         const Type&
-        operator[](usize index) const;
+        operator[](u32 index) const;
 
     private:
         /**
          *
          */
-        static const usize s_type_size =
-            sizeof(Type);
+        static const u32 s_type_size
+            = sizeof(Type);
         /**
          *
          */
         bool
-        expand(usize pages);
+        expand(u32 pages);
 
         /**
          *
          */
         bool
-        shrink(usize pages);
+        shrink(u32 pages);
 
     private:
         /**

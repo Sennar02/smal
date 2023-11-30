@@ -8,14 +8,14 @@ namespace ma
         , m_cursor {0}
     { }
 
-    StackAlloc::StackAlloc(void* memory, usize size)
+    StackAlloc::StackAlloc(void* memory, u32 size)
         : BaseAlloc(memory, size)
         , m_cursor {0}
     {
         prepare();
     }
 
-    usize
+    u32
     StackAlloc::avail() const
     {
         return m_size - (m_cursor - m_memory);
@@ -31,7 +31,7 @@ namespace ma
     }
 
     char*
-    StackAlloc::acquire(usize size)
+    StackAlloc::acquire(u32 size)
     {
         char* addr = m_cursor + s_head_size;
         Head* head = (Head*) m_cursor;

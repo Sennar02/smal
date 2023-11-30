@@ -11,18 +11,18 @@ namespace ma
         /**
          *
          */
-        FileReader(char* memory = 0, usize size = 0);
+        FileReader(char* memory = 0, u32 size = 0);
 
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
          *
          */
-        usize
+        u32
         count() const;
 
         /**
@@ -40,7 +40,7 @@ namespace ma
         /**
          *
          */
-        usize
+        u32
         read(FileIStream& stream);
 
     private:
@@ -52,12 +52,12 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        u32 m_size;
 
         /**
          *
          */
-        usize m_count;
+        u32 m_count;
     };
 } // namespace ma
 

@@ -31,7 +31,7 @@ namespace ma
 
     template <class Type, class... Args>
     Type&
-    create(Type& value, Args&&... args);
+    create(Type& value, Args... args);
 
     template <class Type>
     Type&

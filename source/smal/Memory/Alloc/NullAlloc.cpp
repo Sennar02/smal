@@ -7,11 +7,11 @@ namespace ma
         : BaseAlloc(0, 0)
     { }
 
-    NullAlloc::NullAlloc(void* memory, usize size)
+    NullAlloc::NullAlloc(void* memory, u32 size)
         : BaseAlloc(0, 0)
     { }
 
-    usize
+    u32
     NullAlloc::avail() const
     {
         return 0;
@@ -24,7 +24,7 @@ namespace ma
     }
 
     char*
-    NullAlloc::acquire(usize size)
+    NullAlloc::acquire(u32 size)
     {
         return 0;
     }

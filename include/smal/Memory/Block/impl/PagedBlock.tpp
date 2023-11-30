@@ -9,11 +9,11 @@ namespace ma
     { }
 
     template <class Type>
-    PagedBlock<Type>::PagedBlock(const PoolAlloc& alloc, usize size)
+    PagedBlock<Type>::PagedBlock(const PoolAlloc& alloc, u32 size)
         : m_alloc {alloc}
         , m_table {}
     {
-        usize page = m_alloc.page();
+        u32 page = m_alloc.page();
         char* addr = m_alloc.acquire(page);
 
         if ( addr != 0 )
@@ -23,21 +23,21 @@ namespace ma
     }
 
     template <class Type>
-    usize
+    u32
     PagedBlock<Type>::size() const
     {
-        usize pages = m_table.count();
-        usize items = m_alloc.page() / s_type_size;
+        u32 pages = m_table.count();
+        u32 items = m_alloc.page() / s_type_size;
 
         return pages * items;
     }
 
     template <class Type>
     bool
-    PagedBlock<Type>::resize(usize size)
+    PagedBlock<Type>::resize(u32 size)
     {
-        usize pages = m_table.count();
-        usize items = m_alloc.page() / s_type_size;
+        u32 pages = m_table.count();
+        u32 items = m_alloc.page() / s_type_size;
 
         if ( items != 0 ) {
             size = ceil(size, items);
@@ -55,9 +55,9 @@ namespace ma
 
     template <class Type>
     bool
-    PagedBlock<Type>::expand(usize pages)
+    PagedBlock<Type>::expand(u32 pages)
     {
-        usize page = m_alloc.page();
+        u32 page = m_alloc.page();
         char* addr = 0;
 
         if ( m_table.count() + pages > m_table.size() )
@@ -66,7 +66,7 @@ namespace ma
         if ( m_alloc.avail() / page < pages )
             return false;
 
-        for ( usize i = 0; i < pages; i++ ) {
+        for ( u32 i = 0; i < pages; i++ ) {
             addr = m_alloc.acquire(page);
 
             if ( addr != 0 )
@@ -80,14 +80,14 @@ namespace ma
 
     template <class Type>
     bool
-    PagedBlock<Type>::shrink(usize pages)
+    PagedBlock<Type>::shrink(u32 pages)
     {
         char* addr = 0;
 
         if ( m_table.count() - pages < 0 )
             return false;
 
-        for ( usize i = 0; i < pages; i++ ) {
+        for ( u32 i = 0; i < pages; i++ ) {
             addr = m_table.pull();
 
             if ( addr != 0 )
@@ -108,7 +108,7 @@ namespace ma
 
     template <class Type>
     Type&
-    PagedBlock<Type>::operator[](usize index)
+    PagedBlock<Type>::operator[](u32 index)
     {
         char* addr =
             m_table.convert(index, s_type_size);
@@ -118,7 +118,7 @@ namespace ma
 
     template <class Type>
     const Type&
-    PagedBlock<Type>::operator[](usize index) const
+    PagedBlock<Type>::operator[](u32 index) const
     {
         char* addr =
             m_table.convert(index, s_type_size);

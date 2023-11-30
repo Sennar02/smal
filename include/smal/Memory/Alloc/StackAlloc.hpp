@@ -17,12 +17,12 @@ namespace ma
         /**
          *
          */
-        StackAlloc(void* memory, usize size);
+        StackAlloc(void* memory, u32 size);
 
         /**
          *
          */
-        virtual usize
+        virtual u32
         avail() const;
 
         /**
@@ -35,7 +35,7 @@ namespace ma
          *
          */
         virtual char*
-        acquire(usize size);
+        acquire(u32 size);
 
         /**
          *
@@ -50,16 +50,15 @@ namespace ma
         release();
 
     private:
-        struct Head
-        {
-            usize size;
+        struct Head {
+            u32 size;
         };
 
         /**
          *
          */
-        static const usize s_head_size =
-            sizeof(Head);
+        static const u32 s_head_size
+            = sizeof(Head);
 
     private:
         /**

@@ -40,14 +40,14 @@ namespace ma
         return true;
     }
 
-    usize
-    FileIStream::read(char* memory, usize size)
+    u32
+    FileIStream::read(char* memory, u32 size)
     {
         auto* source = (FILE*) m_source;
 
         if ( memory != 0 )
             return fread(memory, 1, size, source);
 
-        return g_max_usize;
+        return g_max_u32;
     }
 } // namespace ma

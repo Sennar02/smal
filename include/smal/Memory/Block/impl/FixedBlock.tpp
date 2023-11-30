@@ -9,7 +9,7 @@ namespace ma
     { }
 
     template <class Type>
-    FixedBlock<Type>::FixedBlock(const BaseAlloc& alloc, usize size)
+    FixedBlock<Type>::FixedBlock(const BaseAlloc& alloc, u32 size)
         : m_memory {0}
         , m_size {0}
     {
@@ -23,7 +23,7 @@ namespace ma
     }
 
     template <class Type>
-    usize
+    u32
     FixedBlock<Type>::size() const
     {
         return m_size;
@@ -31,14 +31,14 @@ namespace ma
 
     template <class Type>
     bool
-    FixedBlock<Type>::resize(usize size)
+    FixedBlock<Type>::resize(u32 size)
     {
         return false;
     }
 
     template <class Type>
     Type&
-    FixedBlock<Type>::operator[](usize index)
+    FixedBlock<Type>::operator[](u32 index)
     {
         char* elem =
             &m_memory[s_type_size * index];
@@ -48,7 +48,7 @@ namespace ma
 
     template <class Type>
     const Type&
-    FixedBlock<Type>::operator[](usize index) const
+    FixedBlock<Type>::operator[](u32 index) const
     {
         char* elem =
             &m_memory[s_type_size * index];

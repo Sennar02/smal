@@ -3,50 +3,45 @@
 
 using namespace ma;
 
+template <class List>
+void
+print(int& x, u32 i, const List& l)
+{
+    printf("%u | %i\n", i, x);
+
+    if ( i + 1 == l.count() )
+        printf("\n");
+}
+
 int
 main(int argc, const char* argv[])
 {
     Origin     mem   = {g_MiB * 4};
     StackAlloc alloc = {mem.memory(), mem.size()};
 
-    // clang-format off
     ArrayList<int, PagedBlock> array = {
-        ProxyAlloc<PoolAlloc> {alloc, g_KiB}, 100, 5
+        PoolAlloc {mem.memory(), mem.size(), g_KiB}, 100, 5
     };
-    // clang-format on
 
-    array.insert(10, g_max_isize);
+    array.insert(10, g_max_i32);
 
-    array.for_each(Action {[](int& x, usize i, const ArrayList<int, PagedBlock>& self) {
-        if ( i == 0 )
-            printf("{\n");
-
-        printf("  %2lu | %i\n", i, x);
-
-        if ( i + 1 == self.count() )
-            printf("}\n");
-    }});
+    array.for_each(
+        action<print<ArrayList<int, PagedBlock>>>());
 
     Action func = {[](const int& a, const int& b) {
         return a >= b;
     }};
 
-    array.remove(g_min_isize);
+    array.remove(g_min_i32);
 
-    array.for_each(Action {[](int& x, usize i, const ArrayList<int, PagedBlock>& self) {
-        if ( i == 0 )
-            printf("{\n");
-
-        printf("  %2lu | %i\n", i, x);
-
-        if ( i + 1 == self.count() )
-            printf("}\n");
-    }});
+    array.for_each(Action {
+        bind<print<ArrayList<int, PagedBlock>>>,
+    });
 
     if ( array.contains(0, func) )
         printf("Array contains x >= 0\n");
 
-    array.clear(Action {[](int x, usize i) {
+    array.clear(Action {[](int x, u32 i) {
         destroy(x);
     }});
 

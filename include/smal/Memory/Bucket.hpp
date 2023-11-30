@@ -17,7 +17,7 @@ namespace ma
         /**
          *
          */
-        Bucket(void* memory, usize size);
+        Bucket(void* memory, u32 size);
 
         /**
          *
@@ -35,8 +35,8 @@ namespace ma
         /**
          *
          */
-        static const usize s_type_size =
-            sizeof(Type);
+        static const u32 s_type_size
+            = sizeof(Type);
 
     private:
         /**

@@ -17,25 +17,25 @@ namespace ma
         /**
          *
          */
-        PoolAlloc(void* memory, usize size, usize page = 0);
+        PoolAlloc(void* memory, u32 size, u32 page = 0);
 
         /**
          *
          */
-        usize
+        u32
         page() const;
 
         /**
          *
          */
-        virtual usize
+        virtual u32
         avail() const;
 
         /**
          *
          */
         virtual bool
-        prepare(usize page);
+        prepare(u32 page);
 
         /**
          *
@@ -47,7 +47,7 @@ namespace ma
          *
          */
         virtual char*
-        acquire(usize size = g_max_usize);
+        acquire(u32 size = g_max_u32);
 
         /**
          *
@@ -62,8 +62,7 @@ namespace ma
         release();
 
     private:
-        struct Node
-        {
+        struct Node {
             Node* next;
         };
 
@@ -76,12 +75,12 @@ namespace ma
         /**
          *
          */
-        usize m_page;
+        u32 m_page;
 
         /**
          *
          */
-        usize m_count;
+        u32 m_count;
     };
 } // namespace ma
 

@@ -3,11 +3,11 @@
 namespace ma
 {
     char*
-    memory_set(void* memory, usize size, char byte)
+    memory_set(void* memory, u32 size, char byte)
     {
         char* buffer = (char*) memory;
 
-        for ( usize i = 0; i < size; i++ )
+        for ( u32 i = 0; i < size; i++ )
             buffer[i] = byte;
 
         return buffer;

@@ -17,26 +17,26 @@ namespace ma
         /**
          *
          */
-        virtual usize
+        virtual u32
         size() const = 0;
 
         /**
          *
          */
         virtual bool
-        resize(usize size) = 0;
+        resize(u32 size) = 0;
 
         /**
          *
          */
         virtual Type&
-        operator[](usize index) = 0;
+        operator[](u32 index) = 0;
 
         /**
          *
          */
         virtual const Type&
-        operator[](usize index) const = 0;
+        operator[](u32 index) const = 0;
     };
 } // namespace ma
 

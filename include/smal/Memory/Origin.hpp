@@ -11,7 +11,7 @@ namespace ma
         /**
          *
          */
-        Origin(usize size);
+        Origin(u32 size);
 
         /**
          *
@@ -21,7 +21,7 @@ namespace ma
         /**
          *
          */
-        usize
+        u32
         size() const;
 
         /**
@@ -45,7 +45,7 @@ namespace ma
         /**
          *
          */
-        usize m_size;
+        u32 m_size;
     };
 } // namespace ma
 
