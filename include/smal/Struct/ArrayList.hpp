@@ -58,8 +58,34 @@ namespace ma
          *
          */
         template <class... Args>
+        usize
+        index_of(const Type& value, const Action<bool(Args...)>& func) const;
+
+        /**
+         *
+         */
+        usize
+        index_of(const Type& value) const;
+
+        /**
+         *
+         */
+        template <class... Args>
+        bool
+        contains(const Type& value, const Action<bool(Args...)>& func) const;
+
+        /**
+         *
+         */
+        bool
+        contains(const Type& value) const;
+
+        /**
+         *
+         */
+        template <class... Args>
         void
-        for_each(const Action<void(Args...)>& func);
+        for_each(const Action<void(Args...)>& func) const;
 
         /**
          *

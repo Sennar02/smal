@@ -15,7 +15,7 @@ main(int argc, const char* argv[])
     };
     // clang-format on
 
-    array.insert(10, 0);
+    array.insert(10, g_max_isize);
 
     array.for_each(Action {[](int& x, usize i, const ArrayList<int, PagedBlock>& self) {
         if ( i == 0 )
@@ -26,6 +26,25 @@ main(int argc, const char* argv[])
         if ( i + 1 == self.count() )
             printf("}\n");
     }});
+
+    Action func = {[](const int& a, const int& b) {
+        return a >= b;
+    }};
+
+    array.remove(g_min_isize);
+
+    array.for_each(Action {[](int& x, usize i, const ArrayList<int, PagedBlock>& self) {
+        if ( i == 0 )
+            printf("{\n");
+
+        printf("  %2lu | %i\n", i, x);
+
+        if ( i + 1 == self.count() )
+            printf("}\n");
+    }});
+
+    if ( array.contains(0, func) )
+        printf("Array contains x >= 0\n");
 
     array.clear(Action {[](int x, usize i) {
         destroy(x);
