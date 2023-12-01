@@ -4,21 +4,62 @@
 namespace ma
 {
     StackAlloc::StackAlloc()
-        : BaseAlloc(0, 0)
+        : m_memory {0}
         , m_cursor {0}
+        , m_size {0}
     { }
 
     StackAlloc::StackAlloc(void* memory, u32 size)
-        : BaseAlloc(memory, size)
+        : m_memory {(char*) memory}
         , m_cursor {0}
+        , m_size {size}
     {
+        if ( m_memory == 0 )
+            m_size = 0;
+
         prepare();
+    }
+
+    u32
+    StackAlloc::size() const
+    {
+        return m_size;
+    }
+
+    char*
+    StackAlloc::memory()
+    {
+        return m_memory;
+    }
+
+    const char*
+    StackAlloc::memory() const
+    {
+        return m_memory;
+    }
+
+    bool
+    StackAlloc::contains(void* memory) const
+    {
+        char* addr = (char*) memory;
+
+        if ( addr != 0 ) {
+            return addr < m_memory + m_size &&
+                   addr >= m_memory;
+        }
+
+        return true;
     }
 
     u32
     StackAlloc::avail() const
     {
-        return m_size - (m_cursor - m_memory);
+        u32 size = m_size - (m_cursor - m_memory);
+
+        if ( size > s_head_size )
+            return size - s_head_size;
+
+        return 0;
     }
 
     bool

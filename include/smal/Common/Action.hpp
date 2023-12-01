@@ -7,7 +7,8 @@
 namespace ma
 {
     template <class Ret, class... Args>
-    class Action<Ret(Args...)> {
+    class Action<Ret(Args...)>
+    {
     public:
         /**
          *

@@ -13,19 +13,25 @@ namespace ma
     static const u32 g_MB = g_KB * g_KB;
     static const u32 g_GB = g_MB * g_KB;
 
-    class Origin;
+    class MemoryService;
 
     class BaseAlloc;
     class NullAlloc;
     class PoolAlloc;
     class StackAlloc;
+    class ProxyAlloc;
+
+    template <class... Allocs>
+    class ChainAlloc;
 
     template <class Type>
-    class Bucket;
+    class BaseBlock;
 
-    template <class Type> class BaseBlock;
-    template <class Type> class FixedBlock;
-    template <class Type> class PagedBlock;
+    template <class Type>
+    class FixedBlock;
+
+    template <class Type>
+    class PagedBlock;
 
     class PageTable;
 } // namespace ma

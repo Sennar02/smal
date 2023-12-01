@@ -78,8 +78,8 @@ namespace ma
         /**
          *
          */
-        static const u32 s_node_size
-            = sizeof(Node);
+        static const u32 s_node_size =
+            sizeof(Node);
 
     private:
         /**

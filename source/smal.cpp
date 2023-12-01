@@ -1,49 +1,70 @@
 #include <smal/Struct/import.hpp>
-#include <stdio.h>
+
+#include <stdio.h> // printf
 
 using namespace ma;
 
-template <class List>
+static auto g_memory =
+    MemoryService {g_MiB * 64};
+
 void
-print(int& x, u32 i, const List& l)
+print(int& x, u32 i, const ArrayList<int, PagedBlock>& l)
 {
-    printf("%u | %i\n", i, x);
+    if ( i == 0 )
+        printf("[\n");
+
+    printf("  %2u: %i\n", i, x);
 
     if ( i + 1 == l.count() )
-        printf("\n");
+        printf("]\n");
 }
 
 int
 main(int argc, const char* argv[])
 {
-    Origin     mem   = {g_MiB * 4};
-    StackAlloc alloc = {mem.memory(), mem.size()};
-
-    ArrayList<int, PagedBlock> array = {
-        PoolAlloc {mem.memory(), mem.size(), g_KiB}, 100, 5
+    ChainAlloc chain = {
+        g_memory.create<PoolAlloc>(g_MiB * 4, 8u),
+        g_memory.create<PoolAlloc>(g_MiB * 8, 16u),
+        g_memory.create<StackAlloc>(g_MiB * 4),
     };
 
-    array.insert(10, g_max_i32);
+    auto& stack = chain.alloc<2>();
+    auto  avail = stack.avail();
 
-    array.for_each(
-        action<print<ArrayList<int, PagedBlock>>>());
+    auto pool = PoolAlloc {stack.acquire(avail), avail, g_KiB};
+
+    ArrayList<int, PagedBlock> array = {pool, 10, 5};
+
+    printf("size = %u / %u\n",
+        array.count(),
+        array.size());
+
+    printf("insert(%i, %li) = %i\n",
+        10,
+        g_max_i32,
+        array.insert(10, g_max_i32));
+
+    array.for_each(action<print>());
 
     Action func = {[](const int& a, const int& b) {
         return a >= b;
     }};
 
-    array.remove(g_min_i32);
+    printf("remove(%li) = %i\n",
+        g_max_i32,
+        array.remove(g_min_i32));
 
     array.for_each(Action {
-        bind<print<ArrayList<int, PagedBlock>>>,
+        bind<print>,
     });
 
-    if ( array.contains(0, func) )
-        printf("Array contains x >= 0\n");
+    if ( array.contains(10, func) )
+        printf("array has item >= 10\n");
 
-    array.clear(Action {[](int x, u32 i) {
-        destroy(x);
-    }});
+    array.clear(
+        action([](int& x) {
+            printf("%i\n", x);
+        }));
 
     return 0;
 }

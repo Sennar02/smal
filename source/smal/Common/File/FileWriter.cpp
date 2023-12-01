@@ -9,11 +9,11 @@ namespace ma
     u32
     FileWriter::write(FileOStream& stream, const String& string)
     {
-        const char* mem = string.memory();
-        u32       siz = string.size();
+        const char* addr = string.memory();
+        u32         size = string.size();
 
         if ( string.size() != 0 )
-            return stream.write(mem, siz);
+            return stream.write(addr, size);
 
         return g_max_u32;
     }

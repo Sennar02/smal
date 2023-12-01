@@ -11,36 +11,7 @@ namespace ma
         /**
          *
          */
-        BaseAlloc(void* memory, u32 size);
-
-        /**
-         *
-         */
         virtual ~BaseAlloc() = default;
-
-        /**
-         *
-         */
-        u32
-        size() const;
-
-        /**
-         *
-         */
-        char*
-        memory();
-
-        /**
-         *
-         */
-        const char*
-        memory() const;
-
-        /**
-         *
-         */
-        virtual bool
-        contains(void* memory);
 
         /**
          *
@@ -71,17 +42,6 @@ namespace ma
          */
         virtual bool
         release() = 0;
-
-    protected:
-        /**
-         *
-         */
-        char* m_memory;
-
-        /**
-         *
-         */
-        u32 m_size;
     };
 } // namespace ma
 

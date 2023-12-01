@@ -23,6 +23,30 @@ namespace ma
          *
          */
         virtual u32
+        size() const;
+
+        /**
+         *
+         */
+        virtual char*
+        memory();
+
+        /**
+         *
+         */
+        virtual const char*
+        memory() const;
+
+        /**
+         *
+         */
+        virtual bool
+        contains(void* memory) const;
+
+        /**
+         *
+         */
+        virtual u32
         avail() const;
 
         /**
@@ -50,21 +74,32 @@ namespace ma
         release();
 
     private:
-        struct Head {
+        struct Head
+        {
             u32 size;
         };
 
         /**
          *
          */
-        static const u32 s_head_size
-            = sizeof(Head);
+        static const u32 s_head_size =
+            sizeof(Head);
 
     private:
         /**
          *
          */
+        char* m_memory;
+
+        /**
+         *
+         */
         char* m_cursor;
+
+        /**
+         *
+         */
+        u32 m_size;
     };
 } // namespace ma
 

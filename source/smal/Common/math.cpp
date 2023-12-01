@@ -103,7 +103,7 @@ namespace ma
     hash(char* const& value)
     {
         const char* str = value;
-        u32       res = 5381;
+        u32         res = 5381;
 
         while ( u8 chr = *str++ ) {
             res = (res << 5) + res;
@@ -118,7 +118,7 @@ namespace ma
     hash(const char* const& value)
     {
         const char* str = value;
-        u32       res = 5381;
+        u32         res = 5381;
 
         while ( u8 chr = *str++ ) {
             res = (res << 5) + res;

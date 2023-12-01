@@ -9,34 +9,42 @@ namespace ma
     {
         template <class Ret, class... Args>
         auto
-        signature(Ret (*)(Args...)) -> Ret (*)(Args...);
+        signature(Ret (*)(Args...))
+            -> Ret (*)(Args...);
 
         template <class Ret, class... Args, class... Rest>
         auto
-        signature(Ret (*)(Args...), Rest...) -> Ret (*)(Args...);
+        signature(Ret (*)(Args...), Rest...)
+            -> Ret (*)(Args...);
 
         template <class Type, class Ret, class... Args>
         auto
-        signature(Ret (Type::*)(Args...)) -> Ret (*)(Args...);
+        signature(Ret (Type::*)(Args...))
+            -> Ret (*)(Args...);
 
         template <class Type, class Ret, class... Args, class... Rest>
         auto
-        signature(Ret (Type::*)(Args...), Rest...) -> Ret (*)(Args...);
+        signature(Ret (Type::*)(Args...), Rest...)
+            -> Ret (*)(Args...);
 
         template <class Type, class Ret, class... Args>
         auto
-        signature(Ret (Type::*)(Args...) const) -> Ret (*)(Args...);
+        signature(Ret (Type::*)(Args...) const)
+            -> Ret (*)(Args...);
 
         template <class Type, class Ret, class... Args, class... Rest>
         auto
-        signature(Ret (Type::*)(Args...) const, Rest...) -> Ret (*)(Args...);
+        signature(Ret (Type::*)(Args...) const, Rest...)
+            -> Ret (*)(Args...);
 
         template <class Type, class Ret, class... Rest>
         auto
-        signature(Ret Type::*, Rest...) -> Ret (*)();
+        signature(Ret Type::*, Rest...)
+            -> Ret (*)();
 
         template <class... Func>
-        struct Signature {
+        struct Signature
+        {
             using Main = decltype(signature(declared<Func>()...));
         };
     } // namespace impl

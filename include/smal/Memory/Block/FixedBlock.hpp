@@ -48,8 +48,8 @@ namespace ma
         /**
          *
          */
-        static const u32 s_type_size
-            = sizeof(Type);
+        static const u32 s_type_size =
+            sizeof(Type);
 
     private:
         /**

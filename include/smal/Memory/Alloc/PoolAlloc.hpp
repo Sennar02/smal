@@ -22,6 +22,30 @@ namespace ma
         /**
          *
          */
+        virtual u32
+        size() const;
+
+        /**
+         *
+         */
+        virtual char*
+        memory();
+
+        /**
+         *
+         */
+        virtual const char*
+        memory() const;
+
+        /**
+         *
+         */
+        virtual bool
+        contains(void* memory) const;
+
+        /**
+         *
+         */
         u32
         page() const;
 
@@ -62,11 +86,17 @@ namespace ma
         release();
 
     private:
-        struct Node {
+        struct Node
+        {
             Node* next;
         };
 
     private:
+        /**
+         *
+         */
+        char* m_memory;
+
         /**
          *
          */
@@ -81,6 +111,11 @@ namespace ma
          *
          */
         u32 m_count;
+
+        /**
+         *
+         */
+        u32 m_size;
     };
 } // namespace ma
 

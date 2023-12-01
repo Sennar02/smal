@@ -4,11 +4,9 @@
 namespace ma
 {
     NullAlloc::NullAlloc()
-        : BaseAlloc(0, 0)
     { }
 
     NullAlloc::NullAlloc(void* memory, u32 size)
-        : BaseAlloc(0, 0)
     { }
 
     u32

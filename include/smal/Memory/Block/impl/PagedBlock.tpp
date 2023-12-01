@@ -13,7 +13,7 @@ namespace ma
         : m_alloc {alloc}
         , m_table {}
     {
-        u32 page = m_alloc.page();
+        u32   page = m_alloc.page();
         char* addr = m_alloc.acquire(page);
 
         if ( addr != 0 )
@@ -57,7 +57,7 @@ namespace ma
     bool
     PagedBlock<Type>::expand(u32 pages)
     {
-        u32 page = m_alloc.page();
+        u32   page = m_alloc.page();
         char* addr = 0;
 
         if ( m_table.count() + pages > m_table.size() )

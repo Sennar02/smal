@@ -6,12 +6,14 @@ namespace ma
     namespace impl
     {
         template <class Type>
-        struct RemovePtr {
+        struct RemovePtr
+        {
             using Main = Type;
         };
 
         template <class Type>
-        struct RemovePtr<Type*> {
+        struct RemovePtr<Type*>
+        {
             using Main = Type;
         };
     } // namespace impl

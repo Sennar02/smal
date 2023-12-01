@@ -14,10 +14,7 @@ namespace ma
         : m_block {}
         , m_count {0}
     {
-        m_block = Block<Type> {
-            alloc,
-            size,
-        };
+        m_block = {alloc, size};
 
         if ( count > m_block.size() )
             count = m_block.size();
