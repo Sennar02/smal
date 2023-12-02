@@ -60,6 +60,24 @@ namespace ma
         return false;
     }
 
+    char
+    String::operator[](u32 index)
+    {
+        if ( index < m_size )
+            return m_memory[index];
+
+        return 0;
+    }
+
+    char
+    String::operator[](u32 index) const
+    {
+        if ( index < m_size )
+            return m_memory[index];
+
+        return 0;
+    }
+
     bool
     String::operator==(const String& other) const
     {

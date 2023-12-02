@@ -76,7 +76,7 @@ namespace ma
         if ( node != 0 ) {
             m_count = m_size / m_page;
             m_list  = (Node*)
-                memory_set(m_memory, m_size, 0);
+                memorySet(m_memory, m_size, 0);
 
             for ( u32 i = 0; i < m_count - 1; i++ ) {
                 next = (Node*) ((char*) node + m_page);
@@ -114,7 +114,7 @@ namespace ma
             m_count -= 1;
             m_list = m_list->next;
 
-            return memory_set(addr, m_page, 0);
+            return memorySet(addr, m_page, 0);
         }
 
         return 0;
@@ -131,7 +131,7 @@ namespace ma
 
         if ( addr != 0 ) {
             node = (Node*)
-                memory_set(addr, m_page, 0);
+                memorySet(addr, m_page, 0);
 
             m_count += 1;
 

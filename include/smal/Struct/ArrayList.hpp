@@ -46,46 +46,46 @@ namespace ma
          *
          */
         bool
-        is_empty() const;
+        isEmpty() const;
 
         /**
          *
          */
         bool
-        is_full() const;
+        isFull() const;
 
         /**
          *
          */
         template <class Func>
         u32
-        index_of(const Type& value, Func&& func) const;
+        indexOf(const Type& value, u32 start, Func&& func) const;
 
         /**
          *
          */
         u32
-        index_of(const Type& value) const;
+        indexOf(const Type& value, u32 start = 0) const;
 
         /**
          *
          */
         template <class Func>
         bool
-        contains(const Type& value, Func&& func) const;
+        contains(const Type& value, u32 start, Func&& func) const;
 
         /**
          *
          */
         bool
-        contains(const Type& value) const;
+        contains(const Type& value, u32 start = 0) const;
 
         /**
          *
          */
         template <class Func>
         void
-        for_each(Func&& func) const;
+        forEach(Func&& func) const;
 
         /**
          *

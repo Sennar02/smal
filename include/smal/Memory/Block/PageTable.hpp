@@ -40,13 +40,13 @@ namespace ma
          *
          */
         bool
-        is_empty() const;
+        isEmpty() const;
 
         /**
          *
          */
         bool
-        is_full() const;
+        isFull() const;
 
         /**
          *

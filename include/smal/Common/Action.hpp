@@ -37,7 +37,7 @@ namespace ma
          *
          */
         bool
-        is_bound() const;
+        isBound() const;
 
         /**
          *

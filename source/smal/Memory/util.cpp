@@ -3,7 +3,7 @@
 namespace ma
 {
     char*
-    memory_set(void* memory, u32 size, char byte)
+    memorySet(void* memory, u32 size, char byte)
     {
         char* buffer = (char*) memory;
 

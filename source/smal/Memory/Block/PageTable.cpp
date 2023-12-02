@@ -42,13 +42,13 @@ namespace ma
     }
 
     bool
-    PageTable::is_empty() const
+    PageTable::isEmpty() const
     {
         return m_count == 0;
     }
 
     bool
-    PageTable::is_full() const
+    PageTable::isFull() const
     {
         return m_count == m_size;
     }

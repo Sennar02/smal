@@ -38,7 +38,7 @@ namespace ma
 
     template <class Ret, class... Args>
     bool
-    Action<Ret(Args...)>::is_bound() const
+    Action<Ret(Args...)>::isBound() const
     {
         return m_func != 0;
     }

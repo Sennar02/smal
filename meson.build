@@ -10,6 +10,7 @@ smal_define = []
 
 subdir('source/smal/Common')
 subdir('source/smal/Memory')
+subdir('source/smal/Json')
 
 foreach def : smal_define
     message(' - ', def.name())

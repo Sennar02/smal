@@ -66,7 +66,7 @@ namespace ma
     StackAlloc::prepare()
     {
         m_cursor =
-            memory_set(m_memory, m_size, 0);
+            memorySet(m_memory, m_size, 0);
 
         return true;
     }
@@ -87,7 +87,7 @@ namespace ma
             size -= s_head_size;
             head->size = size;
 
-            return memory_set(addr, size, 0);
+            return memorySet(addr, size, 0);
         }
 
         return 0;
@@ -107,7 +107,7 @@ namespace ma
                 head->size += s_head_size;
 
                 m_cursor =
-                    memory_set(head, head->size, 0);
+                    memorySet(head, head->size, 0);
             } else
                 return false;
         }

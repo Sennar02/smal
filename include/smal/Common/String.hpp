@@ -40,6 +40,18 @@ namespace ma
         /**
          *
          */
+        char
+        operator[](u32 index);
+
+        /**
+         *
+         */
+        char
+        operator[](u32 index) const;
+
+        /**
+         *
+         */
         bool
         operator==(const String& other) const;
 
