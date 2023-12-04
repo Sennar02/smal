@@ -1,4 +1,4 @@
-#include <smal/Struct/ArrayList.hpp>
+#include <smal/Algo/ArrayList.hpp>
 
 namespace ma
 {
@@ -74,9 +74,8 @@ namespace ma
     u32
     ArrayList<Type, Block>::indexOf(const Type& value, Func&& func) const
     {
-        auto iter = ArrayListForwIter {
-            (ArrayList&) *this,
-        };
+        ArrayListForwIter iter =
+            {*this};
 
         return indexOf(value, iter, func);
     }
@@ -105,9 +104,8 @@ namespace ma
     bool
     ArrayList<Type, Block>::contains(const Type& value, Func&& func) const
     {
-        auto iter = ArrayListForwIter {
-            (ArrayList&) *this,
-        };
+        ArrayListForwIter iter =
+            {*this};
 
         return contains(value, iter, func);
     }
@@ -141,9 +139,8 @@ namespace ma
     void
     ArrayList<Type, Block>::forEach(Func&& func) const
     {
-        auto iter = ArrayListForwIter {
-            (ArrayList&) *this,
-        };
+        ArrayListForwIter iter =
+            {*this};
 
         forEach(iter, func);
     }
@@ -212,22 +209,14 @@ namespace ma
     void
     ArrayList<Type, Block>::clear(Func&& func)
     {
-        auto iter = ArrayListForwIter {
-            (ArrayList&) *this,
-        };
+        ArrayListForwIter iter =
+            {*this};
 
         clear(iter, func);
     }
 
     template <class Type, template <class> class Block>
     Type&
-    ArrayList<Type, Block>::find(u32 index)
-    {
-        return m_block[index];
-    }
-
-    template <class Type, template <class> class Block>
-    const Type&
     ArrayList<Type, Block>::find(u32 index) const
     {
         return m_block[index];
@@ -242,21 +231,14 @@ namespace ma
 
     template <class Type, template <class> class Block>
     Type&
-    ArrayList<Type, Block>::operator[](u32 index)
-    {
-        return find(index);
-    }
-
-    template <class Type, template <class> class Block>
-    const Type&
     ArrayList<Type, Block>::operator[](u32 index) const
     {
         return find(index);
     }
 
     template <class Type, template <class> class Block>
-    ArrayListForwIter<Type, Block>::ArrayListForwIter(List& list, u32 start)
-        : m_list {&list}
+    ArrayListForwIter<Type, Block>::ArrayListForwIter(const List& list, u32 start)
+        : m_list {list}
         , m_index {0}
     {
         clear(start);
@@ -273,14 +255,14 @@ namespace ma
     Type&
     ArrayListForwIter<Type, Block>::item()
     {
-        return m_list->find(m_index);
+        return m_list.find(m_index);
     }
 
     template <class Type, template <class> class Block>
     const Type&
     ArrayListForwIter<Type, Block>::item() const
     {
-        return m_list->find(m_index);
+        return m_list.find(m_index);
     }
 
     template <class Type, template <class> class Block>
@@ -289,7 +271,7 @@ namespace ma
     {
         u32 next = m_index + 1;
 
-        if ( next < m_list->count() )
+        if ( next < m_list.count() )
             return true;
 
         return false;
@@ -301,7 +283,7 @@ namespace ma
     {
         u32 next = m_index + 1;
 
-        if ( next < m_list->count() )
+        if ( next < m_list.count() )
             m_index = next;
 
         return m_index == next;
@@ -311,7 +293,7 @@ namespace ma
     void
     ArrayListForwIter<Type, Block>::clear(u32 start)
     {
-        u32 count = m_list->count() - 1;
+        u32 count = m_list.count() - 1;
 
         if ( start > count )
             start = count;
@@ -320,8 +302,8 @@ namespace ma
     }
 
     template <class Type, template <class> class Block>
-    ArrayListBackIter<Type, Block>::ArrayListBackIter(List& list, u32 start)
-        : m_list {&list}
+    ArrayListBackIter<Type, Block>::ArrayListBackIter(const List& list, u32 start)
+        : m_list {list}
         , m_index {0}
     {
         clear(start);
@@ -338,20 +320,20 @@ namespace ma
     Type&
     ArrayListBackIter<Type, Block>::item()
     {
-        u32 index = m_list->count() -
+        u32 index = m_list.count() -
                     m_index;
 
-        return m_list->find(index - 1);
+        return m_list.find(index - 1);
     }
 
     template <class Type, template <class> class Block>
     const Type&
     ArrayListBackIter<Type, Block>::item() const
     {
-        u32 index = m_list->count() -
+        u32 index = m_list.count() -
                     m_index;
 
-        return m_list->find(index - 1);
+        return m_list.find(index - 1);
     }
 
     template <class Type, template <class> class Block>
@@ -360,7 +342,7 @@ namespace ma
     {
         u32 next = m_index + 1;
 
-        if ( next < m_list->count() )
+        if ( next < m_list.count() )
             return true;
 
         return false;
@@ -372,7 +354,7 @@ namespace ma
     {
         u32 next = m_index + 1;
 
-        if ( next < m_list->count() )
+        if ( next < m_list.count() )
             m_index = next;
 
         return m_index == next;
@@ -382,7 +364,7 @@ namespace ma
     void
     ArrayListBackIter<Type, Block>::clear(u32 start)
     {
-        u32 count = m_list->count() - 1;
+        u32 count = m_list.count() - 1;
 
         if ( start > count )
             start = count;

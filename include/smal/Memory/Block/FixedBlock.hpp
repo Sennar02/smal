@@ -36,12 +36,12 @@ namespace ma
          *
          */
         Type&
-        operator[](u32 index);
+        find(u32 index) const;
 
         /**
          *
          */
-        const Type&
+        Type&
         operator[](u32 index) const;
 
     private:

@@ -30,12 +30,12 @@ namespace ma
          *
          */
         virtual Type&
-        operator[](u32 index) = 0;
+        find(u32 index) const = 0;
 
         /**
          *
          */
-        virtual const Type&
+        virtual Type&
         operator[](u32 index) const = 0;
     };
 } // namespace ma

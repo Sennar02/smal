@@ -1,7 +1,7 @@
-#ifndef SMAL_STRUCT_ARRAY_LIST_HPP
-#define SMAL_STRUCT_ARRAY_LIST_HPP
+#ifndef SMAL_ALGO_ARRAY_LIST_HPP
+#define SMAL_ALGO_ARRAY_LIST_HPP
 
-#include <smal/Struct/define.hpp>
+#include <smal/Algo/define.hpp>
 
 namespace ma
 {
@@ -144,12 +144,6 @@ namespace ma
          *
          */
         Type&
-        find(u32 index);
-
-        /**
-         *
-         */
-        const Type&
         find(u32 index) const;
 
         /**
@@ -162,12 +156,6 @@ namespace ma
          *
          */
         Type&
-        operator[](u32 index);
-
-        /**
-         *
-         */
-        const Type&
         operator[](u32 index) const;
 
     private:
@@ -200,7 +188,7 @@ namespace ma
         /**
          *
          */
-        ArrayListForwIter(List& list, u32 start = 0);
+        ArrayListForwIter(const List& list, u32 start = 0);
 
         /**
          *
@@ -242,7 +230,7 @@ namespace ma
         /**
          *
          */
-        List* m_list;
+        const List& m_list;
 
         /**
          *
@@ -264,7 +252,7 @@ namespace ma
         /**
          *
          */
-        ArrayListBackIter(List& list, u32 start = 0);
+        ArrayListBackIter(const List& list, u32 start = 0);
 
         /**
          *
@@ -306,7 +294,7 @@ namespace ma
         /**
          *
          */
-        List* m_list;
+        const List& m_list;
 
         /**
          *
@@ -319,6 +307,6 @@ namespace ma
         -> ArrayListBackIter<Type, Block>;
 } // namespace ma
 
-#include <smal/Struct/impl/ArrayList.tpp>
+#include <smal/Algo/impl/ArrayList.tpp>
 
-#endif // SMAL_STRUCT_ARRAY_LIST_HPP
+#endif // SMAL_ALGO_ARRAY_LIST_HPP

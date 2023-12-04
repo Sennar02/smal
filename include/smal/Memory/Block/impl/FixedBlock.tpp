@@ -13,7 +13,7 @@ namespace ma
         : m_memory {0}
         , m_size {0}
     {
-        char* addr  = alloc.acquire(s_type_size * size);
+        char* addr = alloc.acquire(s_type_size * size);
 
         if ( addr != 0 ) {
             m_memory = addr;
@@ -37,21 +37,15 @@ namespace ma
 
     template <class Type>
     Type&
-    FixedBlock<Type>::operator[](u32 index)
+    FixedBlock<Type>::find(u32 index) const
     {
-        char* elem =
-            &m_memory[s_type_size * index];
-
-        return *(Type*) elem;
+        return (Type&) m_memory[index * s_type_size];
     }
 
     template <class Type>
-    const Type&
+    Type&
     FixedBlock<Type>::operator[](u32 index) const
     {
-        char* elem =
-            &m_memory[s_type_size * index];
-
-        return *(Type*) elem;
+        return find(index);
     }
 } // namespace ma

@@ -114,21 +114,15 @@ namespace ma
 
     template <class Type>
     Type&
-    PagedBlock<Type>::operator[](u32 index)
+    PagedBlock<Type>::find(u32 index) const
     {
-        char* addr =
-            m_table.convert(index, s_type_size);
-
-        return *(Type*) addr;
+        return (Type&) *m_table.convert(index, s_type_size);
     }
 
     template <class Type>
-    const Type&
+    Type&
     PagedBlock<Type>::operator[](u32 index) const
     {
-        char* addr =
-            m_table.convert(index, s_type_size);
-
-        return *(Type*) addr;
+        return find(index);
     }
 } // namespace ma
