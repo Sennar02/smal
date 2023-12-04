@@ -4,17 +4,17 @@ namespace ma
 {
     template <class Type>
     PagedBlock<Type>::PagedBlock()
-        : m_alloc {}
+        : m_alloc {0}
         , m_table {}
     { }
 
     template <class Type>
-    PagedBlock<Type>::PagedBlock(const PoolAlloc& alloc, u32 size)
-        : m_alloc {alloc}
+    PagedBlock<Type>::PagedBlock(PoolAlloc& alloc, u32 size)
+        : m_alloc {&alloc}
         , m_table {}
     {
-        u32   page = m_alloc.page();
-        char* addr = m_alloc.acquire(page);
+        u32   page = m_alloc->page();
+        char* addr = m_alloc->acquire(page);
 
         if ( addr != 0 )
             m_table = {addr, page, page};
@@ -23,11 +23,17 @@ namespace ma
     }
 
     template <class Type>
+    PagedBlock<Type>::PagedBlock(PoolAlloc& alloc, const PageTable& table)
+        : m_alloc {&alloc}
+        , m_table {table}
+    { }
+
+    template <class Type>
     u32
     PagedBlock<Type>::size() const
     {
         u32 pages = m_table.count();
-        u32 items = m_alloc.page() / s_type_size;
+        u32 items = m_alloc->page() / s_type_size;
 
         return pages * items;
     }
@@ -37,7 +43,7 @@ namespace ma
     PagedBlock<Type>::resize(u32 size)
     {
         u32 pages = m_table.count();
-        u32 items = m_alloc.page() / s_type_size;
+        u32 items = m_alloc->page() / s_type_size;
 
         if ( items != 0 ) {
             size = ceil(size, items);
@@ -57,17 +63,17 @@ namespace ma
     bool
     PagedBlock<Type>::expand(u32 pages)
     {
-        u32   page = m_alloc.page();
+        u32   page = m_alloc->page();
         char* addr = 0;
 
         if ( m_table.count() + pages > m_table.size() )
             return false;
 
-        if ( m_alloc.avail() / page < pages )
+        if ( m_alloc->avail() / page < pages )
             return false;
 
         for ( u32 i = 0; i < pages; i++ ) {
-            addr = m_alloc.acquire(page);
+            addr = m_alloc->acquire(page);
 
             if ( addr != 0 )
                 m_table.push(addr);
@@ -91,7 +97,7 @@ namespace ma
             addr = m_table.pull();
 
             if ( addr != 0 )
-                m_alloc.release(addr);
+                m_alloc->release(addr);
             else
                 return false;
         }

@@ -12,12 +12,12 @@ public:
     bool
     string(const String value)
     {
-        printf("\"");
+        printf("[value | \"");
 
         for ( u32 i = 0; i < value.size(); i++ )
             printf("%c", value[i]);
 
-        printf("\"\n");
+        printf("\"]\n");
 
         return true;
     }
@@ -25,7 +25,7 @@ public:
     bool
     number(u32 value)
     {
-        printf("%u\n", value);
+        printf("[value | %u]\n", value);
 
         return true;
     }
@@ -33,7 +33,7 @@ public:
     bool
     number(i32 value)
     {
-        printf("%i\n", value);
+        printf("[value | %i]\n", value);
 
         return true;
     }
@@ -41,7 +41,7 @@ public:
     bool
     number(f32 value)
     {
-        printf("%f\n", value);
+        printf("[value | %f]\n", value);
 
         return true;
     }
@@ -50,9 +50,9 @@ public:
     boolean(bool value)
     {
         if ( value == true )
-            printf("true\n");
+            printf("[value | true]\n");
         else
-            printf("false\n");
+            printf("[value | false]\n");
 
         return true;
     }
@@ -60,7 +60,7 @@ public:
     bool
     null()
     {
-        printf("null\n");
+        printf("[value | null]\n");
 
         return true;
     }
@@ -68,7 +68,7 @@ public:
     bool
     arrOpen(u32 depth)
     {
-        printf("[arr-open  depth %u]\n", depth);
+        printf("[arrop | depth %u]\n", depth);
 
         return true;
     }
@@ -76,7 +76,7 @@ public:
     bool
     arrClose(u32 depth, u32 count)
     {
-        printf("[arr-close depth %u, count %u]\n", depth, count);
+        printf("[arrcl | depth %u, count %u]\n", depth, count);
 
         return true;
     }
@@ -84,7 +84,7 @@ public:
     bool
     objOpen(u32 depth)
     {
-        printf("[obj-open  depth %u]\n", depth);
+        printf("[objop | depth %u]\n", depth);
 
         return true;
     }
@@ -92,7 +92,7 @@ public:
     bool
     objClose(u32 depth, u32 count)
     {
-        printf("[obj-close depth %u, count %u]\n", depth, count);
+        printf("[objcl | depth %u, count %u]\n", depth, count);
 
         return true;
     }
@@ -100,7 +100,7 @@ public:
     bool
     objLabel(const String label)
     {
-        printf("[label \"");
+        printf("[label | \"");
 
         for ( u32 i = 0; i < label.size(); i++ )
             printf("%c", label[i]);
@@ -114,22 +114,22 @@ static auto g_memory =
     MemoryService {g_MiB * 64};
 
 void
-print(int& x, u32 i, const ArrayList<int, PagedBlock>& l)
+print(int& x, u32 i, u32 c)
 {
     if ( i == 0 )
-        printf("[\n");
+        printf("{\n");
 
-    printf("  %2u: %i\n", i, x);
+    printf("  %02u: %i\n", i, x);
 
-    if ( i + 1 == l.count() )
-        printf("]\n");
+    if ( i + 1 == c )
+        printf("}\n");
 }
 
 int
 main(int argc, const char* argv[])
 {
-    SyntaxHandler hdlr;
-    JsonReader    json = {2};
+    Handler    hdlr;
+    JsonReader json;
 
     if ( argc == 2 ) {
         json.bind(hdlr);
@@ -151,35 +151,30 @@ main(int argc, const char* argv[])
 
     auto pool = PoolAlloc {stack.acquire(avail), avail, g_KiB};
 
-    ArrayList<int, PagedBlock> array = {pool, 10, 5};
+    ArrayList<int, PagedBlock> list = {pool, 10, 5};
 
-    printf("size = %u / %u\n",
-        array.count(),
-        array.size());
+    list.forEach([](int& x, u32 i, u32 c) {
+        x = i + 1;
+    });
 
-    printf("insert(%i, %li) = %i\n",
-        10,
-        g_max_i32,
-        array.insert(10, g_max_i32));
+    list.insert(10, g_max_u32);
 
-    array.forEach(action<print>());
+    list.forEach(action<print>());
 
     Action func = {[](const int& a, const int& b) {
         return a >= b;
     }};
 
-    printf("remove(%li) = %i\n",
-        g_max_i32,
-        array.remove(g_min_i32));
+    list.remove(0);
 
-    array.forEach(Action {
+    list.forEach(Action {
         bind<print>,
     });
 
-    if ( array.contains(10, 0, func) )
-        printf("array has item >= 10\n");
+    if ( list.contains(10, func) )
+        printf("list has item >= 10\n");
 
-    array.clear(
+    list.clear(
         action([](int& x) {
             printf("%i\n", x);
         }));

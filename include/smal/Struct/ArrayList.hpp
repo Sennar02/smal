@@ -23,7 +23,7 @@ namespace ma
          *
          */
         template <class Alloc>
-        ArrayList(const Alloc& alloc, u32 size, u32 count = 0);
+        ArrayList(Alloc& alloc, u32 size, u32 count = 0);
 
         /**
          *
@@ -57,28 +57,49 @@ namespace ma
         /**
          *
          */
+        template <class Iter, class Func>
+        u32
+        indexOf(const Type& value, Iter& iter, Func&& func) const;
+
+        /**
+         *
+         */
         template <class Func>
         u32
-        indexOf(const Type& value, u32 start, Func&& func) const;
+        indexOf(const Type& value, Func&& func) const;
 
         /**
          *
          */
         u32
-        indexOf(const Type& value, u32 start = 0) const;
+        indexOf(const Type& value) const;
+
+        /**
+         *
+         */
+        template <class Iter, class Func>
+        bool
+        contains(const Type& value, Iter& iter, Func&& func) const;
 
         /**
          *
          */
         template <class Func>
         bool
-        contains(const Type& value, u32 start, Func&& func) const;
+        contains(const Type& value, Func&& func) const;
 
         /**
          *
          */
         bool
-        contains(const Type& value, u32 start = 0) const;
+        contains(const Type& value) const;
+
+        /**
+         *
+         */
+        template <class Iter, class Func>
+        void
+        forEach(Iter& iter, Func&& func) const;
 
         /**
          *
@@ -96,39 +117,40 @@ namespace ma
         /**
          *
          */
-        template <class Func>
         bool
+        insert(const Type& value, u32 index = g_max_u32);
+
+        /**
+         *
+         */
+        bool
+        remove(u32 index = g_max_u32);
+
+        /**
+         *
+         */
+        template <class Iter, class Func>
+        void
+        clear(Iter& iter, Func&& func);
+
+        /**
+         *
+         */
+        template <class Func>
+        void
         clear(Func&& func);
 
         /**
          *
          */
-        bool
-        clear();
-
-        /**
-         *
-         */
-        bool
-        insert(const Type& value, i32 index = g_max_u32);
-
-        /**
-         *
-         */
-        bool
-        remove(i32 index = g_max_u32);
-
-        /**
-         *
-         */
         Type&
-        find(i32 index);
+        find(u32 index);
 
         /**
          *
          */
         const Type&
-        find(i32 index) const;
+        find(u32 index) const;
 
         /**
          *
@@ -140,13 +162,13 @@ namespace ma
          *
          */
         Type&
-        operator[](i32 index);
+        operator[](u32 index);
 
         /**
          *
          */
         const Type&
-        operator[](i32 index) const;
+        operator[](u32 index) const;
 
     private:
         /**
@@ -167,6 +189,134 @@ namespace ma
     template <class Type, template <class> class Block>
     ArrayList(const Block<Type>&, u32)
         -> ArrayList<Type, Block>;
+
+    template <class Type, template <class> class Block>
+    class ArrayListForwIter
+    {
+    private:
+        using List = ArrayList<Type, Block>;
+
+    public:
+        /**
+         *
+         */
+        ArrayListForwIter(List& list, u32 start = 0);
+
+        /**
+         *
+         */
+        u32
+        index() const;
+
+        /**
+         *
+         */
+        Type&
+        item();
+
+        /**
+         *
+         */
+        const Type&
+        item() const;
+
+        /**
+         *
+         */
+        bool
+        hasNext() const;
+
+        /**
+         *
+         */
+        bool
+        next();
+
+        /**
+         *
+         */
+        void
+        clear(u32 start = 0);
+
+    private:
+        /**
+         *
+         */
+        List* m_list;
+
+        /**
+         *
+         */
+        u32 m_index;
+    };
+
+    template <class Type, template <class> class Block>
+    ArrayListForwIter(ArrayList<Type, Block>&)
+        -> ArrayListForwIter<Type, Block>;
+
+    template <class Type, template <class> class Block>
+    class ArrayListBackIter
+    {
+    private:
+        using List = ArrayList<Type, Block>;
+
+    public:
+        /**
+         *
+         */
+        ArrayListBackIter(List& list, u32 start = 0);
+
+        /**
+         *
+         */
+        u32
+        index() const;
+
+        /**
+         *
+         */
+        Type&
+        item();
+
+        /**
+         *
+         */
+        const Type&
+        item() const;
+
+        /**
+         *
+         */
+        bool
+        hasNext() const;
+
+        /**
+         *
+         */
+        bool
+        next();
+
+        /**
+         *
+         */
+        void
+        clear(u32 start = 0);
+
+    private:
+        /**
+         *
+         */
+        List* m_list;
+
+        /**
+         *
+         */
+        u32 m_index;
+    };
+
+    template <class Type, template <class> class Block>
+    ArrayListBackIter(ArrayList<Type, Block>&)
+        -> ArrayListBackIter<Type, Block>;
 } // namespace ma
 
 #include <smal/Struct/impl/ArrayList.tpp>

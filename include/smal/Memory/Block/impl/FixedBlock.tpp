@@ -9,12 +9,11 @@ namespace ma
     { }
 
     template <class Type>
-    FixedBlock<Type>::FixedBlock(const BaseAlloc& alloc, u32 size)
+    FixedBlock<Type>::FixedBlock(BaseAlloc& alloc, u32 size)
         : m_memory {0}
         , m_size {0}
     {
-        auto& alias = (BaseAlloc&) alloc;
-        char* addr  = alias.acquire(s_type_size * size);
+        char* addr  = alloc.acquire(s_type_size * size);
 
         if ( addr != 0 ) {
             m_memory = addr;

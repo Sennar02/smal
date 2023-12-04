@@ -20,7 +20,12 @@ namespace ma
         /**
          *
          */
-        PagedBlock(const PoolAlloc& alloc, u32 size);
+        PagedBlock(PoolAlloc& alloc, u32 size);
+
+        /**
+         *
+         */
+        PagedBlock(PoolAlloc& alloc, const PageTable& table);
 
         /**
          *
@@ -75,7 +80,7 @@ namespace ma
         /**
          *
          */
-        PoolAlloc m_alloc;
+        PoolAlloc* m_alloc;
 
         /**
          *
