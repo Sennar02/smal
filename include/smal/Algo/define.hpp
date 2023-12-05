@@ -5,8 +5,11 @@
 
 namespace ma
 {
-    template <class Type, template <class> class Block>
+    template <class Item, template <class> class Block>
     class ArrayList;
+
+    template <class Head, class Item, template <class> class Block>
+    class HashTable;
 } // namespace ma
 
 #endif // SMAL_ALGO_DEFINE_HPP

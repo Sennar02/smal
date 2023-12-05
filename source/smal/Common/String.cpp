@@ -88,9 +88,6 @@ namespace ma
     u32
     hash(const String& value)
     {
-        const char* string =
-            value.memory();
-
-        return hash(string);
+        return hash(value.memory());
     }
 } // namespace ma

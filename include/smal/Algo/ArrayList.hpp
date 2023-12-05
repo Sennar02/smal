@@ -5,7 +5,7 @@
 
 namespace ma
 {
-    template <class Type, template <class> class Block = PagedBlock>
+    template <class Item, template <class> class Block = PagedBlock>
     class ArrayList
     {
     public:
@@ -17,7 +17,7 @@ namespace ma
         /**
          *
          */
-        ArrayList(const Block<Type>& block, u32 count = 0);
+        ArrayList(const Block<Item>& block, u32 count = 0);
 
         /**
          *
@@ -59,40 +59,40 @@ namespace ma
          */
         template <class Iter, class Func>
         u32
-        indexOf(const Type& value, Iter& iter, Func&& func) const;
+        indexOf(const Item& item, Iter& iter, Func&& func) const;
 
         /**
          *
          */
         template <class Func>
         u32
-        indexOf(const Type& value, Func&& func) const;
+        indexOf(const Item& item, Func&& func) const;
 
         /**
          *
          */
         u32
-        indexOf(const Type& value) const;
+        indexOf(const Item& item) const;
 
         /**
          *
          */
         template <class Iter, class Func>
         bool
-        contains(const Type& value, Iter& iter, Func&& func) const;
+        contains(const Item& item, Iter& iter, Func&& func) const;
 
         /**
          *
          */
         template <class Func>
         bool
-        contains(const Type& value, Func&& func) const;
+        contains(const Item& item, Func&& func) const;
 
         /**
          *
          */
         bool
-        contains(const Type& value) const;
+        contains(const Item& item) const;
 
         /**
          *
@@ -118,7 +118,7 @@ namespace ma
          *
          */
         bool
-        insert(const Type& value, u32 index = g_max_u32);
+        insert(const Item& item, u32 index = g_max_u32);
 
         /**
          *
@@ -143,26 +143,32 @@ namespace ma
         /**
          *
          */
-        Type&
+        Item*
+        search(u32 index) const;
+
+        /**
+         *
+         */
+        Item&
         find(u32 index) const;
 
         /**
          *
          */
-        const Block<Type>&
+        const Block<Item>&
         block() const;
 
         /**
          *
          */
-        Type&
+        Item&
         operator[](u32 index) const;
 
     private:
         /**
          *
          */
-        Block<Type> m_block;
+        Block<Item> m_block;
 
         /**
          *
@@ -170,19 +176,19 @@ namespace ma
         u32 m_count;
     };
 
-    template <class Type, template <class> class Block>
-    ArrayList(const Block<Type>&)
-        -> ArrayList<Type, Block>;
+    template <class Item, template <class> class Block>
+    ArrayList(const Block<Item>&)
+        -> ArrayList<Item, Block>;
 
-    template <class Type, template <class> class Block>
-    ArrayList(const Block<Type>&, u32)
-        -> ArrayList<Type, Block>;
+    template <class Item, template <class> class Block>
+    ArrayList(const Block<Item>&, u32)
+        -> ArrayList<Item, Block>;
 
-    template <class Type, template <class> class Block>
+    template <class Item, template <class> class Block>
     class ArrayListForwIter
     {
     private:
-        using List = ArrayList<Type, Block>;
+        using List = ArrayList<Item, Block>;
 
     public:
         /**
@@ -199,13 +205,13 @@ namespace ma
         /**
          *
          */
-        Type&
+        Item&
         item();
 
         /**
          *
          */
-        const Type&
+        const Item&
         item() const;
 
         /**
@@ -238,15 +244,15 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Type, template <class> class Block>
-    ArrayListForwIter(ArrayList<Type, Block>&)
-        -> ArrayListForwIter<Type, Block>;
+    template <class Item, template <class> class Block>
+    ArrayListForwIter(const ArrayList<Item, Block>&)
+        -> ArrayListForwIter<Item, Block>;
 
-    template <class Type, template <class> class Block>
+    template <class Item, template <class> class Block>
     class ArrayListBackIter
     {
     private:
-        using List = ArrayList<Type, Block>;
+        using List = ArrayList<Item, Block>;
 
     public:
         /**
@@ -263,13 +269,13 @@ namespace ma
         /**
          *
          */
-        Type&
+        Item&
         item();
 
         /**
          *
          */
-        const Type&
+        const Item&
         item() const;
 
         /**
@@ -302,9 +308,9 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Type, template <class> class Block>
-    ArrayListBackIter(ArrayList<Type, Block>&)
-        -> ArrayListBackIter<Type, Block>;
+    template <class Item, template <class> class Block>
+    ArrayListBackIter(const ArrayList<Item, Block>&)
+        -> ArrayListBackIter<Item, Block>;
 } // namespace ma
 
 #include <smal/Algo/impl/ArrayList.tpp>
