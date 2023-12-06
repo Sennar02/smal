@@ -194,7 +194,7 @@ namespace ma
         /**
          *
          */
-        ArrayListForwIter(const List& list, u32 start = 0);
+        ArrayListForwIter(const List& list);
 
         /**
          *
@@ -230,7 +230,7 @@ namespace ma
          *
          */
         void
-        clear(u32 start = 0);
+        reset();
 
     private:
         /**
@@ -258,7 +258,7 @@ namespace ma
         /**
          *
          */
-        ArrayListBackIter(const List& list, u32 start = 0);
+        ArrayListBackIter(const List& list);
 
         /**
          *
@@ -294,7 +294,7 @@ namespace ma
          *
          */
         void
-        clear(u32 start = 0);
+        reset();
 
     private:
         /**

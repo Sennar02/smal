@@ -109,12 +109,19 @@ namespace ma
     void
     HashTable<Name, Item, Block>::forEach(Iter& iter, Func&& func) const
     {
-        while ( true ) {
+        while ( iter.next() )
             func(iter.name(), iter.item());
+    }
 
-            if ( iter.next() == false )
-                break;
-        }
+    template <class Name, class Item, template <class> class Block>
+    template <class Func>
+    void
+    HashTable<Name, Item, Block>::forEach(Func&& func) const
+    {
+        HashTableForwIter iter =
+            {*this};
+
+        forEach(iter, func);
     }
 
     template <class Name, class Item, template <class> class Block>
@@ -191,6 +198,28 @@ namespace ma
         };
 
         return remove(name, func);
+    }
+
+    template <class Name, class Item, template <class> class Block>
+    template <class Iter, class Func>
+    void
+    HashTable<Name, Item, Block>::clear(Iter& iter, Func&& func)
+    {
+        while ( iter.next() )
+            func(iter.name(), iter.item());
+
+        m_count = 0;
+    }
+
+    template <class Name, class Item, template <class> class Block>
+    template <class Func>
+    void
+    HashTable<Name, Item, Block>::clear(Func&& func)
+    {
+        HashTableForwIter iter =
+            {*this};
+
+        clear(iter, func);
     }
 
     template <class Name, class Item, template <class> class Block>
@@ -273,10 +302,8 @@ namespace ma
     template <class Name, class Item, template <class> class Block>
     HashTableForwIter<Name, Item, Block>::HashTableForwIter(const Table& table)
         : m_table {table}
-        , m_index {0}
-    {
-        clear();
-    }
+        , m_index {g_max_u32}
+    { }
 
     template <class Name, class Item, template <class> class Block>
     const Name&
@@ -330,8 +357,8 @@ namespace ma
 
     template <class Name, class Item, template <class> class Block>
     void
-    HashTableForwIter<Name, Item, Block>::clear()
+    HashTableForwIter<Name, Item, Block>::reset()
     {
-        m_index = 0, next();
+        m_index = g_max_u32;
     }
 } // namespace ma

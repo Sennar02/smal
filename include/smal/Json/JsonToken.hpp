@@ -15,10 +15,10 @@ namespace ma
             Number,
             Boolean,
             Null,
-            ObjOpen,
-            ObjClose,
-            ArrOpen,
-            ArrClose,
+            DictLPar,
+            DictRPar,
+            ListLPar,
+            ListRPar,
             Colon,
             Comma,
             Finish,
@@ -29,8 +29,8 @@ namespace ma
 
         enum Flag : u32
         {
-            Flt = 1,
-            Neg = 2,
+            Float = 1,
+            Negat = 2,
         };
 
     public:

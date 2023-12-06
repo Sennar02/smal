@@ -67,7 +67,7 @@ namespace ma
          *
          */
         virtual bool
-        arrOpen(u32 depth)
+        listEnter(u32 depth)
         {
             return true;
         }
@@ -76,7 +76,7 @@ namespace ma
          *
          */
         virtual bool
-        arrClose(u32 depth, u32 count)
+        listLeave(u32 depth, u32 count)
         {
             return true;
         }
@@ -85,7 +85,7 @@ namespace ma
          *
          */
         virtual bool
-        objOpen(u32 depth)
+        dictEnter(u32 depth)
         {
             return true;
         }
@@ -94,7 +94,7 @@ namespace ma
          *
          */
         virtual bool
-        objLabel(const String label)
+        dictProp(const String prop)
         {
             return true;
         }
@@ -103,7 +103,7 @@ namespace ma
          *
          */
         virtual bool
-        objClose(u32 depth, u32 count)
+        dictLeave(u32 depth, u32 count)
         {
             return true;
         }

@@ -70,10 +70,10 @@ namespace ma
             case 'f': return symbol("false", Type::Boolean);
             case 'n': return symbol("null", Type::Null);
 
-            case '{': return symbol("{", Type::ObjOpen);
-            case '}': return symbol("}", Type::ObjClose);
-            case '[': return symbol("[", Type::ArrOpen);
-            case ']': return symbol("]", Type::ArrClose);
+            case '{': return symbol("{", Type::DictLPar);
+            case '}': return symbol("}", Type::DictRPar);
+            case '[': return symbol("[", Type::ListLPar);
+            case ']': return symbol("]", Type::ListRPar);
             case ':': return symbol(":", Type::Colon);
             case ',': return symbol(",", Type::Comma);
 
@@ -127,8 +127,8 @@ namespace ma
         for ( ; true; dist++ ) {
             byte = memory[dist];
 
-            if ( g_float.contains(byte) ) flag |= Flag::Flt;
-            if ( g_negat.contains(byte) ) flag |= Flag::Neg;
+            if ( g_float.contains(byte) ) flag |= Flag::Float;
+            if ( g_negat.contains(byte) ) flag |= Flag::Negat;
 
             if ( g_number.contains(byte) == false )
                 break;

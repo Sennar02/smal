@@ -53,31 +53,31 @@ namespace ma
          *
          */
         virtual bool
-        arrOpen(u32 depth) = 0;
+        listEnter(u32 depth) = 0;
 
         /**
          *
          */
         virtual bool
-        arrClose(u32 depth, u32 count) = 0;
+        listLeave(u32 depth, u32 count) = 0;
 
         /**
          *
          */
         virtual bool
-        objOpen(u32 depth) = 0;
+        dictEnter(u32 depth) = 0;
 
         /**
          *
          */
         virtual bool
-        objLabel(const String label) = 0;
+        dictProp(const String prop) = 0;
 
         /**
          *
          */
         virtual bool
-        objClose(u32 depth, u32 count) = 0;
+        dictLeave(u32 depth, u32 count) = 0;
     };
 } // namespace ma
 

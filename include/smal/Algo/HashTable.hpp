@@ -95,6 +95,13 @@ namespace ma
          *
          */
         template <class Func>
+        void
+        forEach(Func&& func) const;
+
+        /**
+         *
+         */
+        template <class Func>
         bool
         insert(const Name& name, const Item& item, Func&& func);
 
@@ -116,6 +123,20 @@ namespace ma
          */
         bool
         remove(const Name& name);
+
+        /**
+         *
+         */
+        template <class Iter, class Func>
+        void
+        clear(Iter& iter, Func&& func);
+
+        /**
+         *
+         */
+        template <class Func>
+        void
+        clear(Func&& func);
 
         /**
          *
@@ -247,7 +268,7 @@ namespace ma
          *
          */
         void
-        clear();
+        reset();
 
     private:
         /**

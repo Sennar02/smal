@@ -37,8 +37,8 @@ namespace ma
     {
         if ( depth < m_depth ) {
             switch ( token.type ) {
-                case Type::ObjOpen: return object(depth);
-                case Type::ArrOpen: return array(depth);
+                case Type::DictLPar: return object(depth);
+                case Type::ListLPar: return array(depth);
                 case Type::String: return string(token);
                 case Type::Number: return number(token);
                 case Type::Boolean: return boolean(token);
@@ -64,7 +64,7 @@ namespace ma
         const char* memory = token.memory();
         f32         number = 0;
 
-        if ( token.flag & Flag::Flt ) {
+        if ( token.flag & Flag::Float ) {
             number = strtod(memory, 0);
 
             if ( number == (i32) number )
@@ -76,7 +76,7 @@ namespace ma
             return m_hndlr->number(number);
         }
 
-        if ( token.flag & Flag::Neg )
+        if ( token.flag & Flag::Negat )
             return m_hndlr->number((i32) strtol(memory, 0, 10));
 
         return m_hndlr->number((u32) strtoul(memory, 0, 10));
@@ -98,54 +98,22 @@ namespace ma
     }
 
     bool
-    JsonReader::array(u32 depth)
-    {
-        JsonToken token;
-        u32       count = 0;
-
-        if ( m_hndlr->arrOpen(depth) == false )
-            return true;
-
-        for ( count = 0; true; count++ ) {
-            token = m_lexer.next();
-
-            if ( token.type != Type::ArrClose ) {
-                if ( send(token, depth + 1) == false )
-                    return false;
-            } else
-                break;
-
-            token = m_lexer.next();
-
-            if ( token.type == Type::Comma ) continue;
-            if ( token.type == Type::ArrClose ) break;
-
-            return false;
-        }
-
-        if ( m_hndlr->arrClose(depth, count) == false )
-            return true;
-
-        return true;
-    }
-
-    bool
     JsonReader::object(u32 depth)
     {
         JsonToken token;
         u32       count = 0;
 
-        if ( m_hndlr->objOpen(depth) == false )
+        if ( m_hndlr->dictEnter(depth) == false )
             return true;
 
         for ( count = 0; true; count++ ) {
             token = m_lexer.next();
 
-            if ( token.type == Type::ObjClose )
+            if ( token.type == Type::DictRPar )
                 break;
 
             if ( token.type == Type::String ) {
-                if ( m_hndlr->objLabel(token) == false )
+                if ( m_hndlr->dictProp(token) == false )
                     return true;
             } else
                 return false;
@@ -163,14 +131,47 @@ namespace ma
             token = m_lexer.next();
 
             if ( token.type == Type::Comma ) continue;
-            if ( token.type == Type::ObjClose ) break;
+            if ( token.type == Type::DictRPar ) break;
 
             return false;
         }
 
-        if ( m_hndlr->objClose(depth, count) == false )
+        if ( m_hndlr->dictLeave(depth, count) == false )
             return true;
 
         return true;
     }
+
+    bool
+    JsonReader::array(u32 depth)
+    {
+        JsonToken token;
+        u32       count = 0;
+
+        if ( m_hndlr->listEnter(depth) == false )
+            return true;
+
+        for ( count = 0; true; count++ ) {
+            token = m_lexer.next();
+
+            if ( token.type != Type::ListRPar ) {
+                if ( send(token, depth + 1) == false )
+                    return false;
+            } else
+                break;
+
+            token = m_lexer.next();
+
+            if ( token.type == Type::Comma ) continue;
+            if ( token.type == Type::ListRPar ) break;
+
+            return false;
+        }
+
+        if ( m_hndlr->listLeave(depth, count) == false )
+            return true;
+
+        return true;
+    }
+
 } // namespace ma

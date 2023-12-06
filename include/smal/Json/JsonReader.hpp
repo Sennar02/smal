@@ -69,13 +69,13 @@ namespace ma
          *
          */
         bool
-        array(u32 depth);
+        object(u32 depth);
 
         /**
          *
          */
         bool
-        object(u32 depth);
+        array(u32 depth);
 
     private:
         /**

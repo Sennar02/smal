@@ -58,12 +58,9 @@ namespace ma
     u32
     ArrayList<Item, Block>::indexOf(const Item& item, Iter& iter, Func&& func) const
     {
-        while ( true ) {
+        while ( iter.next() ) {
             if ( func(iter.item(), item) == true )
                 return iter.index();
-
-            if ( iter.next() == false )
-                break;
         }
 
         return g_max_u32;
@@ -126,12 +123,8 @@ namespace ma
     void
     ArrayList<Item, Block>::forEach(Iter& iter, Func&& func) const
     {
-        while ( true ) {
+        while ( iter.next() )
             func(iter.item(), iter.index(), m_count);
-
-            if ( iter.next() == false )
-                break;
-        }
     }
 
     template <class Item, template <class> class Block>
@@ -194,14 +187,10 @@ namespace ma
     void
     ArrayList<Item, Block>::clear(Iter& iter, Func&& func)
     {
-        while ( true ) {
+        while ( iter.next() )
             func(iter.item(), iter.index(), m_count);
 
-            if ( iter.next() == false )
-                break;
-        }
-
-        resize(0);
+        m_count = 0;
     }
 
     template <class Item, template <class> class Block>
@@ -247,12 +236,10 @@ namespace ma
     }
 
     template <class Item, template <class> class Block>
-    ArrayListForwIter<Item, Block>::ArrayListForwIter(const List& list, u32 start)
+    ArrayListForwIter<Item, Block>::ArrayListForwIter(const List& list)
         : m_list {list}
-        , m_index {0}
-    {
-        clear(start);
-    }
+        , m_index {g_max_u32}
+    { }
 
     template <class Item, template <class> class Block>
     u32
@@ -301,23 +288,16 @@ namespace ma
 
     template <class Item, template <class> class Block>
     void
-    ArrayListForwIter<Item, Block>::clear(u32 start)
+    ArrayListForwIter<Item, Block>::reset()
     {
-        u32 count = m_list.count() - 1;
-
-        if ( start > count )
-            start = count;
-
-        m_index = start;
+        m_index = g_max_u32;
     }
 
     template <class Item, template <class> class Block>
-    ArrayListBackIter<Item, Block>::ArrayListBackIter(const List& list, u32 start)
+    ArrayListBackIter<Item, Block>::ArrayListBackIter(const List& list)
         : m_list {list}
-        , m_index {0}
-    {
-        clear(start);
-    }
+        , m_index {g_max_u32}
+    { }
 
     template <class Item, template <class> class Block>
     u32
@@ -372,13 +352,8 @@ namespace ma
 
     template <class Item, template <class> class Block>
     void
-    ArrayListBackIter<Item, Block>::clear(u32 start)
+    ArrayListBackIter<Item, Block>::reset()
     {
-        u32 count = m_list.count() - 1;
-
-        if ( start > count )
-            start = count;
-
-        m_index = start;
+        m_index = g_max_u32;
     }
 } // namespace ma

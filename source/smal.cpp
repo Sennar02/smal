@@ -1,5 +1,4 @@
-#include <smal/Algo/import.hpp>
-
+#include <smal/Json/import.hpp>
 #include <stdio.h>
 
 using namespace ma;
@@ -10,21 +9,21 @@ static auto g_memory =
 int
 main(int argc, const char* argv[])
 {
-    PoolAlloc alloc = g_memory.create<PoolAlloc>(g_MiB * 63, g_KiB);
+    PoolAlloc alloc = g_memory.create<PoolAlloc>(
+        g_MiB * 63, g_KiB * 4);
 
-    HashTable<String, String, PagedBlock> table =
-        {alloc, 10};
+    JsonDict json = {alloc, 10};
 
     for ( i32 i = 1; i < argc; i++ )
-        table.insert(argv[1], "");
+        json.insert({argv[i]}, {i});
 
-    HashTableForwIter iter = {table};
+    json.forEach([](const String& prop, JsonValue& item) {
+        printf("[%s] -> ", prop.memory());
 
-    if ( table.count() == 0 )
-        return 0;
+        if ( item.isNumber() )
+            printf("%u", item.toUnsig());
 
-    table.forEach(iter, [](const String& name, const String& item) {
-        printf("%s -> %s\n", name.memory(), item.memory());
+        printf("\n");
     });
 
     return 0;

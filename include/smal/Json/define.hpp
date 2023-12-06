@@ -11,7 +11,7 @@ namespace ma
     class JsonToken;
     class JsonLexer;
     class JsonReader;
-
+    class JsonValue;
 } // namespace ma
 
 #endif // SMAL_JSON_DEFINE_HPP
