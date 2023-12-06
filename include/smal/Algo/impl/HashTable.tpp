@@ -118,8 +118,9 @@ namespace ma
     }
 
     template <class Name, class Item, template <class> class Block>
+    template <class Func>
     bool
-    HashTable<Name, Item, Block>::insert(const Name& name, const Item& item)
+    HashTable<Name, Item, Block>::insert(const Name& name, const Item& item, Func&& func)
     {
         Node node = {name, 1};
         u32  hash = code(name);
@@ -130,11 +131,13 @@ namespace ma
         for ( u32 i = hash; hash != next(i); i = next(i) ) {
             dist = m_nodes[i].dist;
 
+            if ( dist != 0 && code(m_nodes[i].name) == hash )
+                return func(m_nodes[i].name, name) == true;
+
             if ( dist < node.dist ) {
                 if ( dist == 0 ) {
                     m_nodes[i] = node;
                     m_block[i] = item;
-
                     m_count += 1;
 
                     return true;
@@ -152,9 +155,21 @@ namespace ma
 
     template <class Name, class Item, template <class> class Block>
     bool
-    HashTable<Name, Item, Block>::remove(const Name& name)
+    HashTable<Name, Item, Block>::insert(const Name& name, const Item& item)
     {
-        u32 index = indexOf(name);
+        auto func = [](const Name& a, const Name& b) {
+            return a == b;
+        };
+
+        return insert(name, item, func);
+    }
+
+    template <class Name, class Item, template <class> class Block>
+    template <class Func>
+    bool
+    HashTable<Name, Item, Block>::remove(const Name& name, Func&& func)
+    {
+        u32 index = indexOf(name, func);
         u32 count = size();
 
         if ( index < count ) {
@@ -165,6 +180,17 @@ namespace ma
         }
 
         return false;
+    }
+
+    template <class Name, class Item, template <class> class Block>
+    bool
+    HashTable<Name, Item, Block>::remove(const Name& name)
+    {
+        auto func = [](const Name& a, const Name& b) {
+            return a == b;
+        };
+
+        return remove(name, func);
     }
 
     template <class Name, class Item, template <class> class Block>
@@ -277,10 +303,11 @@ namespace ma
     bool
     HashTableForwIter<Name, Item, Block>::hasNext() const
     {
-        for ( u32 i = m_index; true; i++ ) {
-            HashNode<Name>& node = m_table.nodes()[i];
+        u32 size = m_table.size();
+        u32 next = m_index + 1;
 
-            if ( node.dist != 0 )
+        for ( u32 i = next; i < size; i++ ) {
+            if ( m_table.nodes()[i].dist != 0 )
                 return true;
         }
 
@@ -293,16 +320,10 @@ namespace ma
     {
         u32 size = m_table.size();
 
-        for ( u32 i = m_index; i < size; i++ ) {
-            HashNode<Name>& node = m_table.nodes()[i];
-
-            if ( node.dist != 0 ) {
-                m_index = i;
+        for ( u32& i = ++m_index; i < size; i++ ) {
+            if ( m_table.nodes()[i].dist != 0 )
                 return true;
-            }
         }
-
-        m_index = size;
 
         return false;
     }
@@ -311,8 +332,6 @@ namespace ma
     void
     HashTableForwIter<Name, Item, Block>::clear()
     {
-        m_index = 0;
-
-        next();
+        m_index = 0, next();
     }
 } // namespace ma

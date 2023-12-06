@@ -26,31 +26,61 @@ namespace ma
         using Node = HashNode<Name>;
 
     public:
+        /**
+         *
+         */
         HashTable();
 
+        /**
+         *
+         */
         HashTable(const Block<Node>& nodes, const Block<Item>& block);
 
+        /**
+         *
+         */
         template <class Alloc>
         HashTable(Alloc& alloc, u32 size);
 
+        /**
+         *
+         */
         virtual ~HashTable() = default;
 
+        /**
+         *
+         */
         u32
         size() const;
 
+        /**
+         *
+         */
         u32
         count() const;
 
+        /**
+         *
+         */
         bool
         isEmpty() const;
 
+        /**
+         *
+         */
         bool
         isFull() const;
 
+        /**
+         *
+         */
         template <class Func>
         bool
         contains(const Name& name, Func&& func) const;
 
+        /**
+         *
+         */
         bool
         contains(const Name& name) const;
 
@@ -61,49 +91,109 @@ namespace ma
         void
         forEach(Iter& iter, Func&& func) const;
 
+        /**
+         *
+         */
+        template <class Func>
+        bool
+        insert(const Name& name, const Item& item, Func&& func);
+
+        /**
+         *
+         */
         bool
         insert(const Name& name, const Item& item);
 
+        /**
+         *
+         */
+        template <class Func>
+        bool
+        remove(const Name& name, Func&& func);
+
+        /**
+         *
+         */
         bool
         remove(const Name& name);
 
+        /**
+         *
+         */
         template <class Func>
         Item*
         search(const Name& name, Func&& func) const;
 
+        /**
+         *
+         */
         Item*
         search(const Name& name) const;
 
+        /**
+         *
+         */
         Item&
         find(const Name& name) const;
 
+        /**
+         *
+         */
         const Block<Node>&
         nodes() const;
 
+        /**
+         *
+         */
         const Block<Item>&
         block() const;
 
+        /**
+         *
+         */
         Item&
         operator[](const Name& name) const;
 
     private:
+        /**
+         *
+         */
         template <class Func>
         u32
         indexOf(const Name& name, Func&& func) const;
 
+        /**
+         *
+         */
         u32
         indexOf(const Name& name) const;
 
+        /**
+         *
+         */
         u32
         code(const Name& name) const;
 
+        /**
+         *
+         */
         u32
         next(u32 code) const;
 
     private:
+        /**
+         *
+         */
         Block<Node> m_nodes;
+
+        /**
+         *
+         */
         Block<Item> m_block;
 
+        /**
+         *
+         */
         u32 m_count;
     };
 

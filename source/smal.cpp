@@ -15,11 +15,13 @@ main(int argc, const char* argv[])
     HashTable<String, String, PagedBlock> table =
         {alloc, 10};
 
-    table.insert("true", "t");
-    table.insert("false", "f");
-    table.insert("null", "n");
+    for ( i32 i = 1; i < argc; i++ )
+        table.insert(argv[1], "");
 
     HashTableForwIter iter = {table};
+
+    if ( table.count() == 0 )
+        return 0;
 
     table.forEach(iter, [](const String& name, const String& item) {
         printf("%s -> %s\n", name.memory(), item.memory());
