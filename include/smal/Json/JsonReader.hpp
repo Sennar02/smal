@@ -20,13 +20,13 @@ namespace ma
         /**
          *
          */
-        JsonReader(u32 depth, BaseHandler& handler);
+        JsonReader(JsonClient& client, u32 depth = 10);
 
         /**
          *
          */
         bool
-        bind(BaseHandler& handler);
+        bind(JsonClient& client);
 
         /**
          *
@@ -69,13 +69,13 @@ namespace ma
          *
          */
         bool
-        object(u32 depth);
+        dict(u32 depth);
 
         /**
          *
          */
         bool
-        array(u32 depth);
+        list(u32 depth);
 
     private:
         /**
@@ -86,7 +86,7 @@ namespace ma
         /**
          *
          */
-        BaseHandler* m_hndlr;
+        JsonClient* m_client;
 
         /**
          *

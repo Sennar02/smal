@@ -5,8 +5,7 @@
 
 namespace ma
 {
-    class BaseHandler;
-    class SyntaxHandler;
+    class JsonClient;
 
     class JsonToken;
     class JsonLexer;

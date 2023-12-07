@@ -5,79 +5,79 @@
 
 namespace ma
 {
-    class BaseHandler
+    class JsonClient
     {
     public:
         /**
          *
          */
-        virtual ~BaseHandler() = default;
+        virtual ~JsonClient() = default;
 
         /**
          *
          */
         virtual bool
-        string(const String value) = 0;
+        string(const String value);
 
         /**
          *
          */
         virtual bool
-        number(u32 value) = 0;
+        number(u32 value);
 
         /**
          *
          */
         virtual bool
-        number(i32 value) = 0;
+        number(i32 value);
 
         /**
          *
          */
         virtual bool
-        number(f32 value) = 0;
+        number(f32 value);
 
         /**
          *
          */
         virtual bool
-        boolean(bool value) = 0;
+        boolean(bool value);
 
         /**
          *
          */
         virtual bool
-        null() = 0;
+        null();
 
         /**
          *
          */
         virtual bool
-        listEnter(u32 depth) = 0;
+        listEnter(u32 depth);
 
         /**
          *
          */
         virtual bool
-        listLeave(u32 depth, u32 count) = 0;
+        listLeave(u32 depth, u32 count);
 
         /**
          *
          */
         virtual bool
-        dictEnter(u32 depth) = 0;
+        dictEnter(u32 depth);
 
         /**
          *
          */
         virtual bool
-        dictProp(const String prop) = 0;
+        dictProp(const String prop);
 
         /**
          *
          */
         virtual bool
-        dictLeave(u32 depth, u32 count) = 0;
+        dictLeave(u32 depth, u32 count);
     };
 } // namespace ma
 
