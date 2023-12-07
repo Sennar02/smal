@@ -20,62 +20,80 @@ namespace ma
         /**
          *
          */
-        JsonReader(JsonClient& client, u32 depth = 10);
-
-        /**
-         *
-         */
+        template <class User>
         bool
-        bind(JsonClient& client);
-
-        /**
-         *
-         */
-        bool
-        read(const String& json);
+        read(User& user, const String& json);
 
     private:
         /**
          *
          */
+        template <class User>
         bool
-        send(const JsonToken& token, u32 depth = 0);
+        deduce(User& user, const JsonToken& token, u32 depth = 0);
 
         /**
          *
          */
+        template <class User>
         bool
-        string(const JsonToken& token);
+        string(User& user, const JsonToken& token);
 
         /**
          *
          */
+        template <class User>
         bool
-        number(const JsonToken& token);
+        number(User& user, const JsonToken& token);
 
         /**
          *
          */
+        template <class User>
         bool
-        boolean(const JsonToken& token);
+        number(User& user, u32 value);
 
         /**
          *
          */
+        template <class User>
         bool
-        null(const JsonToken& token);
+        number(User& user, i32 value);
 
         /**
          *
          */
+        template <class User>
         bool
-        dict(u32 depth);
+        number(User& user, f32 value);
 
         /**
          *
          */
+        template <class User>
         bool
-        list(u32 depth);
+        boolean(User& user, const JsonToken& token);
+
+        /**
+         *
+         */
+        template <class User>
+        bool
+        null(User& user, const JsonToken& token);
+
+        /**
+         *
+         */
+        template <class User>
+        bool
+        object(User& user, u32 depth);
+
+        /**
+         *
+         */
+        template <class User>
+        bool
+        array(User& user, u32 depth);
 
     private:
         /**
@@ -86,13 +104,10 @@ namespace ma
         /**
          *
          */
-        JsonClient* m_client;
-
-        /**
-         *
-         */
         u32 m_depth;
     };
 } // namespace ma
+
+#include <smal/Json/impl/JsonReader.tpp>
 
 #endif // SMAL_JSON_JSON_READER_HPP

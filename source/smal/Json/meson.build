@@ -2,9 +2,8 @@ smal_json = static_library('smal-json',
     sources: [
         'JsonToken.cpp',
         'JsonLexer.cpp',
-        'JsonReader.cpp',
         'JsonValue.cpp',
-        'JsonClient.cpp',
+        'JsonReader.cpp',
     ],
     include_directories: [smal_header],
 )

@@ -39,7 +39,7 @@ namespace ma
          *
          */
         JsonToken
-        send(char byte);
+        deduce(char byte);
 
         /**
          *

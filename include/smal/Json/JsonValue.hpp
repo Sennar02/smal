@@ -5,8 +5,8 @@
 
 namespace ma
 {
-    using JsonDict = HashTable<String, JsonValue>;
-    using JsonList = ArrayList<JsonValue>;
+    using JsonObject = HashTable<String, JsonValue>;
+    using JsonArray  = ArrayList<JsonValue>;
 
     class JsonValue
     {
@@ -19,8 +19,8 @@ namespace ma
             Float,
             Boolean,
             Null,
-            Dict,
-            List,
+            Object,
+            Array,
 
             SIZE,
         };
@@ -64,12 +64,12 @@ namespace ma
         /**
          *
          */
-        JsonValue(JsonDict& dict);
+        JsonValue(JsonObject& object);
 
         /**
          *
          */
-        JsonValue(JsonList& list);
+        JsonValue(JsonArray& array);
 
         /**
          *
@@ -140,13 +140,13 @@ namespace ma
          *
          */
         bool
-        isDict() const;
+        isObject() const;
 
         /**
          *
          */
         bool
-        isList() const;
+        isArray() const;
 
         /**
          *
@@ -181,14 +181,14 @@ namespace ma
         /**
          *
          */
-        JsonDict&
-        toDict();
+        JsonObject&
+        toObject();
 
         /**
          *
          */
-        JsonList&
-        toList();
+        JsonArray&
+        toArray();
 
     private:
         /**

@@ -39,13 +39,19 @@ namespace ma
     Type&
     FixedBlock<Type>::find(u32 index) const
     {
-        return (Type&) m_memory[index * s_type_size];
+        char* addr =
+            m_memory + index * s_type_size;
+
+        return (Type&) *addr;
     }
 
     template <class Type>
     Type&
     FixedBlock<Type>::operator[](u32 index) const
     {
-        return find(index);
+        char* addr =
+            m_memory + index * s_type_size;
+
+        return (Type&) *addr;
     }
 } // namespace ma

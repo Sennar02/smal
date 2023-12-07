@@ -44,11 +44,11 @@ namespace ma
             length - dist,
         };
 
-        return send(byte);
+        return deduce(byte);
     }
 
     JsonToken
-    JsonLexer::send(char byte)
+    JsonLexer::deduce(char byte)
     {
         switch ( byte ) {
             case '\"': return string('\"');
@@ -70,10 +70,10 @@ namespace ma
             case 'f': return symbol("false", Type::Boolean);
             case 'n': return symbol("null", Type::Null);
 
-            case '{': return symbol("{", Type::DictLPar);
-            case '}': return symbol("}", Type::DictRPar);
-            case '[': return symbol("[", Type::ListLPar);
-            case ']': return symbol("]", Type::ListRPar);
+            case '{': return symbol("{", Type::ObjLPar);
+            case '}': return symbol("}", Type::ObjRPar);
+            case '[': return symbol("[", Type::ArrLPar);
+            case ']': return symbol("]", Type::ArrRPar);
             case ':': return symbol(":", Type::Colon);
             case ',': return symbol(",", Type::Comma);
 

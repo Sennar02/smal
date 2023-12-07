@@ -42,16 +42,16 @@ namespace ma
         , m_type {Type::Boolean}
     { }
 
-    JsonValue::JsonValue(JsonDict& object)
+    JsonValue::JsonValue(JsonObject& object)
         : m_memory {(char*) &object}
         , m_size {sizeof(char*)}
-        , m_type {Type::Dict}
+        , m_type {Type::Object}
     { }
 
-    JsonValue::JsonValue(JsonList& array)
+    JsonValue::JsonValue(JsonArray& array)
         : m_memory {(char*) &array}
         , m_size {sizeof(char*)}
-        , m_type {Type::List}
+        , m_type {Type::Array}
     { }
 
     const char*
@@ -117,15 +117,15 @@ namespace ma
     }
 
     bool
-    JsonValue::isDict() const
+    JsonValue::isObject() const
     {
-        return m_type == Type::Dict;
+        return m_type == Type::Object;
     }
 
     bool
-    JsonValue::isList() const
+    JsonValue::isArray() const
     {
-        return m_type == Type::List;
+        return m_type == Type::Array;
     }
 
     String
@@ -177,21 +177,21 @@ namespace ma
         return false;
     }
 
-    JsonDict&
-    JsonValue::toDict()
+    JsonObject&
+    JsonValue::toObject()
     {
-        if ( m_type == Type::Dict )
-            return *(JsonDict*) m_memory;
+        if ( m_type == Type::Object )
+            return *(JsonObject*) m_memory;
 
-        return *(JsonDict*) 0;
+        return *(JsonObject*) 0;
     }
 
-    JsonList&
-    JsonValue::toList()
+    JsonArray&
+    JsonValue::toArray()
     {
-        if ( m_type == Type::List )
-            return *(JsonList*) m_memory;
+        if ( m_type == Type::Array )
+            return *(JsonArray*) m_memory;
 
-        return *(JsonList*) 0;
+        return *(JsonArray*) 0;
     }
 } // namespace ma

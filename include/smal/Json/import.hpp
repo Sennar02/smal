@@ -6,8 +6,8 @@
 
 #include <smal/Json/JsonToken.hpp>
 #include <smal/Json/JsonLexer.hpp>
-#include <smal/Json/JsonReader.hpp>
 #include <smal/Json/JsonValue.hpp>
-#include <smal/Json/JsonClient.hpp>
+
+#include <smal/Json/JsonReader.hpp>
 
 #endif // SMAL_JSON_IMPORT_HPP
