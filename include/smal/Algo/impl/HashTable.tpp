@@ -101,7 +101,7 @@ namespace ma
             return a == b;
         };
 
-        return contains(name, func);
+        return indexOf(name, func) < m_count;
     }
 
     template <class Name, class Item, template <class> class Block>
@@ -118,10 +118,10 @@ namespace ma
     void
     HashTable<Name, Item, Block>::forEach(Func&& func) const
     {
-        HashTableForwIter iter =
-            {*this};
+        HashTableForwIter iter = {*this};
 
-        forEach(iter, func);
+        while ( iter.next() )
+            func(iter.name(), iter.item());
     }
 
     template <class Name, class Item, template <class> class Block>
@@ -143,8 +143,8 @@ namespace ma
 
             if ( dist < node.dist ) {
                 if ( dist == 0 ) {
-                    m_nodes[i] = node;
-                    m_block[i] = item;
+                    create(m_nodes[i], node);
+                    create(m_block[i], item);
                     m_count += 1;
 
                     return true;
@@ -216,10 +216,12 @@ namespace ma
     void
     HashTable<Name, Item, Block>::clear(Func&& func)
     {
-        HashTableForwIter iter =
-            {*this};
+        HashTableForwIter iter = {*this};
 
-        clear(iter, func);
+        while ( iter.next() )
+            func(iter.name(), iter.item());
+
+        m_count = 0;
     }
 
     template <class Name, class Item, template <class> class Block>
@@ -272,7 +274,7 @@ namespace ma
     Item&
     HashTable<Name, Item, Block>::operator[](const Name& name) const
     {
-        return find(name);
+        return *search(name);
     }
 
     template <class Name, class Item, template <class> class Block>

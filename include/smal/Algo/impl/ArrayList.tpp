@@ -71,10 +71,14 @@ namespace ma
     u32
     ArrayList<Item, Block>::indexOf(const Item& item, Func&& func) const
     {
-        ArrayListForwIter iter =
-            {*this};
+        ArrayListForwIter iter = {*this};
 
-        return indexOf(item, iter, func);
+        while ( iter.next() ) {
+            if ( func(iter.item(), item) == true )
+                return iter.index();
+        }
+
+        return g_max_u32;
     }
 
     template <class Item, template <class> class Block>
@@ -101,10 +105,9 @@ namespace ma
     bool
     ArrayList<Item, Block>::contains(const Item& item, Func&& func) const
     {
-        ArrayListForwIter iter =
-            {*this};
+        ArrayListForwIter iter = {*this};
 
-        return contains(item, iter, func);
+        return indexOf(item, iter, func) < m_count;
     }
 
     template <class Item, template <class> class Block>
@@ -132,10 +135,10 @@ namespace ma
     void
     ArrayList<Item, Block>::forEach(Func&& func) const
     {
-        ArrayListForwIter iter =
-            {*this};
+        ArrayListForwIter iter = {*this};
 
-        forEach(iter, func);
+        while ( iter.next() )
+            func(iter.item(), iter.index(), m_count);
     }
 
     template <class Item, template <class> class Block>
@@ -155,7 +158,7 @@ namespace ma
             for ( u32 i = m_count; i > index; i-- )
                 m_block[i] = move(m_block[i - 1]);
 
-            m_block[index] = item;
+            create(m_block[index], item);
             m_count += 1;
 
             return true;
@@ -198,10 +201,12 @@ namespace ma
     void
     ArrayList<Item, Block>::clear(Func&& func)
     {
-        ArrayListForwIter iter =
-            {*this};
+        ArrayListForwIter iter = {*this};
 
-        clear(iter, func);
+        while ( iter.next() )
+            func(iter.item(), iter.index(), m_count);
+
+        m_count = 0;
     }
 
     template <class Item, template <class> class Block>
@@ -232,7 +237,7 @@ namespace ma
     Item&
     ArrayList<Item, Block>::operator[](u32 index) const
     {
-        return find(index);
+        return *search(index);
     }
 
     template <class Item, template <class> class Block>

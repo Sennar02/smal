@@ -28,7 +28,7 @@ namespace ma
     }
 
     bool
-    String::equals(const String& other, u32 count, u32 first) const
+    String::equals(const String& that, u32 count, u32 first) const
     {
         char a = 0, b = 0;
 
@@ -37,7 +37,7 @@ namespace ma
 
         for ( u32 i = first; i < count; i++ ) {
             a = m_memory[i];
-            b = other.m_memory[i];
+            b = that.m_memory[i];
 
             if ( a == 0 || a != b )
                 break;
@@ -79,9 +79,9 @@ namespace ma
     }
 
     bool
-    String::operator==(const String& other) const
+    String::operator==(const String& that) const
     {
-        return equals(other);
+        return equals(that);
     }
 
     template <>

@@ -29,7 +29,7 @@ namespace ma
          *
          */
         bool
-        equals(const String& other, u32 count = g_max_u32, u32 first = 0) const;
+        equals(const String& that, u32 count = g_max_u32, u32 first = 0) const;
 
         /**
          *
@@ -53,7 +53,7 @@ namespace ma
          *
          */
         bool
-        operator==(const String& other) const;
+        operator==(const String& that) const;
 
     private:
         /**

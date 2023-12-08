@@ -81,7 +81,7 @@ namespace ma
         operator()(Args... args, Rest... rest) const;
 
     private:
-        using Call = Ret (*)(void*, Args...);
+        using Call = Ret(void*, Args...);
 
     private:
         /**
@@ -92,7 +92,7 @@ namespace ma
         /**
          *
          */
-        Call m_func;
+        Call* m_func;
     };
 
     template <auto Func>

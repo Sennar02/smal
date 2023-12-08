@@ -6,7 +6,6 @@
 
 #include <smal/Json/JsonToken.hpp>
 #include <smal/Json/JsonLexer.hpp>
-#include <smal/Json/JsonValue.hpp>
 
 #include <smal/Json/JsonReader.hpp>
 

@@ -7,11 +7,8 @@ namespace ma
 {
     class JsonToken;
     class JsonLexer;
-    class JsonValue;
 
     class JsonReader;
-
-    class JsonDocument;
 } // namespace ma
 
 #endif // SMAL_JSON_DEFINE_HPP
