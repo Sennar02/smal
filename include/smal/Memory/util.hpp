@@ -9,7 +9,7 @@ namespace ma
      *
      */
     char*
-    memorySet(void* memory, u32 size, char byte);
+    memoryWipe(void* memory, u32 size);
 
     /**
      *

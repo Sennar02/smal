@@ -26,31 +26,6 @@ namespace ma
         return m_size;
     }
 
-    char*
-    StackAlloc::memory()
-    {
-        return m_memory;
-    }
-
-    const char*
-    StackAlloc::memory() const
-    {
-        return m_memory;
-    }
-
-    bool
-    StackAlloc::contains(void* memory) const
-    {
-        char* addr = (char*) memory;
-
-        if ( addr != 0 ) {
-            return addr < m_memory + m_size &&
-                   addr >= m_memory;
-        }
-
-        return true;
-    }
-
     u32
     StackAlloc::avail() const
     {
@@ -62,11 +37,26 @@ namespace ma
         return 0;
     }
 
+    char*
+    StackAlloc::memory() const
+    {
+        return m_memory;
+    }
+
+    bool
+    StackAlloc::contains(void* memory) const
+    {
+        char* inf = m_memory;
+        char* sup = m_memory + m_size;
+
+        return inf <= memory && memory < sup;
+    }
+
     bool
     StackAlloc::prepare()
     {
         m_cursor =
-            memorySet(m_memory, m_size, 0);
+            memoryWipe(m_memory, m_size);
 
         return true;
     }
@@ -74,20 +64,18 @@ namespace ma
     char*
     StackAlloc::acquire(u32 size)
     {
+        u32   full = s_head_size + size;
         char* addr = m_cursor + s_head_size;
+        char* next = m_cursor + full;
         Head* head = (Head*) m_cursor;
 
         if ( size == 0 ) return 0;
 
-        size += s_head_size;
-
-        if ( m_cursor + size <= m_memory + m_size ) {
-            m_cursor += size;
-
-            size -= s_head_size;
+        if ( next <= m_memory + m_size ) {
             head->size = size;
+            m_cursor   = next;
 
-            return memorySet(addr, size, 0);
+            return memoryWipe(addr, size);
         }
 
         return 0;
@@ -96,28 +84,23 @@ namespace ma
     bool
     StackAlloc::release(void* memory)
     {
-        char* addr = (char*) memory;
-        Head* head = (Head*) (addr - s_head_size);
+        char* addr = (char*) memory - s_head_size;
+        Head* head = (Head*) addr;
+        u32   size = 0;
 
-        if ( contains(addr) == false )
-            return false;
-
-        if ( addr != 0 ) {
-            if ( m_cursor == addr + head->size ) {
-                head->size += s_head_size;
-
-                m_cursor =
-                    memorySet(head, head->size, 0);
-            } else
+        if ( memory != 0 ) {
+            if ( contains(addr) == false )
                 return false;
+
+            size = head->size + s_head_size;
+
+            if ( m_cursor != addr + size )
+                return false;
+
+            m_cursor =
+                memoryWipe(head, size);
         }
 
         return true;
-    }
-
-    bool
-    StackAlloc::release()
-    {
-        return prepare();
     }
 } // namespace ma

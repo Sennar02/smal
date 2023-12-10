@@ -9,7 +9,7 @@ namespace ma
         Type* addr =
             (Type*) alloc.acquire(sizeof(Type));
 
-        if ( addr != 0 ) create(*addr);
+        if ( addr != 0 ) ctor(*addr);
 
         return addr;
     }
@@ -22,7 +22,7 @@ namespace ma
             (Type*) alloc.acquire(sizeof(Type));
 
         if ( addr != 0 )
-            create(*addr, forw<Args>(args)...);
+            ctor(*addr, forw<Args>(args)...);
 
         return addr;
     }

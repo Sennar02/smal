@@ -5,13 +5,13 @@
 
 namespace ma
 {
-    static const u32 g_KiB = 1024;
-    static const u32 g_MiB = g_KiB * g_KiB;
-    static const u32 g_GiB = g_MiB * g_KiB;
+    static const u32 g_kib = 1024;
+    static const u32 g_mib = g_kib * g_kib;
+    static const u32 g_gib = g_mib * g_kib;
 
-    static const u32 g_KB = 1000;
-    static const u32 g_MB = g_KB * g_KB;
-    static const u32 g_GB = g_MB * g_KB;
+    static const u32 g_kb = 1000;
+    static const u32 g_mb = g_kb * g_kb;
+    static const u32 g_gb = g_mb * g_kb;
 
     class MemoryService;
 
@@ -20,10 +20,6 @@ namespace ma
     class PoolAlloc;
     class StackAlloc;
     class ArenaAlloc;
-    class ProxyAlloc;
-
-    template <class... Allocs>
-    class ChainAlloc;
 
     template <class Type>
     class BaseBlock;

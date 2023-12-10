@@ -10,6 +10,24 @@ namespace ma
     { }
 
     u32
+    NullAlloc::size() const
+    {
+        return 0;
+    }
+
+    char*
+    NullAlloc::memory() const
+    {
+        return 0;
+    }
+
+    bool
+    NullAlloc::contains(void* memory) const
+    {
+        return memory == 0;
+    }
+
+    u32
     NullAlloc::avail() const
     {
         return 0;
@@ -30,12 +48,6 @@ namespace ma
     bool
     NullAlloc::release(void* memory)
     {
-        return true;
-    }
-
-    bool
-    NullAlloc::release()
-    {
-        return true;
+        return memory == 0;
     }
 } // namespace ma

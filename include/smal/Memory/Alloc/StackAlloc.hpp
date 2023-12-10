@@ -28,13 +28,13 @@ namespace ma
         /**
          *
          */
-        virtual char*
-        memory();
+        virtual u32
+        avail() const;
 
         /**
          *
          */
-        virtual const char*
+        virtual char*
         memory() const;
 
         /**
@@ -42,12 +42,6 @@ namespace ma
          */
         virtual bool
         contains(void* memory) const;
-
-        /**
-         *
-         */
-        virtual u32
-        avail() const;
 
         /**
          *
@@ -66,12 +60,6 @@ namespace ma
          */
         virtual bool
         release(void* memory);
-
-        /**
-         *
-         */
-        virtual bool
-        release();
 
     private:
         struct Head

@@ -23,18 +23,24 @@ namespace ma
          *
          */
         virtual u32
+        page() const;
+
+        /**
+         *
+         */
+        virtual u32
         size() const;
 
         /**
          *
          */
-        virtual char*
-        memory();
+        virtual u32
+        avail() const;
 
         /**
          *
          */
-        virtual const char*
+        virtual char*
         memory() const;
 
         /**
@@ -42,18 +48,6 @@ namespace ma
          */
         virtual bool
         contains(void* memory) const;
-
-        /**
-         *
-         */
-        u32
-        page() const;
-
-        /**
-         *
-         */
-        virtual u32
-        avail() const;
 
         /**
          *
@@ -79,17 +73,17 @@ namespace ma
         virtual bool
         release(void* memory);
 
-        /**
-         *
-         */
-        virtual bool
-        release();
-
     private:
         struct Node
         {
             Node* next;
         };
+
+        /**
+         *
+         */
+        static const u32 s_node_size =
+            sizeof(Node);
 
     private:
         /**
@@ -100,12 +94,7 @@ namespace ma
         /**
          *
          */
-        Node* m_list;
-
-        /**
-         *
-         */
-        u32 m_page;
+        u32 m_size;
 
         /**
          *
@@ -115,7 +104,12 @@ namespace ma
         /**
          *
          */
-        u32 m_size;
+        Node* m_list;
+
+        /**
+         *
+         */
+        u32 m_page;
     };
 } // namespace ma
 

@@ -25,7 +25,7 @@ namespace ma
         /**
          *
          */
-        PagedBlock(PoolAlloc& alloc, const PageTable& table);
+        PagedBlock(PoolAlloc& alloc, PageTable&& table);
 
         /**
          *

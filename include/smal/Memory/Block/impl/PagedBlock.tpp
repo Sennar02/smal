@@ -23,9 +23,9 @@ namespace ma
     }
 
     template <class Type>
-    PagedBlock<Type>::PagedBlock(PoolAlloc& alloc, const PageTable& table)
+    PagedBlock<Type>::PagedBlock(PoolAlloc& alloc, PageTable&& table)
         : m_alloc {&alloc}
-        , m_table {table}
+        , m_table {move(table)}
     { }
 
     template <class Type>

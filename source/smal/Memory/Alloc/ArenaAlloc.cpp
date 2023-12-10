@@ -27,12 +27,6 @@ namespace ma
     }
 
     char*
-    ArenaAlloc::memory()
-    {
-        return m_memory;
-    }
-
-    const char*
     ArenaAlloc::memory() const
     {
         return m_memory;
@@ -41,14 +35,10 @@ namespace ma
     bool
     ArenaAlloc::contains(void* memory) const
     {
-        char* addr = (char*) memory;
+        char* inf = m_memory;
+        char* sup = m_memory + m_size;
 
-        if ( addr != 0 ) {
-            return addr < m_memory + m_size &&
-                   addr >= m_memory;
-        }
-
-        return true;
+        return inf <= memory && memory < sup;
     }
 
     u32
@@ -61,7 +51,7 @@ namespace ma
     ArenaAlloc::prepare()
     {
         m_cursor =
-            memorySet(m_memory, m_size, 0);
+            memoryWipe(m_memory, m_size);
 
         return true;
     }
@@ -70,13 +60,14 @@ namespace ma
     ArenaAlloc::acquire(u32 size)
     {
         char* addr = m_cursor;
+        char* next = m_cursor + size;
 
         if ( size == 0 ) return 0;
 
-        if ( m_cursor + size <= m_memory + m_size ) {
-            m_cursor += size;
+        if ( next <= m_memory + m_size ) {
+            m_cursor = next;
 
-            return memorySet(addr, size, 0);
+            return memoryWipe(addr, size);
         }
 
         return 0;
@@ -85,12 +76,6 @@ namespace ma
     bool
     ArenaAlloc::release(void* memory)
     {
-        return false;
-    }
-
-    bool
-    ArenaAlloc::release()
-    {
-        return prepare();
+        return memory == 0;
     }
 } // namespace ma

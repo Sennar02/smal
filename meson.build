@@ -8,7 +8,7 @@ smal_header = include_directories('include')
 smal_depend = []
 smal_define = []
 
-subdir('source/smal/Common')
+subdir('source/smal/Base')
 subdir('source/smal/Memory')
 subdir('source/smal/Json')
 

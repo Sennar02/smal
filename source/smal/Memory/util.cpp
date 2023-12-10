@@ -3,13 +3,13 @@
 namespace ma
 {
     char*
-    memorySet(void* memory, u32 size, char byte)
+    memoryWipe(void* memory, u32 size)
     {
-        char* buffer = (char*) memory;
+        char* addr = (char*) memory;
 
         for ( u32 i = 0; i < size; i++ )
-            buffer[i] = byte;
+            addr[i] = 0;
 
-        return buffer;
+        return addr;
     }
 } // namespace ma

@@ -23,6 +23,24 @@ namespace ma
          *
          */
         virtual u32
+        size() const;
+
+        /**
+         *
+         */
+        virtual char*
+        memory() const;
+
+        /**
+         *
+         */
+        virtual bool
+        contains(void* memory) const;
+
+        /**
+         *
+         */
+        virtual u32
         avail() const;
 
         /**
@@ -42,12 +60,6 @@ namespace ma
          */
         virtual bool
         release(void* memory);
-
-        /**
-         *
-         */
-        virtual bool
-        release();
     };
 } // namespace ma
 
