@@ -14,23 +14,23 @@ namespace ma
     /**
      *
      */
-    template <class Value, class Alloc>
-    Value*
+    template <class Type, class Alloc>
+    Type*
     acquire(Alloc& alloc);
 
     /**
      *
      */
-    template <class Value, class Alloc, class... Args>
-    Value*
+    template <class Type, class Alloc, class... Args>
+    Type*
     acquire(Alloc& alloc, Args&&... args);
 
     /**
      *
      */
-    template <class Value, class Alloc>
+    template <class Type, class Alloc>
     bool
-    release(Alloc& alloc, Value* value);
+    release(Alloc& alloc, Type* addr);
 } // namespace ma
 
 #include <smal/Memory/impl/util.tpp>

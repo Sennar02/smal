@@ -19,6 +19,7 @@ namespace ma
     class NullAlloc;
     class PoolAlloc;
     class StackAlloc;
+    class ArenaAlloc;
     class ProxyAlloc;
 
     template <class... Allocs>

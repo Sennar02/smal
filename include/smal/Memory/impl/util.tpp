@@ -2,24 +2,24 @@
 
 namespace ma
 {
-    template <class Value, class Alloc>
-    Value*
+    template <class Type, class Alloc>
+    Type*
     acquire(Alloc& alloc)
     {
-        Value* addr =
-            (Value*) alloc.acquire(sizeof(Value));
+        Type* addr =
+            (Type*) alloc.acquire(sizeof(Type));
 
         if ( addr != 0 ) create(*addr);
 
         return addr;
     }
 
-    template <class Value, class Alloc, class... Args>
-    Value*
+    template <class Type, class Alloc, class... Args>
+    Type*
     acquire(Alloc& alloc, Args&&... args)
     {
-        Value* addr =
-            (Value*) alloc.acquire(sizeof(Value));
+        Type* addr =
+            (Type*) alloc.acquire(sizeof(Type));
 
         if ( addr != 0 )
             create(*addr, forw<Args>(args)...);
@@ -27,10 +27,10 @@ namespace ma
         return addr;
     }
 
-    template <class Value, class Alloc>
+    template <class Type, class Alloc>
     bool
-    release(Alloc& alloc, Value* value)
+    release(Alloc& alloc, Type* addr)
     {
-        return alloc.release(value);
+        return alloc.release(addr);
     }
 } // namespace ma

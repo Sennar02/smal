@@ -12,6 +12,7 @@
 #include <smal/Memory/Alloc/NullAlloc.hpp>
 #include <smal/Memory/Alloc/PoolAlloc.hpp>
 #include <smal/Memory/Alloc/StackAlloc.hpp>
+#include <smal/Memory/Alloc/ArenaAlloc.hpp>
 #include <smal/Memory/Alloc/ProxyAlloc.hpp>
 #include <smal/Memory/Alloc/ChainAlloc.hpp>
 

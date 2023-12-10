@@ -51,21 +51,21 @@ namespace ma
          */
         template <class User>
         bool
-        number(User& user, u32 value);
+        number(User& user, u32 item);
 
         /**
          *
          */
         template <class User>
         bool
-        number(User& user, i32 value);
+        number(User& user, i32 item);
 
         /**
          *
          */
         template <class User>
         bool
-        number(User& user, f32 value);
+        number(User& user, f32 item);
 
         /**
          *

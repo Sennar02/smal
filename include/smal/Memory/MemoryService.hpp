@@ -1,8 +1,7 @@
 #ifndef SMAL_MEMORY_MEMORY_SERVICE_HPP
 #define SMAL_MEMORY_MEMORY_SERVICE_HPP
 
-#include <smal/Memory/Alloc/PoolAlloc.hpp>
-#include <smal/Memory/Alloc/StackAlloc.hpp>
+#include <smal/Memory/Alloc/ArenaAlloc.hpp>
 
 namespace ma
 {
@@ -48,7 +47,7 @@ namespace ma
         /**
          *
          */
-        StackAlloc m_stack;
+        ArenaAlloc m_arena;
     };
 } // namespace ma
 

@@ -7,7 +7,7 @@ namespace ma
     MemoryService::create(u32 size, Args&&... args)
     {
         char* addr =
-            m_stack.acquire(size);
+            m_arena.acquire(size);
 
         return {addr, size, forw<Args>(args)...};
     }

@@ -42,29 +42,29 @@ namespace ma
 
     template <class User>
     bool
-    JsonReader::number(User& user, u32 value)
+    JsonReader::number(User& user, u32 item)
     {
-        return user.number(value);
+        return user.number(item);
     }
 
     template <class User>
     bool
-    JsonReader::number(User& user, i32 value)
+    JsonReader::number(User& user, i32 item)
     {
-        return user.number(value);
+        return user.number(item);
     }
 
     template <class User>
     bool
-    JsonReader::number(User& user, f32 value)
+    JsonReader::number(User& user, f32 item)
     {
-        if ( value == (u32) value )
-            return user.number((u32) value);
+        if ( item == (u32) item )
+            return user.number((u32) item);
 
-        if ( value == (i32) value )
-            return user.number((i32) value);
+        if ( item == (i32) item )
+            return user.number((i32) item);
 
-        return user.number(value);
+        return user.number(item);
     }
 
     template <class User>
