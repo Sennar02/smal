@@ -18,10 +18,10 @@ namespace ma
         , m_list {0}
         , m_page {s_node_size}
     {
-        if ( m_memory == 0 )
-            m_size = 0;
+        if ( m_memory == 0 ) m_size = 0;
 
-        prepare(page);
+        if ( page >= s_node_size )
+            prepare(page);
     }
 
     u32
@@ -67,19 +67,25 @@ namespace ma
     }
 
     bool
-    PoolAlloc::prepare()
+    PoolAlloc::prepare(u32 page)
     {
-        Node* node = (Node*) m_memory;
+        Node* node = 0;
         Node* next = 0;
+        u32   step = page + s_head_size;
+
+        if ( page < s_node_size ) return false;
 
         if ( m_memory != 0 ) {
-            m_count = m_size / m_page;
-            m_list  = (Node*) m_memory;
+            node = (Node*) ((char*) m_memory + s_head_size);
+
+            m_count = m_size / step;
+            m_list  = node;
+            m_page  = page;
 
             memoryWipe(m_memory, m_size);
 
-            for ( u32 i = 0; i < m_count - 1; i++ ) {
-                next = (Node*) ((char*) node + m_page);
+            for ( u32 i = 1; i < m_count; i++ ) {
+                next = (Node*) ((char*) node + step);
 
                 node->next = next;
                 node       = next;
@@ -90,31 +96,24 @@ namespace ma
     }
 
     bool
-    PoolAlloc::prepare(u32 page)
+    PoolAlloc::prepare()
     {
-        if ( m_page != page ) {
-            m_page = page;
-
-            if ( m_page < s_node_size )
-                m_page = s_node_size;
-
-            return prepare();
-        }
-
-        return true;
+        return prepare(m_page);
     }
 
     char*
     PoolAlloc::acquire(u32 size)
     {
         char* addr = (char*) m_list;
+        Head* head = (Head*) (addr - s_head_size);
 
         if ( size == 0 ) return 0;
-        if ( size == g_max_u32 ) size = m_page;
 
-        if ( m_page >= size && m_count != 0 ) {
+        if ( size <= m_page && m_count != 0 ) {
             m_count -= 1;
-            m_list = m_list->next;
+
+            m_list     = m_list->next;
+            head->used = true;
 
             return memoryWipe(addr, m_page);
         }
@@ -122,30 +121,34 @@ namespace ma
         return 0;
     }
 
+    char*
+    PoolAlloc::acquire()
+    {
+        return acquire(m_page);
+    }
+
     bool
     PoolAlloc::release(void* memory)
     {
-        char* addr = (char*) memory;
-        u32   dist = (addr - m_memory) % m_page;
+        char* addr = (char*) memory - s_head_size;
+        Head* head = (Head*) addr;
         Node* node = (Node*) memory;
 
-        if ( dist != 0 ) return false;
+        u32 full = m_page + s_head_size;
+        u32 dist = ((char*) head - m_memory) % full;
 
         if ( memory != 0 ) {
             if ( contains(node) == false )
                 return false;
 
-            for ( Node* iter = m_list; iter != 0; ) {
-                if ( iter == memory )
-                    return false;
-
-                iter = iter->next;
-            }
+            if ( dist != 0 || head->used == false )
+                return false;
 
             m_count += 1;
 
-            memoryWipe(memory, m_page);
+            memoryWipe(head, m_page);
 
+            head->used = false;
             node->next = m_list;
             m_list     = node;
         }

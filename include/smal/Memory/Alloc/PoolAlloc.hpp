@@ -71,7 +71,13 @@ namespace ma
          *
          */
         virtual char*
-        acquire(u32 size = g_max_u32);
+        acquire(u32 size);
+
+        /**
+         *
+         */
+        virtual char*
+        acquire();
 
         /**
          *
@@ -85,11 +91,22 @@ namespace ma
             Node* next;
         };
 
+        struct Head
+        {
+            u32 used;
+        };
+
         /**
          *
          */
         static const u32 s_node_size =
             sizeof(Node);
+
+        /**
+         *
+         */
+        static const u32 s_head_size =
+            sizeof(Head);
 
     private:
         /**

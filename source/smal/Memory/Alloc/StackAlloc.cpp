@@ -64,10 +64,11 @@ namespace ma
     char*
     StackAlloc::acquire(u32 size)
     {
-        u32   full = s_head_size + size;
         char* addr = m_cursor + s_head_size;
-        char* next = m_cursor + full;
         Head* head = (Head*) m_cursor;
+
+        u32   full = size + s_head_size;
+        char* next = m_cursor + full;
 
         if ( size == 0 ) return 0;
 
