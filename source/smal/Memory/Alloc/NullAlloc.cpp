@@ -15,6 +15,12 @@ namespace ma
         return 0;
     }
 
+    u32
+    NullAlloc::next() const
+    {
+        return 0;
+    }
+
     char*
     NullAlloc::memory() const
     {
@@ -25,12 +31,6 @@ namespace ma
     NullAlloc::contains(void* memory) const
     {
         return memory == 0;
-    }
-
-    u32
-    NullAlloc::avail() const
-    {
-        return 0;
     }
 
     bool

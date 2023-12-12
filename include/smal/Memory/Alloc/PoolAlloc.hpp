@@ -29,13 +29,19 @@ namespace ma
          *
          */
         virtual u32
+        count() const;
+
+        /**
+         *
+         */
+        virtual u32
         size() const;
 
         /**
          *
          */
         virtual u32
-        avail() const;
+        next() const;
 
         /**
          *

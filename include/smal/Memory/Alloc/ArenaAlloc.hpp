@@ -29,7 +29,7 @@ namespace ma
          *
          */
         virtual u32
-        avail() const;
+        next() const;
 
         /**
          *

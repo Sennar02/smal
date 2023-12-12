@@ -1,4 +1,4 @@
-#include <smal/Json/import.hpp>
+#include <smal/Memory/import.hpp>
 #include <stdio.h>
 
 using namespace ma;
@@ -10,15 +10,10 @@ int
 main(int argc, const char* argv[])
 {
     auto  alloc = PoolAlloc {buff, size, 64};
-    char* addr  = 0;
-    char* pntr;
+    char* piece = alloc.acquire();
 
-    addr = alloc.acquire();
-    pntr = alloc.acquire();
-
-    alloc.release(addr);
-    alloc.release(pntr);
-    alloc.release(addr);
+    printf("%i\n", alloc.release(piece));
+    printf("%i\n", alloc.release(piece));
 
     return 0;
 }

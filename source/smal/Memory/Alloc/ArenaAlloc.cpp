@@ -26,6 +26,12 @@ namespace ma
         return m_size;
     }
 
+    u32
+    ArenaAlloc::next() const
+    {
+        return m_size - (m_cursor - m_memory);
+    }
+
     char*
     ArenaAlloc::memory() const
     {
@@ -39,12 +45,6 @@ namespace ma
         char* sup = m_memory + m_size;
 
         return inf <= memory && memory < sup;
-    }
-
-    u32
-    ArenaAlloc::avail() const
-    {
-        return m_size - (m_cursor - m_memory);
     }
 
     bool

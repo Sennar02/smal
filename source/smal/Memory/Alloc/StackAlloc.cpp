@@ -27,7 +27,7 @@ namespace ma
     }
 
     u32
-    StackAlloc::avail() const
+    StackAlloc::next() const
     {
         u32 size = m_size - (m_cursor - m_memory);
 

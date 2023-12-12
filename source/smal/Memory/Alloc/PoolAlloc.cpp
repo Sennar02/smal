@@ -31,15 +31,24 @@ namespace ma
     }
 
     u32
+    PoolAlloc::count() const
+    {
+        return m_count;
+    }
+
+    u32
     PoolAlloc::size() const
     {
         return m_size;
     }
 
     u32
-    PoolAlloc::avail() const
+    PoolAlloc::next() const
     {
-        return m_page * m_count;
+        if ( m_count != 0 )
+            return m_page;
+
+        return 0;
     }
 
     char*
@@ -116,21 +125,29 @@ namespace ma
     bool
     PoolAlloc::release(void* memory)
     {
+        char* addr = (char*) memory;
+        u32   dist = (addr - m_memory) % m_page;
         Node* node = (Node*) memory;
+
+        if ( dist != 0 ) return false;
 
         if ( memory != 0 ) {
             if ( contains(node) == false )
                 return false;
 
-            // check if "memory" is not inside the list.
-            // and is "k * page" bytes after "m_memory".
+            for ( Node* iter = m_list; iter != 0; ) {
+                if ( iter == memory )
+                    return false;
 
-            node->next = m_list;
-            m_list     = node;
+                iter = iter->next;
+            }
+
+            m_count += 1;
 
             memoryWipe(memory, m_page);
 
-            m_count += 1;
+            node->next = m_list;
+            m_list     = node;
         }
 
         return true;
