@@ -3,6 +3,19 @@
 
 namespace ma
 {
+    union StackAlloc::Head
+    {
+        struct
+        {
+            u32 size;
+        };
+
+        char memory[16];
+    };
+
+    const u32 StackAlloc::s_head_size =
+        sizeof(Head);
+
     StackAlloc::StackAlloc()
         : m_memory {0}
         , m_cursor {0}
@@ -55,10 +68,10 @@ namespace ma
     bool
     StackAlloc::prepare()
     {
-        m_cursor =
-            memoryWipe(m_memory, m_size);
+        if ( m_memory != 0 )
+            m_cursor = memoryWipe(m_memory, m_size);
 
-        return true;
+        return m_memory != 0;
     }
 
     char*

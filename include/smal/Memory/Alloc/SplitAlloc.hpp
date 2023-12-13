@@ -1,35 +1,29 @@
-#ifndef SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
-#define SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
+#ifndef SMAL_MEMORY_ALLOC_SPLIT_ALLOC_HPP
+#define SMAL_MEMORY_ALLOC_SPLIT_ALLOC_HPP
 
 #include <smal/Memory/Alloc/BaseAlloc.hpp>
 
 namespace ma
 {
-    class PoolAlloc
+    class SplitAlloc
         : public BaseAlloc
     {
     public:
         /**
          *
          */
-        PoolAlloc();
+        SplitAlloc();
 
         /**
          *
          */
-        PoolAlloc(void* memory, u32 size, u32 page = 0);
-
-        /**
-         *
-         */
-        virtual u32
-        page() const;
+        SplitAlloc(void* memory, u32 size, u32 unit);
 
         /**
          *
          */
         virtual u32
-        count() const;
+        unit() const;
 
         /**
          *
@@ -59,12 +53,6 @@ namespace ma
          *
          */
         virtual bool
-        prepare(u32 page);
-
-        /**
-         *
-         */
-        virtual bool
         prepare();
 
         /**
@@ -76,28 +64,35 @@ namespace ma
         /**
          *
          */
-        virtual char*
-        acquire();
-
-        /**
-         *
-         */
         virtual bool
         release(void* memory);
 
     private:
-        struct Node;
         union Head;
 
         /**
          *
          */
-        static const u32 s_node_size;
+        static const u32 s_head_size;
+
+    private:
+        /**
+         *
+         */
+        void*
+        split(void* memory, u32 size) const;
 
         /**
          *
          */
-        static const u32 s_head_size;
+        void*
+        merge(void* memory) const;
+
+        /**
+         *
+         */
+        void*
+        search(u32 size) const;
 
     private:
         /**
@@ -113,18 +108,8 @@ namespace ma
         /**
          *
          */
-        u32 m_count;
-
-        /**
-         *
-         */
-        Node* m_list;
-
-        /**
-         *
-         */
-        u32 m_page;
+        u32 m_unit;
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_POOL_ALLOC_HPP
+#endif // SMAL_MEMORY_ALLOC_SPLIT_ALLOC_HPP

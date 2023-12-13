@@ -20,6 +20,7 @@ namespace ma
     class PoolAlloc;
     class StackAlloc;
     class ArenaAlloc;
+    class SplitAlloc;
 
     template <class Type>
     class BaseBlock;

@@ -3,6 +3,27 @@
 
 namespace ma
 {
+    struct PoolAlloc::Node
+    {
+        Node* next;
+    };
+
+    union PoolAlloc::Head
+    {
+        struct
+        {
+            bool used;
+        };
+
+        char memory[16];
+    };
+
+    const u32 PoolAlloc::s_node_size =
+        sizeof(Node);
+
+    const u32 PoolAlloc::s_head_size =
+        sizeof(Head);
+
     PoolAlloc::PoolAlloc()
         : m_memory {0}
         , m_size {0}
@@ -138,7 +159,7 @@ namespace ma
         u32 dist = ((char*) head - m_memory) % full;
 
         if ( memory != 0 ) {
-            if ( contains(node) == false )
+            if ( contains(addr) == false )
                 return false;
 
             if ( dist != 0 || head->used == false )
@@ -148,7 +169,6 @@ namespace ma
 
             memoryWipe(head, m_page);
 
-            head->used = false;
             node->next = m_list;
             m_list     = node;
         }

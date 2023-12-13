@@ -50,10 +50,10 @@ namespace ma
     bool
     ArenaAlloc::prepare()
     {
-        m_cursor =
-            memoryWipe(m_memory, m_size);
+        if ( m_memory != 0 )
+            m_cursor = memoryWipe(m_memory, m_size);
 
-        return true;
+        return m_memory != 0;
     }
 
     char*

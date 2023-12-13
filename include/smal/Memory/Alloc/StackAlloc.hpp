@@ -62,16 +62,12 @@ namespace ma
         release(void* memory);
 
     private:
-        struct Head
-        {
-            u32 size;
-        };
+        union Head;
 
         /**
          *
          */
-        static const u32 s_head_size =
-            sizeof(Head);
+        static const u32 s_head_size;
 
     private:
         /**
