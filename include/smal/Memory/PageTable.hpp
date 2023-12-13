@@ -1,5 +1,5 @@
-#ifndef SMAL_MEMORY_BLOCK_PAGE_TABLE_HPP
-#define SMAL_MEMORY_BLOCK_PAGE_TABLE_HPP
+#ifndef SMAL_MEMORY_PAGE_TABLE_HPP
+#define SMAL_MEMORY_PAGE_TABLE_HPP
 
 #include <smal/Memory/define.hpp>
 
@@ -73,19 +73,16 @@ namespace ma
         convert(u32 index, u32 size) const;
 
     private:
-        using Node = char*;
-
         /**
          *
          */
-        static const u32 s_node_size =
-            sizeof(Node);
+        static const u32 s_node_size;
 
     private:
         /**
          *
          */
-        Node* m_memory;
+        char** m_memory;
 
         /**
          *
@@ -104,4 +101,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_BLOCK_PAGE_TABLE_HPP
+#endif // SMAL_MEMORY_PAGE_TABLE_HPP

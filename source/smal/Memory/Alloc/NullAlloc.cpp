@@ -4,33 +4,17 @@
 namespace ma
 {
     NullAlloc::NullAlloc()
+        : BaseAlloc()
     { }
 
     NullAlloc::NullAlloc(void* memory, u32 size)
+        : BaseAlloc()
     { }
 
-    u32
-    NullAlloc::size() const
-    {
-        return 0;
-    }
-
-    u32
-    NullAlloc::next() const
-    {
-        return 0;
-    }
-
-    char*
-    NullAlloc::memory() const
-    {
-        return 0;
-    }
-
     bool
-    NullAlloc::contains(void* memory) const
+    NullAlloc::availab(u32 size) const
     {
-        return memory == 0;
+        return size == 0;
     }
 
     bool

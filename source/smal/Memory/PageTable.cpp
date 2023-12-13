@@ -1,22 +1,22 @@
-#include <smal/Memory/Block/PageTable.hpp>
+#include <smal/Memory/PageTable.hpp>
 
 namespace ma
 {
+    const u32 PageTable::s_node_size =
+        sizeof(char*);
+
     PageTable::PageTable()
         : m_memory {0}
-        , m_size {1}
+        , m_size {0}
         , m_page {1}
         , m_count {0}
     { }
 
     PageTable::PageTable(void* memory, u32 size, u32 page)
-        : m_memory {0}
-        , m_size {1}
-        , m_page {1}
-        , m_count {0}
+        : PageTable()
     {
-        if ( m_page != 0 ) {
-            m_memory = (Node*) memory;
+        if ( memory != 0 && size != 0 && page >= 1 ) {
+            m_memory = (char**) memory;
 
             m_size = size / s_node_size;
             m_page = page;
@@ -58,7 +58,7 @@ namespace ma
     {
         u32 count = m_count;
 
-        if ( m_count < m_size )
+        if ( m_count < m_size && memory != 0 )
             m_memory[m_count++] = (char*) memory;
 
         return m_count != count;
@@ -70,7 +70,7 @@ namespace ma
         char* addr = 0;
 
         if ( m_count > 0 )
-            swap(m_memory[--m_count], addr);
+            addr = m_memory[--m_count];
 
         return addr;
     }

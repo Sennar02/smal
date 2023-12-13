@@ -17,7 +17,7 @@ namespace ma
         /**
          *
          */
-        PoolAlloc(void* memory, u32 size, u32 page = 0);
+        PoolAlloc(void* memory, u32 size, u32 page);
 
         /**
          *
@@ -34,26 +34,8 @@ namespace ma
         /**
          *
          */
-        virtual u32
-        size() const;
-
-        /**
-         *
-         */
-        virtual u32
-        next() const;
-
-        /**
-         *
-         */
-        virtual char*
-        memory() const;
-
-        /**
-         *
-         */
         virtual bool
-        contains(void* memory) const;
+        availab(u32 size) const;
 
         /**
          *
@@ -103,27 +85,17 @@ namespace ma
         /**
          *
          */
-        char* m_memory;
-
-        /**
-         *
-         */
-        u32 m_size;
-
-        /**
-         *
-         */
-        u32 m_count;
-
-        /**
-         *
-         */
         Node* m_list;
 
         /**
          *
          */
         u32 m_page;
+
+        /**
+         *
+         */
+        u32 m_count;
     };
 } // namespace ma
 

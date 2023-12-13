@@ -17,52 +17,23 @@ namespace ma
         sizeof(Head);
 
     StackAlloc::StackAlloc()
-        : m_memory {0}
+        : BaseAlloc()
         , m_cursor {0}
-        , m_size {0}
     { }
 
     StackAlloc::StackAlloc(void* memory, u32 size)
-        : m_memory {(char*) memory}
-        , m_cursor {0}
-        , m_size {size}
+        : BaseAlloc(memory, size)
     {
-        if ( m_memory == 0 )
-            m_size = 0;
-
-        prepare();
-    }
-
-    u32
-    StackAlloc::size() const
-    {
-        return m_size;
-    }
-
-    u32
-    StackAlloc::next() const
-    {
-        u32 size = m_size - (m_cursor - m_memory);
-
-        if ( size > s_head_size )
-            return size - s_head_size;
-
-        return 0;
-    }
-
-    char*
-    StackAlloc::memory() const
-    {
-        return m_memory;
+        if ( memory != 0 && size != 0 )
+            prepare();
     }
 
     bool
-    StackAlloc::contains(void* memory) const
+    StackAlloc::availab(u32 size) const
     {
-        char* inf = m_memory;
-        char* sup = m_memory + m_size;
+        u32 dist = (m_cursor - m_memory) + s_head_size;
 
-        return inf <= memory && memory < sup;
+        return size <= m_size - dist;
     }
 
     bool

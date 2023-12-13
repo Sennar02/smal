@@ -22,26 +22,8 @@ namespace ma
         /**
          *
          */
-        virtual u32
-        size() const;
-
-        /**
-         *
-         */
-        virtual u32
-        next() const;
-
-        /**
-         *
-         */
-        virtual char*
-        memory() const;
-
-        /**
-         *
-         */
         virtual bool
-        contains(void* memory) const;
+        availab(u32 size) const;
 
         /**
          *
@@ -65,17 +47,7 @@ namespace ma
         /**
          *
          */
-        char* m_memory;
-
-        /**
-         *
-         */
         char* m_cursor;
-
-        /**
-         *
-         */
-        u32 m_size;
     };
 } // namespace ma
 

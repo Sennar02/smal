@@ -25,24 +25,22 @@ namespace ma
         sizeof(Head);
 
     PoolAlloc::PoolAlloc()
-        : m_memory {0}
-        , m_size {0}
-        , m_count {0}
+        : BaseAlloc()
         , m_list {0}
         , m_page {s_node_size}
+        , m_count {0}
     { }
 
     PoolAlloc::PoolAlloc(void* memory, u32 size, u32 page)
-        : m_memory {(char*) memory}
-        , m_size {size}
-        , m_count {0}
+        : BaseAlloc(memory, size)
         , m_list {0}
         , m_page {s_node_size}
+        , m_count {0}
     {
-        if ( m_memory == 0 ) m_size = 0;
-
-        if ( page >= s_node_size )
-            prepare(page);
+        if ( page >= s_node_size ) {
+            if ( memory != 0 && size != 0 )
+                prepare(page);
+        }
     }
 
     u32
@@ -57,34 +55,13 @@ namespace ma
         return m_count;
     }
 
-    u32
-    PoolAlloc::size() const
-    {
-        return m_size;
-    }
-
-    u32
-    PoolAlloc::next() const
+    bool
+    PoolAlloc::availab(u32 size) const
     {
         if ( m_count != 0 )
-            return m_page;
+            return size <= m_page;
 
-        return 0;
-    }
-
-    char*
-    PoolAlloc::memory() const
-    {
-        return m_memory;
-    }
-
-    bool
-    PoolAlloc::contains(void* memory) const
-    {
-        char* inf = m_memory;
-        char* sup = m_memory + m_size;
-
-        return inf <= memory && memory < sup;
+        return false;
     }
 
     bool

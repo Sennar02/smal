@@ -4,47 +4,23 @@
 namespace ma
 {
     ArenaAlloc::ArenaAlloc()
-        : m_memory {0}
+        : BaseAlloc()
         , m_cursor {0}
-        , m_size {0}
     { }
 
     ArenaAlloc::ArenaAlloc(void* memory, u32 size)
-        : m_memory {(char*) memory}
-        , m_cursor {0}
-        , m_size {size}
+        : BaseAlloc(memory, size)
     {
-        if ( m_memory == 0 )
-            m_size = 0;
-
-        prepare();
-    }
-
-    u32
-    ArenaAlloc::size() const
-    {
-        return m_size;
-    }
-
-    u32
-    ArenaAlloc::next() const
-    {
-        return m_size - (m_cursor - m_memory);
-    }
-
-    char*
-    ArenaAlloc::memory() const
-    {
-        return m_memory;
+        if ( memory != 0 && size != 0 )
+            prepare();
     }
 
     bool
-    ArenaAlloc::contains(void* memory) const
+    ArenaAlloc::availab(u32 size) const
     {
-        char* inf = m_memory;
-        char* sup = m_memory + m_size;
+        u32 diff = m_cursor - m_memory;
 
-        return inf <= memory && memory < sup;
+        return size <= m_size - diff;
     }
 
     bool

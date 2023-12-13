@@ -46,22 +46,18 @@ namespace ma
         sizeof(Head);
 
     SplitAlloc::SplitAlloc()
-        : m_memory {0}
-        , m_size {0}
+        : BaseAlloc()
         , m_unit {s_head_size}
     { }
 
     SplitAlloc::SplitAlloc(void* memory, u32 size, u32 unit)
-        : m_memory {(char*) memory}
-        , m_size {size}
+        : BaseAlloc(memory, size)
         , m_unit {s_head_size}
     {
-        if ( m_memory == 0 ) m_size = 0;
-
-        if ( unit > s_head_size )
-            m_unit = unit;
-
-        prepare();
+        if ( unit >= s_head_size ) {
+            if ( memory != 0 && size != 0 )
+                prepare(unit);
+        }
     }
 
     u32
@@ -70,43 +66,46 @@ namespace ma
         return m_unit;
     }
 
-    u32
-    SplitAlloc::size() const
+    bool
+    SplitAlloc::availab(u32 size) const
     {
-        return m_size;
-    }
+        char* addr = m_memory;
+        Head* node = (Head*) addr;
 
-    u32
-    SplitAlloc::next() const
-    {
-        return 0;
-    }
+        if ( size > s_head_size ) {
+            while ( addr < m_memory + m_size ) {
+                addr += node->size;
 
-    char*
-    SplitAlloc::memory() const
-    {
-        return m_memory;
+                if ( node->used == false && size <= node->size )
+                    return true;
+
+                node = (Head*) addr;
+            }
+        }
+
+        return false;
     }
 
     bool
-    SplitAlloc::contains(void* memory) const
+    SplitAlloc::prepare(u32 unit)
     {
-        char* inf = m_memory;
-        char* sup = m_memory + m_size;
+        Head* root = (Head*)
+            memoryWipe(m_memory, m_size);
 
-        return inf <= m_memory && m_memory < sup;
+        if ( unit < s_head_size ) return false;
+
+        if ( m_memory != 0 ) {
+            root->size = m_size;
+            m_unit     = unit;
+        }
+
+        return m_memory != 0;
     }
 
     bool
     SplitAlloc::prepare()
     {
-        Head* root = (Head*)
-            memoryWipe(m_memory, m_size);
-
-        if ( m_memory != 0 )
-            root->size = m_size;
-
-        return m_memory != 0;
+        return prepare(m_unit);
     }
 
     void*
