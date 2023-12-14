@@ -9,22 +9,14 @@ static char      buff[size] = {0};
 int
 main(int argc, const char* argv[])
 {
-    ArenaOrigin origin = {buff, size};
+    PoolOrigin origin {buff, size, 128};
 
-    auto buffer =
-        SimpleBuffer<int>(origin, 20);
+    char* memory = origin.acquire();
 
-    printf("%u\n", buffer.size());
-
-    for ( u32 i = 0; i < buffer.size(); i++ )
-        printf("%u ", buffer[i] = 1);
-    printf("\n");
-
-    origin.prepare();
-
-    for ( u32 i = 0; i < buffer.size(); i++ )
-        printf("%u ", buffer[i]);
-    printf("\n");
+    printf("%p\n", memory);
+    printf("%i\n", origin.release(memory));
+    printf("%i\n", origin.release(memory + 1));
+    printf("%i\n", origin.release(memory));
 
     return 0;
 }

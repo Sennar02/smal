@@ -3,6 +3,8 @@ smal_memory = static_library('smal-memory',
         'Origin/BaseOrigin.cpp',
         'Origin/NullOrigin.cpp',
         'Origin/ArenaOrigin.cpp',
+        'Origin/PoolOrigin.cpp',
+        'util.cpp',
     ],
     include_directories: [smal_header],
 )

@@ -7,6 +7,7 @@
 #include <smal/Memory/Origin/BaseOrigin.hpp>
 #include <smal/Memory/Origin/NullOrigin.hpp>
 #include <smal/Memory/Origin/ArenaOrigin.hpp>
+#include <smal/Memory/Origin/PoolOrigin.hpp>
 
 #include <smal/Memory/Buffer/BaseBuffer.hpp>
 #include <smal/Memory/Buffer/SimpleBuffer.hpp>
