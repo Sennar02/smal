@@ -1,29 +1,34 @@
-#ifndef SMAL_MEMORY_ALLOC_NULL_ALLOC_HPP
-#define SMAL_MEMORY_ALLOC_NULL_ALLOC_HPP
+#ifndef SMAL_MEMORY_ORIGIN_NULL_ORIGIN_HPP
+#define SMAL_MEMORY_ORIGIN_NULL_ORIGIN_HPP
 
-#include <smal/Memory/Alloc/BaseAlloc.hpp>
+#include <smal/Memory/Origin/BaseOrigin.hpp>
 
 namespace ma
 {
-    class NullAlloc
-        : public BaseAlloc
+    class NullOrigin
+        : public BaseOrigin
     {
     public:
         /**
          *
          */
-        NullAlloc();
+        NullOrigin();
 
         /**
          *
          */
-        NullAlloc(void* memory, u32 size);
+        NullOrigin(const SimpleBuffer<char>& buffer);
+
+        /**
+         *
+         */
+        NullOrigin(void* memory, u32 size);
 
         /**
          *
          */
         virtual bool
-        availab(u32 size) const;
+        remains(u32 size) const;
 
         /**
          *
@@ -45,4 +50,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_NULL_ALLOC_HPP
+#endif // SMAL_MEMORY_ORIGIN_NULL_ORIGIN_HPP

@@ -25,10 +25,6 @@ namespace ma
     Type
     exch(Type& value, Type&& other);
 
-    template <class Type>
-    void
-    ctor(Type& value);
-
     template <class Type, class... Args>
     void
     ctor(Type& value, Args&&... args);

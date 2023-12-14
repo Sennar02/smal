@@ -1,14 +1,8 @@
 smal_memory = static_library('smal-memory',
     sources: [
-        'Alloc/BaseAlloc.cpp',
-        'Alloc/NullAlloc.cpp',
-        'Alloc/PoolAlloc.cpp',
-        'Alloc/StackAlloc.cpp',
-        'Alloc/ArenaAlloc.cpp',
-        'Alloc/SplitAlloc.cpp',
-        'PageTable.cpp',
-        'MemoryModule.cpp',
-        'util.cpp',
+        'Origin/BaseOrigin.cpp',
+        'Origin/NullOrigin.cpp',
+        'Origin/ArenaOrigin.cpp',
     ],
     include_directories: [smal_header],
 )

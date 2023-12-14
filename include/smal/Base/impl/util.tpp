@@ -45,13 +45,6 @@ namespace ma
         return temp;
     }
 
-    template <class Type>
-    void
-    ctor(Type& value)
-    {
-        new (&value) Type {};
-    }
-
     template <class Type, class... Args>
     void
     create(Type& value, Args&&... args)

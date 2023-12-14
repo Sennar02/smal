@@ -47,23 +47,6 @@ namespace ma
 
     static const f64 g_inf = INFINITY;
     static const f64 g_nan = NAN;
-
-    class String;
-
-    class FileIStream;
-    class FileOStream;
-    class FileReader;
-    class FileWriter;
-
-    template <class Func>
-    class Action;
-
-    template <auto Func>
-    class Bind
-    { };
-
-    template <auto Func>
-    static inline Bind<Func> bind;
 } // namespace ma
 
 #endif // SMAL_BASE_DEFINE_HPP

@@ -1,29 +1,34 @@
-#ifndef SMAL_MEMORY_ALLOC_ARENA_ALLOC_HPP
-#define SMAL_MEMORY_ALLOC_ARENA_ALLOC_HPP
+#ifndef SMAL_MEMORY_ORIGIN_ARENA_ORIGIN_HPP
+#define SMAL_MEMORY_ORIGIN_ARENA_ORIGIN_HPP
 
-#include <smal/Memory/Alloc/BaseAlloc.hpp>
+#include <smal/Memory/Origin/BaseOrigin.hpp>
 
 namespace ma
 {
-    class ArenaAlloc
-        : public BaseAlloc
+    class ArenaOrigin
+        : public BaseOrigin
     {
     public:
         /**
          *
          */
-        ArenaAlloc();
+        ArenaOrigin();
 
         /**
          *
          */
-        ArenaAlloc(void* memory, u32 size);
+        ArenaOrigin(const SimpleBuffer<char>& buffer);
+
+        /**
+         *
+         */
+        ArenaOrigin(void* memory, u32 size);
 
         /**
          *
          */
         virtual bool
-        availab(u32 size) const;
+        remains(u32 size) const;
 
         /**
          *
@@ -43,12 +48,12 @@ namespace ma
         virtual bool
         release(void* memory);
 
-    private:
+    protected:
         /**
          *
          */
-        char* m_cursor;
+        char* m_pntr;
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ALLOC_ARENA_ALLOC_HPP
+#endif // SMAL_MEMORY_ORIGIN_ARENA_ORIGIN_HPP
