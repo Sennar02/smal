@@ -1,40 +1,34 @@
-#ifndef SMAL_MEMORY_ORIGIN_NULL_ORIGIN_HPP
-#define SMAL_MEMORY_ORIGIN_NULL_ORIGIN_HPP
+#ifndef SMAL_MEMORY_ORIGIN_STACK_ORIGIN_HPP
+#define SMAL_MEMORY_ORIGIN_STACK_ORIGIN_HPP
 
-#include <smal/Memory/Origin/BaseOrigin.hpp>
+#include <smal/Memory/Origin/ArenaOrigin.hpp>
 
 namespace ma
 {
-    class NullOrigin
-        : public BaseOrigin
+    class StackOrigin
+        : public ArenaOrigin
     {
     public:
         /**
          *
          */
-        NullOrigin();
+        StackOrigin();
 
         /**
          *
          */
-        NullOrigin(const FixedBuffer<char>& buffer);
+        StackOrigin(const FixedBuffer<char>& buffer);
 
         /**
          *
          */
-        NullOrigin(void* memory, u32 size);
+        StackOrigin(void* memory, u32 size);
 
         /**
          *
          */
         virtual bool
         remains(u32 size) const;
-
-        /**
-         *
-         */
-        virtual bool
-        prepare();
 
         /**
          *
@@ -50,4 +44,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_ORIGIN_NULL_ORIGIN_HPP
+#endif // SMAL_MEMORY_ORIGIN_STACK_ORIGIN_HPP

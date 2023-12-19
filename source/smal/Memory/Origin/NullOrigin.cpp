@@ -6,7 +6,7 @@ namespace ma
         : BaseOrigin()
     { }
 
-    NullOrigin::NullOrigin(const SimpleBuffer<char>& buffer)
+    NullOrigin::NullOrigin(const FixedBuffer<char>& buffer)
         : BaseOrigin()
     { }
 

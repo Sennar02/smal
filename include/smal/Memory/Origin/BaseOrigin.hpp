@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 #define SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 
-#include <smal/Memory/Buffer/SimpleBuffer.hpp>
+#include <smal/Memory/Buffer/FixedBuffer.hpp>
 
 namespace ma
 {
@@ -16,7 +16,7 @@ namespace ma
         /**
          *
          */
-        BaseOrigin(const SimpleBuffer<char>& buffer);
+        BaseOrigin(const FixedBuffer<char>& buffer);
 
         /**
          *

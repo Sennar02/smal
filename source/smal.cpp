@@ -3,20 +3,18 @@
 
 using namespace ma;
 
-static const u32 size       = 2048;
-static char      buff[size] = {0};
-
 int
 main(int argc, const char* argv[])
 {
-    PoolOrigin origin {buff, size, 128};
+    MemoryModule memory;
+    PoolOrigin   origin;
 
-    char* memory = origin.acquire();
+    memory.request(origin, 2056u, 128u);
 
-    printf("%p\n", memory);
-    printf("%i\n", origin.release(memory));
-    printf("%i\n", origin.release(memory + 1));
-    printf("%i\n", origin.release(memory));
+    PagedBuffer<int> buffer = {origin, 16u};
+
+    if ( buffer.size() >= 16u )
+        printf("%u\n", buffer.resize(0));
 
     return 0;
 }

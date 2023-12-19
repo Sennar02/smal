@@ -7,7 +7,7 @@ namespace ma
         , m_size {0}
     { }
 
-    BaseOrigin::BaseOrigin(const SimpleBuffer<char>& buffer)
+    BaseOrigin::BaseOrigin(const FixedBuffer<char>& buffer)
         : BaseOrigin()
     {
         m_memory = buffer.memory();
@@ -15,7 +15,7 @@ namespace ma
     }
 
     BaseOrigin::BaseOrigin(void* memory, u32 size)
-        : BaseOrigin(SimpleBuffer<char> {memory, size})
+        : BaseOrigin(FixedBuffer<char> {memory, size})
     { }
 
     const char*

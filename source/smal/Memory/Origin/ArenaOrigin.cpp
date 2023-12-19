@@ -9,7 +9,7 @@ namespace ma
         , m_pntr {0}
     { }
 
-    ArenaOrigin::ArenaOrigin(const SimpleBuffer<char>& buffer)
+    ArenaOrigin::ArenaOrigin(const FixedBuffer<char>& buffer)
         : BaseOrigin(buffer)
         , m_pntr {0}
     {
@@ -17,7 +17,7 @@ namespace ma
     }
 
     ArenaOrigin::ArenaOrigin(void* memory, u32 size)
-        : ArenaOrigin(SimpleBuffer<char> {memory, size})
+        : ArenaOrigin(FixedBuffer<char> {memory, size})
     { }
 
     bool

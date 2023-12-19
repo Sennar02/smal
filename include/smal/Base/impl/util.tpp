@@ -47,14 +47,14 @@ namespace ma
 
     template <class Type, class... Args>
     void
-    create(Type& value, Args&&... args)
+    ctor(Type& value, Args&&... args)
     {
         new (&value) Type {forw<Args>(args)...};
     }
 
     template <class Type>
     void
-    destroy(Type& value)
+    dtor(Type& value)
     {
         value.~Type();
     }

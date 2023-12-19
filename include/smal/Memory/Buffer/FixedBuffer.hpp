@@ -6,7 +6,7 @@
 namespace ma
 {
     template <class Item>
-    class SimpleBuffer
+    class FixedBuffer
         : public BaseBuffer<Item>
     {
     public:
@@ -19,25 +19,25 @@ namespace ma
         /**
          *
          */
-        SimpleBuffer();
+        FixedBuffer();
 
         /**
          *
          */
         template <class Type>
-        SimpleBuffer(Type memory[], u32 size);
+        FixedBuffer(Type memory[], u32 size);
 
         /**
          *
          */
         template <class Origin>
-        SimpleBuffer(Origin& origin, u32 size, const Item& item);
+        FixedBuffer(Origin& origin, u32 size, const Item& item);
 
         /**
          *
          */
         template <class Origin>
-        SimpleBuffer(Origin& origin, u32 size);
+        FixedBuffer(Origin& origin, u32 size);
 
         /**
          *
@@ -56,6 +56,12 @@ namespace ma
          */
         virtual bool
         resize(u32 size);
+
+        /**
+         *
+         */
+        virtual Item*
+        search(u32 index) const;
 
         /**
          *
@@ -83,6 +89,6 @@ namespace ma
 
 } // namespace ma
 
-#include <smal/Memory/impl/Buffer/SimpleBuffer.tpp>
+#include <smal/Memory/impl/Buffer/FixedBuffer.tpp>
 
 #endif // SMAL_MEMORY_BUFFER_SIMPLE_BUFFER_HPP

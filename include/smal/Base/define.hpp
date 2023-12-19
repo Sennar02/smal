@@ -27,11 +27,11 @@ namespace ma
     static const u64   g_max_u64   = UINT64_MAX;
     static const usize g_max_usize = SIZE_MAX;
 
-    static const u8    g_min_u8    = 0;
-    static const u16   g_min_u16   = 0;
-    static const u32   g_min_u32   = 0;
-    static const u64   g_min_u64   = 0;
-    static const usize g_min_usize = 0;
+    static const u8    g_min_u8    = 0u;
+    static const u16   g_min_u16   = 0u;
+    static const u32   g_min_u32   = 0u;
+    static const u64   g_min_u64   = 0u;
+    static const usize g_min_usize = 0u;
 
     static const i8    g_max_i8    = g_max_u8 / 2;
     static const i16   g_max_i16   = g_max_u16 / 2;
@@ -47,6 +47,10 @@ namespace ma
 
     static const f64 g_inf = INFINITY;
     static const f64 g_nan = NAN;
+
+    template <auto Func>
+    class Bind
+    { };
 } // namespace ma
 
 #endif // SMAL_BASE_DEFINE_HPP

@@ -17,7 +17,7 @@ namespace ma
         /**
          *
          */
-        ArenaOrigin(const SimpleBuffer<char>& buffer);
+        ArenaOrigin(const FixedBuffer<char>& buffer);
 
         /**
          *

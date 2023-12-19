@@ -4,17 +4,17 @@
 
 namespace ma
 {
-    struct Pref
+    struct Head
     {
         bool used;
-        char fill[15];
+        char fill[7u];
     };
 
     static const u32 s_node_size =
         sizeof(void*);
 
-    static const u32 s_pref_size =
-        sizeof(Pref);
+    static const u32 s_head_size =
+        sizeof(Head);
 
     PoolOrigin::PoolOrigin()
         : BaseOrigin()
@@ -23,7 +23,7 @@ namespace ma
         , m_count {0}
     { }
 
-    PoolOrigin::PoolOrigin(const SimpleBuffer<char>& buffer, u32 page)
+    PoolOrigin::PoolOrigin(const FixedBuffer<char>& buffer, u32 page)
         : BaseOrigin(buffer)
         , m_list {0}
         , m_page {s_node_size}
@@ -33,7 +33,7 @@ namespace ma
     }
 
     PoolOrigin::PoolOrigin(void* memory, u32 size, u32 page)
-        : PoolOrigin(SimpleBuffer<char> {memory, size}, page)
+        : PoolOrigin(FixedBuffer<char> {memory, size}, page)
     { }
 
     u32
@@ -51,11 +51,11 @@ namespace ma
     bool
     PoolOrigin::contains(void* memory) const
     {
-        u32 size = m_page + s_pref_size;
+        u32 size = m_page + s_head_size;
 
         char* inf = m_memory;
         char* sup = m_memory + m_size;
-        char* ptr = (char*) memory - s_pref_size;
+        char* ptr = (char*) memory - s_head_size;
 
         if ( inf <= ptr && ptr < sup )
             return (ptr - m_memory) % size == 0;
@@ -75,19 +75,19 @@ namespace ma
     bool
     PoolOrigin::prepare(u32 page)
     {
-        u32    full = page + s_pref_size;
+        u32    full = page + s_head_size;
         void** node = 0;
 
         if ( page < s_node_size ) return false;
 
         if ( m_memory != 0 ) {
-            node = (void**) (m_memory + s_pref_size);
-
-            m_list  = node;
-            m_page  = page;
             m_count = m_size / full;
+            m_page  = page;
+            m_list  = (void**) (m_memory + s_head_size);
 
             memset(m_memory, 0, m_size);
+
+            node = m_list;
 
             for ( u32 i = 0; i < m_count; i++ ) {
                 *node = (void*) ((char*) node + full);
@@ -108,15 +108,15 @@ namespace ma
     PoolOrigin::acquire(u32 size)
     {
         char* addr = (char*) m_list;
-        Pref* pref = (Pref*) (addr - s_pref_size);
+        Head* head = (Head*) (addr - s_head_size);
 
         if ( size == 0 ) return 0;
 
         if ( size <= m_page && m_count != 0 ) {
-            m_count -= 1;
+            m_count -= 1u;
             m_list = (void**) *m_list;
 
-            pref->used = true;
+            head->used = true;
 
             return (char*)
                 memset(addr, 0, m_page);
@@ -135,19 +135,19 @@ namespace ma
     PoolOrigin::release(void* memory)
     {
         char*  addr = (char*) memory;
-        Pref*  pref = (Pref*) (addr - s_pref_size);
+        Head*  head = (Head*) (addr - s_head_size);
         void** node = (void**) memory;
 
         if ( memory != 0 ) {
             if ( contains(memory) == false )
                 return false;
 
-            if ( pref->used == false )
+            if ( head->used == false )
                 return false;
 
-            m_count += 1;
+            m_count += 1u;
 
-            memset(pref, 0, m_page);
+            memset(head, 0, m_page);
 
             *node  = (void*) m_list;
             m_list = node;
