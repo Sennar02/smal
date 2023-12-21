@@ -36,7 +36,19 @@ namespace ma
         /**
          *
          */
-        PagedBuffer(MemoryTable&& memory, PoolOrigin* origin = 0);
+        template <class Origin>
+        PagedBuffer(Origin& origin, u32 size, u32 page);
+
+        /**
+         *
+         */
+        template <class Origin>
+        PagedBuffer(Origin& origin, u32 size, u32 page, const Item& item);
+
+        /**
+         *
+         */
+        PagedBuffer(MemoryTable&& memory, u32 page, BaseOrigin* origin = 0);
 
         /**
          *
@@ -108,7 +120,12 @@ namespace ma
         /**
          *
          */
-        PoolOrigin* m_origin;
+        BaseOrigin* m_origin;
+
+        /**
+         *
+         */
+        u32 m_page;
     };
 } // namespace ma
 

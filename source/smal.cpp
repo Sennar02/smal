@@ -6,21 +6,20 @@ using namespace ma;
 int
 main(int argc, const char* argv[])
 {
-    MemoryModule memory;
-    SplitOrigin  origin;
+    MemoryModule     memory;
+    StackOrigin      origin;
+    PagedBuffer<int> buffer;
 
-    memory.request(origin, 1024, 32u);
+    memory.request(origin, 16u * 1024u);
 
-    char* blocks[] = {
-        origin.acquire(20),
-        origin.acquire(40),
-        origin.acquire(60),
-        origin.acquire(80),
-        origin.acquire(100),
-    };
+    buffer = {origin, 16u, 256u};
 
-    for ( u32 i = 0; i < 5; i++ )
-        origin.release(blocks[i]);
+    if ( buffer.size() != 0 )
+        printf("%u\n", buffer.size());
+    else
+        printf("<error>\n");
+
+    printf("%u\n", buffer.resize(0));
 
     return 0;
 }
