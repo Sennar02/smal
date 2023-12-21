@@ -7,14 +7,20 @@ int
 main(int argc, const char* argv[])
 {
     MemoryModule memory;
-    PoolOrigin   origin;
+    SplitOrigin  origin;
 
-    memory.request(origin, 2056u, 128u);
+    memory.request(origin, 1024, 32u);
 
-    PagedBuffer<int> buffer = {origin, 16u};
+    char* blocks[] = {
+        origin.acquire(20),
+        origin.acquire(40),
+        origin.acquire(60),
+        origin.acquire(80),
+        origin.acquire(100),
+    };
 
-    if ( buffer.size() >= 16u )
-        printf("%u\n", buffer.resize(0));
+    for ( u32 i = 0; i < 5; i++ )
+        origin.release(blocks[i]);
 
     return 0;
 }

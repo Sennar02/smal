@@ -26,12 +26,12 @@ namespace ma
     { }
 
     bool
-    StackOrigin::remains(u32 size) const
+    StackOrigin::availab(u32 size) const
     {
-        u32 dist = m_pntr - m_memory;
-        u32 left = m_size - dist;
+        u32 diff = m_pntr - m_memory;
+        u32 dist = m_size - diff;
 
-        if ( size + s_head_size <= left )
+        if ( size + s_head_size <= dist )
             return true;
 
         return false;
@@ -41,7 +41,7 @@ namespace ma
     StackOrigin::acquire(u32 size)
     {
         u32   full = size + s_head_size;
-        char* addr = 0;
+        char* addr = m_pntr + s_head_size;
         char* next = m_pntr + full;
         Head* head = (Head*) m_pntr;
 
@@ -49,13 +49,13 @@ namespace ma
 
         if ( next <= m_memory + m_size ) {
             head->size = size;
-            addr       = m_pntr + s_head_size;
             m_pntr     = next;
 
-            memset(addr, 0, size);
+            return (char*)
+                memset(addr, 0, size);
         }
 
-        return addr;
+        return 0;
     }
 
     bool
@@ -63,19 +63,15 @@ namespace ma
     {
         char* addr = (char*) memory;
         Head* head = (Head*) (addr - s_head_size);
-        u32   size = s_head_size;
 
         if ( memory != 0 ) {
             if ( contains(head) == false )
                 return false;
 
-            size += head->size;
-
-            if ( m_pntr != addr + head->size )
+            if ( m_pntr == addr + head->size )
+                m_pntr = (char*) head;
+            else
                 return false;
-
-            m_pntr = (char*)
-                memset(head, 0, size);
         }
 
         return true;

@@ -46,7 +46,7 @@ namespace ma
          *
          */
         virtual bool
-        remains(u32 size) const;
+        availab(u32 size) const;
 
         /**
          *
@@ -77,6 +77,19 @@ namespace ma
          */
         virtual bool
         release(void* memory);
+
+    private:
+        /**
+         *
+         */
+        void*
+        remove(u32 size);
+
+        /**
+         *
+         */
+        void
+        insert(void* memory);
 
     private:
         /**

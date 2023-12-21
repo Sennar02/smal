@@ -2,6 +2,11 @@
 
 namespace ma
 {
+    namespace impl
+    {
+        static const PoolOrigin s_null;
+    } // namespace impl
+
     template <class Item>
     const u32 PagedBuffer<Item>::s_item_size =
         sizeof(Item);
@@ -41,8 +46,11 @@ namespace ma
     PagedBuffer<Item>::PagedBuffer(MemoryTable&& memory, PoolOrigin* origin)
         : PagedBuffer()
     {
-        m_memory = move(memory);
+        m_memory = memory;
         m_origin = origin;
+
+        if ( m_origin == 0 )
+            m_origin = &impl::s_null;
     }
 
     template <class Item>
@@ -103,13 +111,16 @@ namespace ma
     {
         char* addr = 0;
 
-        if ( m_memory.count() < pages ) return false;
+        if ( m_memory.count() >= pages ) {
+            for ( u32 i = 0; i < pages; i++ ) {
+                addr = m_memory.remove();
 
-        for ( u32 i = 0; i < pages; i++ ) {
-            addr = m_memory.remove();
-
-            if ( addr == 0 || m_origin->release(addr) == false )
-                return false;
+                if ( addr != 0 ) {
+                    if ( m_origin->release(addr) == false )
+                        return false;
+                } else
+                    return false;
+            }
         }
 
         return true;
@@ -119,11 +130,10 @@ namespace ma
     Item*
     PagedBuffer<Item>::search(u32 index) const
     {
-        u32 byte = index * s_item_size;
-        u32 page = byte / m_origin->page();
-        u32 dist = byte % m_origin->page();
+        u32 page = m_origin->page();
+        u32 byte = s_item_size * index;
 
-        return (Item*) m_memory.find(page, dist);
+        return (Item*) m_memory.convert(byte, page);
     }
 
     template <class Item>

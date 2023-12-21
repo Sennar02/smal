@@ -33,6 +33,4 @@ namespace ma
     static const u32 g_gb = g_mb * g_kb;
 } // namespace ma
 
-#include <smal/Memory/util.hpp>
-
 #endif // SMAL_MEMORY_DEFINE_HPP

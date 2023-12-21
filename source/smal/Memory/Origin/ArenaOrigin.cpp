@@ -21,12 +21,12 @@ namespace ma
     { }
 
     bool
-    ArenaOrigin::remains(u32 size) const
+    ArenaOrigin::availab(u32 size) const
     {
-        u32 dist = m_pntr - m_memory;
-        u32 left = m_size - dist;
+        u32 diff = m_pntr - m_memory;
+        u32 dist = m_size - diff;
 
-        return size <= left;
+        return size <= dist;
     }
 
     bool
@@ -41,19 +41,19 @@ namespace ma
     char*
     ArenaOrigin::acquire(u32 size)
     {
-        char* addr = 0;
+        char* addr = m_pntr;
         char* next = m_pntr + size;
 
         if ( size == 0 ) return 0;
 
         if ( next <= m_memory + m_size ) {
-            addr   = m_pntr;
             m_pntr = next;
 
-            memset(addr, 0, size);
+            return (char*)
+                memset(addr, 0, size);
         }
 
-        return addr;
+        return 0;
     }
 
     bool

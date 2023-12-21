@@ -75,7 +75,13 @@ namespace ma
          *
          */
         char*
-        find(u32 index, u32 delta = 0) const;
+        find(u32 index) const;
+
+        /**
+         *
+         */
+        char*
+        convert(u32 byte, u32 page) const;
 
     private:
         /**

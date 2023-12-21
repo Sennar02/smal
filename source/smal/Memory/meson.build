@@ -8,7 +8,6 @@ smal_memory = static_library('smal-memory',
         'Origin/SplitOrigin.cpp',
         'MemoryTable.cpp',
         'MemoryModule.cpp',
-        'util.cpp',
     ],
     include_directories: [smal_header],
 )

@@ -28,7 +28,7 @@ namespace ma
          *
          */
         virtual bool
-        remains(u32 size) const;
+        availab(u32 size) const;
 
         /**
          *

@@ -75,11 +75,17 @@ namespace ma
     }
 
     char*
-    MemoryTable::find(u32 index, u32 delta) const
+    MemoryTable::find(u32 index) const
     {
         if ( index < m_count )
-            return m_memory[index] + delta;
+            return m_memory[index];
 
         return 0;
+    }
+
+    char*
+    MemoryTable::convert(u32 byte, u32 page) const
+    {
+        return m_memory[byte / page] + (byte % page);
     }
 } // namespace ma

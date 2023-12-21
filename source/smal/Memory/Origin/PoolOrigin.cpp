@@ -39,7 +39,7 @@ namespace ma
     u32
     PoolOrigin::page() const
     {
-        return m_page;
+        return m_page - s_head_size;
     }
 
     u32
@@ -51,23 +51,21 @@ namespace ma
     bool
     PoolOrigin::contains(void* memory) const
     {
-        u32 size = m_page + s_head_size;
-
         char* inf = m_memory;
         char* sup = m_memory + m_size;
         char* ptr = (char*) memory - s_head_size;
 
         if ( inf <= ptr && ptr < sup )
-            return (ptr - m_memory) % size == 0;
+            return (ptr - m_memory) % m_page == 0;
 
         return false;
     }
 
     bool
-    PoolOrigin::remains(u32 size) const
+    PoolOrigin::availab(u32 size) const
     {
         if ( m_count != 0 )
-            return size <= m_page;
+            return size + s_head_size <= m_page;
 
         return false;
     }
@@ -75,24 +73,19 @@ namespace ma
     bool
     PoolOrigin::prepare(u32 page)
     {
-        u32    full = page + s_head_size;
-        void** node = 0;
+        char* addr  = m_memory + s_head_size;
+        u32   count = 0;
 
         if ( page < s_node_size ) return false;
 
         if ( m_memory != 0 ) {
-            m_count = m_size / full;
-            m_page  = page;
-            m_list  = (void**) (m_memory + s_head_size);
-
             memset(m_memory, 0, m_size);
 
-            node = m_list;
+            m_page = page + s_head_size;
+            count  = m_size / m_page;
 
-            for ( u32 i = 0; i < m_count; i++ ) {
-                *node = (void*) ((char*) node + full);
-                node  = (void**) *node;
-            }
+            for ( u32 i = 0; i < count; i++ )
+                insert(addr + m_page * i);
         }
 
         return m_memory != 0;
@@ -107,19 +100,15 @@ namespace ma
     char*
     PoolOrigin::acquire(u32 size)
     {
-        char* addr = (char*) m_list;
+        char* addr = (char*) remove(size);
         Head* head = (Head*) (addr - s_head_size);
 
-        if ( size == 0 ) return 0;
-
-        if ( size <= m_page && m_count != 0 ) {
-            m_count -= 1u;
-            m_list = (void**) *m_list;
-
+        if ( addr != 0 ) {
+            size       = m_page - s_head_size;
             head->used = true;
 
             return (char*)
-                memset(addr, 0, m_page);
+                memset(addr, 0, size);
         }
 
         return 0;
@@ -128,31 +117,57 @@ namespace ma
     char*
     PoolOrigin::acquire()
     {
-        return acquire(m_page);
+        return acquire(m_page - s_head_size);
     }
 
     bool
     PoolOrigin::release(void* memory)
     {
-        char*  addr = (char*) memory;
-        Head*  head = (Head*) (addr - s_head_size);
-        void** node = (void**) memory;
+        char* addr = (char*) memory;
+        Head* head = (Head*) (addr - s_head_size);
 
         if ( memory != 0 ) {
             if ( contains(memory) == false )
                 return false;
 
-            if ( head->used == false )
+            if ( head->used ) {
+                head->used = false;
+                insert(memory);
+            } else
                 return false;
-
-            m_count += 1u;
-
-            memset(head, 0, m_page);
-
-            *node  = (void*) m_list;
-            m_list = node;
         }
 
         return true;
+    }
+
+    void*
+    PoolOrigin::remove(u32 size)
+    {
+        void** node = m_list;
+        u32    page = m_page - s_head_size;
+
+        if ( size == 0 ) return 0;
+
+        if ( size <= page && m_count != 0 ) {
+            m_list = (void**) *node;
+            m_count -= 1u;
+
+            return (void*) node;
+        }
+
+        return 0;
+    }
+
+    void
+    PoolOrigin::insert(void* memory)
+    {
+        void** node = (void**) memory;
+
+        if ( memory != 0 ) {
+            *node  = (void*) m_list;
+            m_list = node;
+
+            m_count += 1u;
+        }
     }
 } // namespace ma

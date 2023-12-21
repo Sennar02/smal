@@ -50,7 +50,7 @@ namespace ma
          *
          */
         virtual bool
-        remains(u32 size) const = 0;
+        availab(u32 size) const = 0;
 
         /**
          *

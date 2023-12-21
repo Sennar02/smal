@@ -19,7 +19,7 @@ namespace ma
         unit() const;
 
         virtual bool
-        remains(u32 size) const;
+        availab(u32 size) const;
 
         virtual bool
         prepare(u32 unit);
@@ -40,7 +40,7 @@ namespace ma
         void*
         split(u32 size) const;
 
-        bool
+        void
         merge() const;
 
     private:

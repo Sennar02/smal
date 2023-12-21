@@ -8,15 +8,27 @@ namespace ma
     class MemoryModule
     {
     public:
+        /**
+         *
+         */
         MemoryModule(u32 size = 2048u);
 
+        /**
+         *
+         */
         ~MemoryModule();
 
+        /**
+         *
+         */
         template <class Origin, class... Args>
         bool
         request(Origin& origin, u32 size, Args&&... args);
 
     private:
+        /**
+         *
+         */
         MemoryTable m_table;
     };
 } // namespace ma

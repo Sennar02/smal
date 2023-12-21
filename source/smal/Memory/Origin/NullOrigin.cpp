@@ -15,7 +15,7 @@ namespace ma
     { }
 
     bool
-    NullOrigin::remains(u32 size) const
+    NullOrigin::availab(u32 size) const
     {
         return size == 0;
     }
