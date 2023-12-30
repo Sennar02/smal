@@ -17,11 +17,6 @@ namespace ma
         /**
          *
          */
-        NullOrigin(const FixedBuffer<char>& buffer);
-
-        /**
-         *
-         */
         NullOrigin(void* memory, u32 size);
 
         /**

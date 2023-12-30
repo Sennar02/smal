@@ -3,8 +3,8 @@
 namespace ma
 {
     template <class Origin, class... Args>
-    bool
-    MemoryModule::request(Origin& origin, u32 size, Args&&... args)
+    Origin
+    MemoryModule::request(u32 size, Args&&... args)
     {
         char* addr = 0;
 
@@ -12,9 +12,9 @@ namespace ma
             addr = (char*) calloc(1u, size);
 
             if ( m_table.insert(addr) )
-                origin = {addr, size, forw<Args>(args)...};
+                return {addr, size, forw<Args>(args)...};
         }
 
-        return origin.memory() == addr;
+        return {};
     }
 } // namespace ma

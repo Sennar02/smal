@@ -11,16 +11,16 @@ namespace ma
         , m_count {0}
     { }
 
-    MemoryTable::MemoryTable(const FixedBuffer<char>& buffer)
+    MemoryTable::MemoryTable(void* memory, u32 size)
         : MemoryTable()
     {
-        m_memory = (char**) buffer.memory();
-        m_size   = buffer.size();
-    }
+        char** addr = (char**) memory;
 
-    MemoryTable::MemoryTable(void* memory, u32 size)
-        : MemoryTable(FixedBuffer<char> {memory, size})
-    { }
+        if ( memory != 0 && size != 0 ) {
+            m_memory = addr;
+            m_size   = size;
+        }
+    }
 
     char*
     MemoryTable::memory() const

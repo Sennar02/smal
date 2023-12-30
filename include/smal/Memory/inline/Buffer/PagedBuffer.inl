@@ -2,75 +2,52 @@
 
 namespace ma
 {
-    namespace impl
-    {
-        static PoolOrigin s_null;
-    } // namespace impl
-
     template <class Item>
     const u32 PagedBuffer<Item>::s_item_size =
         sizeof(Item);
 
     template <class Item>
-    PagedBuffer<Item>::PagedBuffer()
-        : m_memory {}
-        , m_origin {&impl::s_null}
-        , m_page {s_item_size}
+    PagedBuffer<Item>::PagedBuffer(u32 size, u32 page)
+        : PagedBuffer(g_origin, size, page)
     { }
 
     template <class Item>
-    PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size)
-        : PagedBuffer()
-    {
-        char* addr = origin.acquire();
-
-        if ( addr != 0 ) {
-            m_page   = origin.page();
-            m_memory = {addr, m_page};
-            m_origin = &origin;
-
-            resize(size);
-        }
-    }
-
-    template <class Item>
-    PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size, const Item& item)
-        : PagedBuffer(origin, size)
-    {
-        size = m_memory.size();
-
-        for ( u32 i = 0; i < size; i++ )
-            find(i) = item;
-    }
-
-    template <class Item>
-    template <class Origin>
-    PagedBuffer<Item>::PagedBuffer(Origin& origin, u32 size, u32 page)
-        : PagedBuffer()
+    PagedBuffer<Item>::PagedBuffer(BaseOrigin& origin, u32 size, u32 page)
+        : m_memory {}
+        , m_origin {&origin}
+        , m_page {s_item_size}
     {
         char* addr = 0;
 
         if ( page >= s_item_size ) {
-            addr = origin.acquire(page);
+            addr = m_origin->acquire(page);
 
             m_page   = page;
             m_memory = {addr, m_page};
-            m_origin = &origin;
 
             resize(size);
         }
     }
 
     template <class Item>
-    template <class Origin>
-    PagedBuffer<Item>::PagedBuffer(Origin& origin, u32 size, u32 page, const Item& item)
+    PagedBuffer<Item>::PagedBuffer(BaseOrigin& origin, u32 size, u32 page, const Item& item)
         : PagedBuffer(origin, size, page)
     {
-        size = m_memory.size();
+        size = toItems(m_memory.count());
 
         for ( u32 i = 0; i < size; i++ )
             find(i) = item;
     }
+
+    template <class Item>
+    PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size)
+        : PagedBuffer(origin, size, origin.page())
+    { }
+
+    template <class Item>
+    PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size, const Item& item)
+        : PagedBuffer(origin, size, origin.page(), item)
+    { }
 
     template <class Item>
     PagedBuffer<Item>::PagedBuffer(MemoryTable&& memory, u32 page, BaseOrigin* origin)

@@ -10,18 +10,13 @@ smal_define = []
 
 subdir('source/smal/Base')
 subdir('source/smal/Memory')
-# subdir('source/smal/Json')
-
-foreach def : smal_define
-    message(' - ', def.name())
-endforeach
 
 executable('smal',
     sources: [
         'source/smal.cpp',
     ],
     include_directories: [smal_header],
+    dependencies:        [smal_depend],
     link_with:           [smal_define],
     link_args:           '-lm',
-    dependencies:        [smal_depend],
 )

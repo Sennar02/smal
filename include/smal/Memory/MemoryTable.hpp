@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_MEMORY_TABLE_HPP
 #define SMAL_MEMORY_MEMORY_TABLE_HPP
 
-#include <smal/Memory/Buffer/FixedBuffer.hpp>
+#include <smal/Memory/define.hpp>
 
 namespace ma
 {
@@ -18,11 +18,6 @@ namespace ma
          *
          */
         MemoryTable();
-
-        /**
-         *
-         */
-        MemoryTable(const FixedBuffer<char>& buffer);
 
         /**
          *

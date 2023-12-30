@@ -1,23 +1,23 @@
-#ifndef SMAL_MEMORY_ORIGIN_ARENA_ORIGIN_HPP
-#define SMAL_MEMORY_ORIGIN_ARENA_ORIGIN_HPP
+#ifndef SMAL_MEMORY_ORIGIN_SYSTEM_ORIGIN_HPP
+#define SMAL_MEMORY_ORIGIN_SYSTEM_ORIGIN_HPP
 
 #include <smal/Memory/Origin/BaseOrigin.hpp>
 
 namespace ma
 {
-    class ArenaOrigin
+    class DummyOrigin
         : public BaseOrigin
     {
     public:
         /**
          *
          */
-        ArenaOrigin();
+        DummyOrigin();
 
         /**
          *
          */
-        ArenaOrigin(void* memory, u32 size);
+        DummyOrigin(void* memory, u32 size);
 
         /**
          *
@@ -42,13 +42,9 @@ namespace ma
          */
         virtual bool
         release(void* memory);
-
-    protected:
-        /**
-         *
-         */
-        char* m_pntr;
     };
+
+    static DummyOrigin g_origin;
 } // namespace ma
 
-#endif // SMAL_MEMORY_ORIGIN_ARENA_ORIGIN_HPP
+#endif // SMAL_MEMORY_ORIGIN_SYSTEM_ORIGIN_HPP

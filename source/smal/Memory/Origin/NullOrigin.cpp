@@ -6,10 +6,6 @@ namespace ma
         : BaseOrigin()
     { }
 
-    NullOrigin::NullOrigin(const FixedBuffer<char>& buffer)
-        : BaseOrigin()
-    { }
-
     NullOrigin::NullOrigin(void* memory, u32 size)
         : BaseOrigin()
     { }

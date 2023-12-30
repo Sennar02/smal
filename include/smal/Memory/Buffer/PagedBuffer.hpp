@@ -3,6 +3,7 @@
 
 #include <smal/Memory/Buffer/BaseBuffer.hpp>
 #include <smal/Memory/Origin/PoolOrigin.hpp>
+#include <smal/Memory/Origin/DummyOrigin.hpp>
 #include <smal/Memory/MemoryTable.hpp>
 
 namespace ma
@@ -21,7 +22,17 @@ namespace ma
         /**
          *
          */
-        PagedBuffer();
+        PagedBuffer(u32 size = 0, u32 page = 0);
+
+        /**
+         *
+         */
+        PagedBuffer(BaseOrigin& origin, u32 size, u32 page);
+
+        /**
+         *
+         */
+        PagedBuffer(BaseOrigin& origin, u32 size, u32 page, const Item& item);
 
         /**
          *
@@ -32,18 +43,6 @@ namespace ma
          *
          */
         PagedBuffer(PoolOrigin& origin, u32 size, const Item& item);
-
-        /**
-         *
-         */
-        template <class Origin>
-        PagedBuffer(Origin& origin, u32 size, u32 page);
-
-        /**
-         *
-         */
-        template <class Origin>
-        PagedBuffer(Origin& origin, u32 size, u32 page, const Item& item);
 
         /**
          *
@@ -129,6 +128,6 @@ namespace ma
     };
 } // namespace ma
 
-#include <smal/Memory/impl/Buffer/PagedBuffer.tpp>
+#include <smal/Memory/inline/Buffer/PagedBuffer.inl>
 
 #endif // SMAL_MEMORY_BUFFER_PAGED_BUFFER_HPP

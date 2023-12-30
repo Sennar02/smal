@@ -10,7 +10,7 @@ namespace ma
         template <class Ret, class... Args>
         auto
         signature(Ret (*)(Args...))
-                -> Ret (*)(Args...);
+            -> Ret (*)(Args...);
 
         template <class Ret, class... Args, class... Rest>
         auto
@@ -20,7 +20,7 @@ namespace ma
         template <class Type, class Ret, class... Args>
         auto
         signature(Ret (Type::*)(Args...))
-                -> Ret (*)(Args...);
+            -> Ret (*)(Args...);
 
         template <class Type, class Ret, class... Args, class... Rest>
         auto

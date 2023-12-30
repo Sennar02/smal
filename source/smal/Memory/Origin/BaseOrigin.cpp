@@ -7,16 +7,16 @@ namespace ma
         , m_size {0}
     { }
 
-    BaseOrigin::BaseOrigin(const FixedBuffer<char>& buffer)
+    BaseOrigin::BaseOrigin(void* memory, u32 size)
         : BaseOrigin()
     {
-        m_memory = buffer.memory();
-        m_size   = buffer.size();
-    }
+        char* addr = (char*) memory;
 
-    BaseOrigin::BaseOrigin(void* memory, u32 size)
-        : BaseOrigin(FixedBuffer<char> {memory, size})
-    { }
+        if ( memory != 0 && size != 0 ) {
+            m_memory = addr;
+            m_size   = size;
+        }
+    }
 
     const char*
     BaseOrigin::memory() const

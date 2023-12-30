@@ -34,6 +34,6 @@ namespace ma
     dtor(Type& value);
 } // namespace ma
 
-#include <smal/Base/impl/util.tpp>
+#include <smal/Base/inline/util.inl>
 
 #endif // SMAL_BASE_HELPER_HPP

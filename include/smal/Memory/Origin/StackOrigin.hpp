@@ -17,11 +17,6 @@ namespace ma
         /**
          *
          */
-        StackOrigin(const FixedBuffer<char>& buffer);
-
-        /**
-         *
-         */
         StackOrigin(void* memory, u32 size);
 
         /**

@@ -47,10 +47,6 @@ namespace ma
 
     static const f64 g_inf = INFINITY;
     static const f64 g_nan = NAN;
-
-    template <auto Func>
-    class Bind
-    { };
 } // namespace ma
 
 #endif // SMAL_BASE_DEFINE_HPP

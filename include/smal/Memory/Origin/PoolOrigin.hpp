@@ -17,11 +17,6 @@ namespace ma
         /**
          *
          */
-        PoolOrigin(const FixedBuffer<char>& buffer, u32 page);
-
-        /**
-         *
-         */
         PoolOrigin(void* memory, u32 size, u32 page);
 
         /**

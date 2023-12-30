@@ -23,18 +23,14 @@ namespace ma
         , m_count {0}
     { }
 
-    PoolOrigin::PoolOrigin(const FixedBuffer<char>& buffer, u32 page)
-        : BaseOrigin(buffer)
+    PoolOrigin::PoolOrigin(void* memory, u32 size, u32 page)
+        : BaseOrigin(memory, size)
         , m_list {0}
         , m_page {s_node_size}
         , m_count {0}
     {
         prepare(page);
     }
-
-    PoolOrigin::PoolOrigin(void* memory, u32 size, u32 page)
-        : PoolOrigin(FixedBuffer<char> {memory, size}, page)
-    { }
 
     u32
     PoolOrigin::page() const

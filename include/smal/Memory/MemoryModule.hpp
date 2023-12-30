@@ -11,7 +11,7 @@ namespace ma
         /**
          *
          */
-        MemoryModule(u32 size = 2048u);
+        MemoryModule(u32 size);
 
         /**
          *
@@ -22,8 +22,8 @@ namespace ma
          *
          */
         template <class Origin, class... Args>
-        bool
-        request(Origin& origin, u32 size, Args&&... args);
+        Origin
+        request(u32 size, Args&&... args);
 
     private:
         /**
@@ -31,8 +31,10 @@ namespace ma
          */
         MemoryTable m_table;
     };
+
+    static MemoryModule g_memory = {256u};
 } // namespace ma
 
-#include <smal/Memory/impl/MemoryModule.tpp>
+#include <smal/Memory/inline/MemoryModule.inl>
 
 #endif // SMAL_MEMORY_MEMORY_MODULE_HPP

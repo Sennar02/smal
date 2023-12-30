@@ -17,10 +17,6 @@ namespace ma
         : ArenaOrigin()
     { }
 
-    StackOrigin::StackOrigin(const FixedBuffer<char>& buffer)
-        : ArenaOrigin(buffer)
-    { }
-
     StackOrigin::StackOrigin(void* memory, u32 size)
         : ArenaOrigin(memory, size)
     { }

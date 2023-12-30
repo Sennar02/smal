@@ -7,15 +7,15 @@ namespace ma
         sizeof(Item);
 
     template <class Item>
-    FixedBuffer<Item>::FixedBuffer()
-        : m_memory {0}
-        , m_size {0}
+    FixedBuffer<Item>::FixedBuffer(u32 size)
+        : FixedBuffer(g_origin, size)
     { }
 
     template <class Item>
     template <class Type>
     FixedBuffer<Item>::FixedBuffer(Type memory[], u32 size)
-        : FixedBuffer()
+        : m_memory {0}
+        , m_size {0}
     {
         char* addr = (char*) memory;
 
@@ -26,14 +26,12 @@ namespace ma
     }
 
     template <class Item>
-    template <class Origin>
-    FixedBuffer<Item>::FixedBuffer(Origin& origin, u32 size)
+    FixedBuffer<Item>::FixedBuffer(BaseOrigin& origin, u32 size)
         : FixedBuffer(origin.acquire(size * s_item_size), size)
     { }
 
     template <class Item>
-    template <class Origin>
-    FixedBuffer<Item>::FixedBuffer(Origin& origin, u32 size, const Item& item)
+    FixedBuffer<Item>::FixedBuffer(BaseOrigin& origin, u32 size, const Item& item)
         : FixedBuffer(origin, size)
     {
         for ( u32 i = 0; i < m_size; i++ )

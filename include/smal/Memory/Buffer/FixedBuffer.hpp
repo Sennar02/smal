@@ -2,6 +2,7 @@
 #define SMAL_MEMORY_BUFFER_SIMPLE_BUFFER_HPP
 
 #include <smal/Memory/Buffer/BaseBuffer.hpp>
+#include <smal/Memory/Origin/DummyOrigin.hpp>
 
 namespace ma
 {
@@ -19,7 +20,7 @@ namespace ma
         /**
          *
          */
-        FixedBuffer();
+        FixedBuffer(u32 size = 0);
 
         /**
          *
@@ -30,14 +31,12 @@ namespace ma
         /**
          *
          */
-        template <class Origin>
-        FixedBuffer(Origin& origin, u32 size, const Item& item);
+        FixedBuffer(BaseOrigin& origin, u32 size, const Item& item);
 
         /**
          *
          */
-        template <class Origin>
-        FixedBuffer(Origin& origin, u32 size);
+        FixedBuffer(BaseOrigin& origin, u32 size);
 
         /**
          *
@@ -89,6 +88,6 @@ namespace ma
 
 } // namespace ma
 
-#include <smal/Memory/impl/Buffer/FixedBuffer.tpp>
+#include <smal/Memory/inline/Buffer/FixedBuffer.inl>
 
 #endif // SMAL_MEMORY_BUFFER_SIMPLE_BUFFER_HPP

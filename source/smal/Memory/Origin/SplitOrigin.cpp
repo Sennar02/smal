@@ -19,16 +19,12 @@ namespace ma
         , m_unit {1}
     { }
 
-    SplitOrigin::SplitOrigin(const FixedBuffer<char>& buffer, u32 unit)
-        : BaseOrigin(buffer)
+    SplitOrigin::SplitOrigin(void* memory, u32 size, u32 unit)
+        : BaseOrigin(memory, size)
         , m_unit {1}
     {
         prepare(unit);
     }
-
-    SplitOrigin::SplitOrigin(void* memory, u32 size, u32 unit)
-        : SplitOrigin(FixedBuffer<char> {memory, size}, unit)
-    { }
 
     u32
     SplitOrigin::unit() const

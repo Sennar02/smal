@@ -9,16 +9,11 @@ namespace ma
         , m_pntr {0}
     { }
 
-    ArenaOrigin::ArenaOrigin(const FixedBuffer<char>& buffer)
-        : BaseOrigin(buffer)
-        , m_pntr {0}
+    ArenaOrigin::ArenaOrigin(void* memory, u32 size)
+        : BaseOrigin(memory, size)
     {
         prepare();
     }
-
-    ArenaOrigin::ArenaOrigin(void* memory, u32 size)
-        : ArenaOrigin(FixedBuffer<char> {memory, size})
-    { }
 
     bool
     ArenaOrigin::availab(u32 size) const

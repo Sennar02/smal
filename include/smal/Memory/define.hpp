@@ -11,6 +11,7 @@ namespace ma
     class StackOrigin;
     class PoolOrigin;
     class SplitOrigin;
+    class DummyOrigin;
 
     class MemoryTable;
     class MemoryModule;
