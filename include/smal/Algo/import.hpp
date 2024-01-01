@@ -8,5 +8,6 @@
 
 #include <smal/Algo/Tuple.hpp>
 #include <smal/Algo/ArrayList.hpp>
+#include <smal/Algo/HashTable.hpp>
 
 #endif // SMAL_ALGO_IMPORT_HPP

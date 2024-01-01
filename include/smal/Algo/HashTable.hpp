@@ -1,34 +1,42 @@
-#ifndef SMAL_ALGO_ARRAY_LIST_HPP
-#define SMAL_ALGO_ARRAY_LIST_HPP
+#ifndef SMAL_ALGO_HASH_TABLE_HPP
+#define SMAL_ALGO_HASH_TABLE_HPP
 
 #include <smal/Algo/define.hpp>
 
 namespace ma
 {
-    template <class Item, template <class> class Array = FixedBuffer>
-    class ArrayList
+    namespace impl
+    {
+        template <class Name>
+        struct Head;
+    } // namespace impl
+
+    template <class Name, class Item, template <class> class Array = FixedBuffer>
+    class HashTable
     {
     public:
-        /**
-         *
-         */
-        ArrayList();
+        using Head = impl::Head<Name>;
 
         /**
          *
          */
-        ArrayList(Array<Item>&& array);
+        HashTable();
+
+        /**
+         *
+         */
+        HashTable(Array<Head>&& heads, Array<Item>&& array);
 
         /**
          *
          */
         template <class... Args>
-        ArrayList(Args&&... args);
+        HashTable(Args&&... args);
 
         /**
          *
          */
-        virtual ~ArrayList() = default;
+        virtual ~HashTable() = default;
 
         /**
          *
@@ -57,42 +65,15 @@ namespace ma
         /**
          *
          */
-        template <class Iter, class Func>
-        u32
-        indexOf(const Item& item, Iter& iter, Func&& func) const;
-
-        /**
-         *
-         */
-        template <class Func>
-        u32
-        indexOf(const Item& item, Func&& func) const;
-
-        /**
-         *
-         */
-        u32
-        indexOf(const Item& item) const;
-
-        /**
-         *
-         */
-        template <class Iter, class Func>
-        bool
-        contains(const Item& item, Iter& iter, Func&& func) const;
-
-        /**
-         *
-         */
         template <class Func>
         bool
-        contains(const Item& item, Func&& func) const;
+        contains(const Name& name, Func&& func) const;
 
         /**
          *
          */
         bool
-        contains(const Item& item) const;
+        contains(const Name& name) const;
 
         /**
          *
@@ -111,20 +92,28 @@ namespace ma
         /**
          *
          */
+        template <class Func>
         bool
-        resize(u32 size);
+        insert(const Name& name, const Item& item, Func&& func);
 
         /**
          *
          */
         bool
-        insert(const Item& item, u32 index = g_max_u32);
+        insert(const Name& name, const Item& item);
+
+        /**
+         *
+         */
+        template <class Func>
+        bool
+        remove(const Name& name, Func&& func);
 
         /**
          *
          */
         bool
-        remove(u32 index = g_max_u32);
+        remove(const Name& name);
 
         /**
          *
@@ -149,14 +138,34 @@ namespace ma
         /**
          *
          */
+        template <class Func>
         Item*
-        search(u32 index) const;
+        search(const Name& name, Func&& func) const;
+
+        /**
+         *
+         */
+        Item*
+        search(const Name& name) const;
+
+        /**
+         *
+         */
+        template <class Func>
+        Item&
+        find(const Name& name, Func&& func) const;
 
         /**
          *
          */
         Item&
-        find(u32 index) const;
+        find(const Name& name) const;
+
+        /**
+         *
+         */
+        const Array<Head>&
+        heads() const;
 
         /**
          *
@@ -168,9 +177,40 @@ namespace ma
          *
          */
         Item&
-        operator[](u32 index) const;
+        operator[](const Name& name) const;
 
     private:
+        /**
+         *
+         */
+        template <class Func>
+        u32
+        indexOf(const Name& name, Func&& func) const;
+
+        /**
+         *
+         */
+        u32
+        indexOf(const Name& name) const;
+
+        /**
+         *
+         */
+        u32
+        code(const Name& name) const;
+
+        /**
+         *
+         */
+        u32
+        next(u32 code) const;
+
+    private:
+        /**
+         *
+         */
+        Array<Head> m_heads;
+
         /**
          *
          */
@@ -182,23 +222,23 @@ namespace ma
         u32 m_count;
     };
 
-    template <class Item, template <class> class Array>
-    class ArrayListForwIter
+    template <class Name, class Item, template <class> class Array>
+    class HashTableForwIter
     {
     private:
-        using List = ArrayList<Item, Array>;
+        using Table = HashTable<Name, Item, Array>;
 
     public:
         /**
          *
          */
-        ArrayListForwIter(const List& list);
+        HashTableForwIter(const Table& table);
 
         /**
          *
          */
-        u32
-        index() const;
+        const Name&
+        name() const;
 
         /**
          *
@@ -234,7 +274,7 @@ namespace ma
         /**
          *
          */
-        const List& m_list;
+        const Table& m_table;
 
         /**
          *
@@ -242,75 +282,11 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Item, template <class> class Array>
-    ArrayListForwIter(const ArrayList<Item, Array>&)
-        -> ArrayListForwIter<Item, Array>;
-
-    template <class Item, template <class> class Array>
-    class ArrayListBackIter
-    {
-    private:
-        using List = ArrayList<Item, Array>;
-
-    public:
-        /**
-         *
-         */
-        ArrayListBackIter(const List& list);
-
-        /**
-         *
-         */
-        u32
-        index() const;
-
-        /**
-         *
-         */
-        Item&
-        item();
-
-        /**
-         *
-         */
-        const Item&
-        item() const;
-
-        /**
-         *
-         */
-        bool
-        hasNext() const;
-
-        /**
-         *
-         */
-        bool
-        next();
-
-        /**
-         *
-         */
-        void
-        reset();
-
-    private:
-        /**
-         *
-         */
-        const List& m_list;
-
-        /**
-         *
-         */
-        u32 m_index;
-    };
-
-    template <class Item, template <class> class Array>
-    ArrayListBackIter(const ArrayList<Item, Array>&)
-        -> ArrayListBackIter<Item, Array>;
+    template <class Name, class Item, template <class> class Array>
+    HashTableForwIter(HashTable<Name, Item, Array>&)
+        -> HashTableForwIter<Name, Item, Array>;
 } // namespace ma
 
-#include <smal/Algo/inline/ArrayList.inl>
+#include <smal/Algo/inline/HashTable.inl>
 
-#endif // SMAL_ALGO_ARRAY_LIST_HPP
+#endif // SMAL_ALGO_HASH_TABLE_HPP

@@ -9,6 +9,8 @@
 #include <smal/Base/traits/RemovePtr.hpp>
 #include <smal/Base/traits/IsSameType.hpp>
 
+#include <smal/Base/math.hpp>
+
 #include <smal/Base/util.hpp>
 
 #endif // SMAL_BASE_IMPORT_HPP
