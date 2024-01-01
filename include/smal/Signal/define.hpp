@@ -21,15 +21,6 @@ namespace ma
     template <auto Func>
     static inline Bind<Func> bind =
         Bind<Func> {};
-
-    template <class... Args>
-    class Observer;
-
-    template <class... Args>
-    class Signal;
-
-    template <class... Args>
-    class SignalLink;
 } // namespace ma
 
 #endif // SMAL_SIGNAL_DEFINE_HPP
