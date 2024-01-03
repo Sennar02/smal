@@ -12,6 +12,9 @@ namespace ma
     template <class Item, template <class> class Array>
     class ArrayList;
 
+    template <class Item, template <class> class Array>
+    class ArrayStack;
+
     template <class Name, class Item, template <class> class Array>
     class HashTable;
 
