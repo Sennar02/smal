@@ -32,9 +32,9 @@ namespace ma
 
     template <class Name, class Item, template <class> class Array>
     template <class... Args>
-    HashTable<Name, Item, Array>::HashTable(Args&&... args)
-        : m_heads {forw<Args>(args)...}
-        , m_array {forw<Args>(args)...}
+    HashTable<Name, Item, Array>::HashTable(BaseOrigin& origin, u32 size, Args&&... args)
+        : m_heads {origin, size, forw<Args>(args)...}
+        , m_array {origin, size, forw<Args>(args)...}
         , m_count {0}
     { }
 
@@ -106,7 +106,7 @@ namespace ma
     bool
     HashTable<Name, Item, Array>::contains(const Name& name, Func&& func) const
     {
-        return indexOf(name, func) < m_count;
+        return indexOf(name, func) < size();
     }
 
     template <class Name, class Item, template <class> class Array>
@@ -117,7 +117,7 @@ namespace ma
             return a == b;
         };
 
-        return indexOf(name, func) < m_count;
+        return indexOf(name, func) < size();
     }
 
     template <class Name, class Item, template <class> class Array>
@@ -138,6 +138,29 @@ namespace ma
 
         while ( iter.next() )
             func(iter.name(), iter.item());
+    }
+
+    template <class Name, class Item, template <class> class Array>
+    bool
+    HashTable<Name, Item, Array>::resize(u32 size)
+    {
+        bool flag = m_heads.resize(size) &&
+                    m_array.resize(size);
+
+        if ( flag == false ) return false;
+
+        for ( u32 i = 0; next(i) != 0; i = next(i) ) {
+            if ( m_heads[i].dist == 0 ) continue;
+
+            if ( code(m_heads[i].name) != i ) {
+                m_heads[i].dist = 0;
+
+                if ( insert(m_heads[i].name, m_array[i]) == false )
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     template <class Name, class Item, template <class> class Array>

@@ -23,7 +23,7 @@ namespace ma
          *
          */
         template <class... Args>
-        ArrayList(Args&&... args);
+        ArrayList(BaseOrigin& origin, u32 size, Args&&... args);
 
         /**
          *

@@ -23,7 +23,7 @@ namespace ma
          *
          */
         template <class... Args>
-        ArrayStack(Args&&... args);
+        ArrayStack(BaseOrigin& origin, u32 size, Args&&... args);
 
         /**
          *

@@ -31,7 +31,7 @@ namespace ma
          *
          */
         template <class... Args>
-        HashTable(Args&&... args);
+        HashTable(BaseOrigin& origin, u32 size, Args&&... args);
 
         /**
          *
@@ -88,6 +88,12 @@ namespace ma
         template <class Func>
         void
         forEach(Func&& func) const;
+
+        /**
+         *
+         */
+        bool
+        resize(u32 size);
 
         /**
          *

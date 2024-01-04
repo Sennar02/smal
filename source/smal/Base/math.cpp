@@ -77,10 +77,12 @@ namespace ma
     hash(char* const& value)
     {
         const char* str = value;
-        u32         res = 5381;
+        u32         res = 5381u;
+
+        if ( str == 0 ) return res;
 
         while ( u8 chr = *str++ ) {
-            res = (res << 5) + res;
+            res = (res << 5u) + res;
             res = res ^ chr;
         }
 
@@ -92,10 +94,12 @@ namespace ma
     hash(const char* const& value)
     {
         const char* str = value;
-        u32         res = 5381;
+        u32         res = 5381u;
+
+        if ( str == 0 ) return res;
 
         while ( u8 chr = *str++ ) {
-            res = (res << 5) + res;
+            res = (res << 5u) + res;
             res = res ^ chr;
         }
 

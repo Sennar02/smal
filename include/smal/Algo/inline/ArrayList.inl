@@ -16,8 +16,8 @@ namespace ma
 
     template <class Item, template <class> class Array>
     template <class... Args>
-    ArrayList<Item, Array>::ArrayList(Args&&... args)
-        : m_array {forw<Args>(args)...}
+    ArrayList<Item, Array>::ArrayList(BaseOrigin& origin, u32 size, Args&&... args)
+        : m_array {origin, size, forw<Args>(args)...}
         , m_count {0}
     { }
 

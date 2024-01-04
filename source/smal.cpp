@@ -6,22 +6,38 @@ using namespace ma;
 int
 main(int argc, const char* argv[])
 {
-    ArrayStack<u32> stack = {g_origin, 256u};
+    PoolOrigin origin =
+        g_memory.request<PoolOrigin>(g_mib * 8u, g_kib * 1u);
 
-    stack.insert(0);
-    stack.insert(1);
-    stack.insert(2);
+    HashTable<u32, const char*, PagedBuffer> table = {
+        origin,
+        64u,
+        origin.page(),
+    };
 
-    while ( stack.isEmpty() == false ) {
-        stack.forEach([](auto& x, auto, auto) {
-            printf("%u\n", x);
-        });
+    table.insert(256u, "A");
+    table.insert(257u, "B");
+    table.insert(258u, "C");
 
-        stack.remove();
+    printf("table_size = %u\n", table.size());
 
-        if ( stack.count() != 0 )
-            printf("\n");
-    }
+    table.forEach([](auto& x, auto& y) {
+        printf("%u -> %s\n", x, y);
+    });
+
+    printf("\n");
+
+    if ( table.resize(512u) ) {
+        printf("table_size = %u\n", table.size());
+
+        table.insert(255u, "D");
+
+        printf("%u -> %s\n", 255u, table[255u]);
+        printf("%u -> %s\n", 256u, table[256u]);
+        printf("%u -> %s\n", 257u, table[257u]);
+        printf("%u -> %s\n", 258u, table[258u]);
+    } else
+        printf("<error>\n");
 
     return 0;
 }
