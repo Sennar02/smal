@@ -39,5 +39,16 @@ main(int argc, const char* argv[])
     } else
         printf("<error>\n");
 
+    String s = {"ciao"};
+
+    printf("\n'");
+
+    for ( u32 i = 0; i < max(s.size() - 2u, 2u); i++ )
+        printf("%c", s.memory()[i + 2u]);
+
+    printf("' contains %c = %u\n",
+        'c',
+        s.contains('c', 2u, 2u));
+
     return 0;
 }

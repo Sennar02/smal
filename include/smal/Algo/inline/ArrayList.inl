@@ -152,10 +152,10 @@ namespace ma
             if ( index > m_count ) index = m_count;
 
             for ( u32 i = m_count; i > index; i-- )
-                m_array[i] = move(m_array[i - 1]);
+                m_array[i] = move(m_array[i - 1u]);
 
             ctor(m_array[index], item);
-            m_count += 1;
+            m_count += 1u;
 
             return true;
         }
@@ -168,12 +168,12 @@ namespace ma
     ArrayList<Item, Array>::remove(u32 index)
     {
         if ( isEmpty() == false ) {
-            m_count -= 1;
+            m_count -= 1u;
 
             if ( index > m_count ) index = m_count;
 
             for ( u32 i = index; i < m_count; i++ )
-                m_array[i] = move(m_array[i + 1]);
+                m_array[i] = move(m_array[i + 1u]);
 
             return true;
         }
@@ -274,7 +274,7 @@ namespace ma
     bool
     ArrayListForwIter<Item, Array>::hasNext() const
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_list.count() )
             return true;
@@ -286,7 +286,7 @@ namespace ma
     bool
     ArrayListForwIter<Item, Array>::next()
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_list.count() )
             m_index = next;
@@ -321,7 +321,7 @@ namespace ma
         u32 index = m_list.count() -
                     m_index;
 
-        return m_list.find(index - 1);
+        return m_list.find(index - 1u);
     }
 
     template <class Item, template <class> class Array>
@@ -331,14 +331,14 @@ namespace ma
         u32 index = m_list.count() -
                     m_index;
 
-        return m_list.find(index - 1);
+        return m_list.find(index - 1u);
     }
 
     template <class Item, template <class> class Array>
     bool
     ArrayListBackIter<Item, Array>::hasNext() const
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_list.count() )
             return true;
@@ -350,7 +350,7 @@ namespace ma
     bool
     ArrayListBackIter<Item, Array>::next()
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_list.count() )
             m_index = next;

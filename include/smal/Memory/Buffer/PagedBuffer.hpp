@@ -27,22 +27,22 @@ namespace ma
         /**
          *
          */
-        PagedBuffer(BaseOrigin& origin, u32 size, u32 page);
-
-        /**
-         *
-         */
         PagedBuffer(BaseOrigin& origin, u32 size, u32 page, const Item& item);
 
         /**
          *
          */
-        PagedBuffer(PoolOrigin& origin, u32 size);
+        PagedBuffer(BaseOrigin& origin, u32 size, u32 page);
 
         /**
          *
          */
         PagedBuffer(PoolOrigin& origin, u32 size, const Item& item);
+
+        /**
+         *
+         */
+        PagedBuffer(PoolOrigin& origin, u32 size);
 
         /**
          *

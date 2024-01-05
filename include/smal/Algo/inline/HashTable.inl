@@ -168,7 +168,7 @@ namespace ma
     bool
     HashTable<Name, Item, Array>::insert(const Name& name, const Item& item, Func&& func)
     {
-        Head head = {name, 1};
+        Head head = {name, 1u};
         u32  hash = code(name);
         u32  dist = 0;
 
@@ -184,7 +184,7 @@ namespace ma
                 if ( dist == 0 ) {
                     ctor(m_heads[i], head);
                     ctor(m_array[i], item);
-                    m_count += 1;
+                    m_count += 1u;
 
                     return true;
                 }
@@ -193,7 +193,7 @@ namespace ma
                 swap(m_array[i], (Item&) item);
             }
 
-            head.dist += 1;
+            head.dist += 1u;
         }
 
         return false;
@@ -219,7 +219,7 @@ namespace ma
         u32 count = size();
 
         if ( index < count ) {
-            m_count -= 1;
+            m_count -= 1u;
             m_heads[index].dist = 0;
 
             return true;
@@ -350,7 +350,7 @@ namespace ma
         u32 div = size();
 
         if ( div != 0 )
-            return (code + 1) % div;
+            return (code + 1u) % div;
 
         return 0;
     }
@@ -387,7 +387,7 @@ namespace ma
     HashTableForwIter<Name, Item, Array>::hasNext() const
     {
         u32 size = m_table.size();
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         for ( u32 i = next; i < size; i++ ) {
             if ( m_table.heads()[i].dist != 0 )

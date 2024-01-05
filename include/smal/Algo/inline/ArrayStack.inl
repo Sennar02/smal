@@ -150,7 +150,7 @@ namespace ma
     {
         if ( isFull() == false ) {
             ctor(m_array[m_count], item);
-            m_count += 1;
+            m_count += 1u;
 
             return true;
         }
@@ -163,7 +163,7 @@ namespace ma
     ArrayStack<Item, Array>::remove()
     {
         if ( isEmpty() == false ) {
-            m_count -= 1;
+            m_count -= 1u;
 
             return true;
         }
@@ -264,7 +264,7 @@ namespace ma
     bool
     ArrayStackForwIter<Item, Array>::hasNext() const
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_stack.count() )
             return true;
@@ -276,7 +276,7 @@ namespace ma
     bool
     ArrayStackForwIter<Item, Array>::next()
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_stack.count() )
             m_index = next;
@@ -311,7 +311,7 @@ namespace ma
         u32 index = m_stack.count() -
                     m_index;
 
-        return m_stack.find(index - 1);
+        return m_stack.find(index - 1u);
     }
 
     template <class Item, template <class> class Array>
@@ -321,14 +321,14 @@ namespace ma
         u32 index = m_stack.count() -
                     m_index;
 
-        return m_stack.find(index - 1);
+        return m_stack.find(index - 1u);
     }
 
     template <class Item, template <class> class Array>
     bool
     ArrayStackBackIter<Item, Array>::hasNext() const
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_stack.count() )
             return true;
@@ -340,7 +340,7 @@ namespace ma
     bool
     ArrayStackBackIter<Item, Array>::next()
     {
-        u32 next = m_index + 1;
+        u32 next = m_index + 1u;
 
         if ( next < m_stack.count() )
             m_index = next;

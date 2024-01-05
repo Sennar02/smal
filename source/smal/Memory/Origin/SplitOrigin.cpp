@@ -16,12 +16,12 @@ namespace ma
 
     SplitOrigin::SplitOrigin()
         : BaseOrigin()
-        , m_unit {1}
+        , m_unit {1u}
     { }
 
     SplitOrigin::SplitOrigin(void* memory, u32 size, u32 unit)
         : BaseOrigin(memory, size)
-        , m_unit {1}
+        , m_unit {1u}
     {
         prepare(unit);
     }

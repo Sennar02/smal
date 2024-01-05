@@ -21,10 +21,10 @@ namespace ma
     template <class Type, class... Rest>
     template <u32 Index>
     auto&
-    Tuple<Type, Rest...>::extract()
+    Tuple<Type, Rest...>::get()
     {
         if constexpr ( Index != 0 )
-            return m_tail.template extract<Index - 1>();
+            return m_tail.template get<Index - 1u>();
         else
             return m_value;
     }
@@ -32,10 +32,10 @@ namespace ma
     template <class Type, class... Rest>
     template <u32 Index>
     const auto&
-    Tuple<Type, Rest...>::extract() const
+    Tuple<Type, Rest...>::get() const
     {
         if constexpr ( Index != 0 )
-            return m_tail.template extract<Index - 1>();
+            return m_tail.template get<Index - 1u>();
         else
             return m_value;
     }

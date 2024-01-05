@@ -23,7 +23,7 @@ namespace ma
          *
          */
         static const u32 s_size =
-            Tuple<Rest...>::s_size + 1;
+            Tuple<Rest...>::s_size + 1u;
 
     public:
         /**
@@ -46,14 +46,14 @@ namespace ma
          */
         template <u32 Index>
         auto&
-        extract();
+        get();
 
         /**
          *
          */
         template <u32 Index>
         const auto&
-        extract() const;
+        get() const;
 
     private:
         /**

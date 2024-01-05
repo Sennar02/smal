@@ -25,7 +25,7 @@ namespace ma
     char*
     DummyOrigin::acquire(u32 size)
     {
-        return (char*) calloc(1, size);
+        return (char*) calloc(1u, size);
     }
 
     bool

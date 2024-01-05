@@ -138,7 +138,7 @@ namespace ma
     Ret
     Delegate<Ret(Args...)>::unwind(const Tuple<Args..., Rest...>& tuple, IndexSeq<List...> sequence) const
     {
-        return m_func(m_memory, tuple.template extract<List>()...);
+        return m_func(m_memory, tuple.template get<List>()...);
     }
 
     template <auto Func>

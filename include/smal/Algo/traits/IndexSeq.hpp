@@ -13,7 +13,7 @@ namespace ma
 
         template <u32 Count, u32... List>
         struct IndexGen
-            : public IndexGen<Count - 1, Count - 1, List...>
+            : public IndexGen<Count - 1u, Count - 1u, List...>
         { };
 
         template <u32... List>

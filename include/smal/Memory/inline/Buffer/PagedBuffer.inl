@@ -12,6 +12,16 @@ namespace ma
     { }
 
     template <class Item>
+    PagedBuffer<Item>::PagedBuffer(BaseOrigin& origin, u32 size, u32 page, const Item& item)
+        : PagedBuffer(origin, size, page)
+    {
+        size = toItems(m_memory.count());
+
+        for ( u32 i = 0; i < size; i++ )
+            find(i) = item;
+    }
+
+    template <class Item>
     PagedBuffer<Item>::PagedBuffer(BaseOrigin& origin, u32 size, u32 page)
         : m_memory {}
         , m_origin {&origin}
@@ -30,23 +40,13 @@ namespace ma
     }
 
     template <class Item>
-    PagedBuffer<Item>::PagedBuffer(BaseOrigin& origin, u32 size, u32 page, const Item& item)
-        : PagedBuffer(origin, size, page)
-    {
-        size = toItems(m_memory.count());
-
-        for ( u32 i = 0; i < size; i++ )
-            find(i) = item;
-    }
+    PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size, const Item& item)
+        : PagedBuffer(origin, size, origin.page(), item)
+    { }
 
     template <class Item>
     PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size)
         : PagedBuffer(origin, size, origin.page())
-    { }
-
-    template <class Item>
-    PagedBuffer<Item>::PagedBuffer(PoolOrigin& origin, u32 size, const Item& item)
-        : PagedBuffer(origin, size, origin.page(), item)
     { }
 
     template <class Item>

@@ -10,6 +10,7 @@
 #include <smal/Base/traits/IsSameType.hpp>
 
 #include <smal/Base/math.hpp>
+#include <smal/Base/String.hpp>
 
 #include <smal/Base/util.hpp>
 

@@ -26,17 +26,17 @@ namespace ma
     }
 
     template <class Item>
-    FixedBuffer<Item>::FixedBuffer(BaseOrigin& origin, u32 size)
-        : FixedBuffer(origin.acquire(size * s_item_size), size)
-    { }
-
-    template <class Item>
     FixedBuffer<Item>::FixedBuffer(BaseOrigin& origin, u32 size, const Item& item)
         : FixedBuffer(origin, size)
     {
         for ( u32 i = 0; i < m_size; i++ )
             find(i) = item;
     }
+
+    template <class Item>
+    FixedBuffer<Item>::FixedBuffer(BaseOrigin& origin, u32 size)
+        : FixedBuffer(origin.acquire(size * s_item_size), size)
+    { }
 
     template <class Item>
     Item*
