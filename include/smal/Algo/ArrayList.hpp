@@ -149,8 +149,8 @@ namespace ma
         /**
          *
          */
-        Item*
-        search(u32 index) const;
+        Item&
+        find(u32 index, Item& deflt) const;
 
         /**
          *

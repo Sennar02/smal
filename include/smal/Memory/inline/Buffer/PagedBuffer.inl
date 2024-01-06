@@ -132,27 +132,20 @@ namespace ma
     }
 
     template <class Item>
-    Item*
-    PagedBuffer<Item>::search(u32 index) const
+    Item&
+    PagedBuffer<Item>::find(u32 index) const
     {
         u32 page = m_page;
         u32 byte = s_item_size * index;
 
-        return (Item*) m_memory.convert(byte, page);
-    }
-
-    template <class Item>
-    Item&
-    PagedBuffer<Item>::find(u32 index) const
-    {
-        return *search(index);
+        return *(Item*) m_memory.convert(byte, page);
     }
 
     template <class Item>
     Item&
     PagedBuffer<Item>::operator[](u32 index) const
     {
-        return *search(index);
+        return find(index);
     }
 
     template <class Item>

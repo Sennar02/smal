@@ -60,26 +60,16 @@ namespace ma
     }
 
     template <class Item>
-    Item*
-    FixedBuffer<Item>::search(u32 index) const
-    {
-        if ( index < m_size )
-            return (Item*) m_memory + index;
-
-        return 0;
-    }
-
-    template <class Item>
     Item&
     FixedBuffer<Item>::find(u32 index) const
     {
-        return *search(index);
+        return *((Item*) m_memory + index);
     }
 
     template <class Item>
     Item&
     FixedBuffer<Item>::operator[](u32 index) const
     {
-        return *search(index);
+        return find(index);
     }
 } // namespace ma

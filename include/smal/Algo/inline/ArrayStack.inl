@@ -123,7 +123,7 @@ namespace ma
     ArrayStack<Item, Array>::forEach(Iter& iter, Func&& func) const
     {
         while ( iter.next() )
-            func(iter.item(), iter.index(), m_count);
+            func(iter.index(), iter.item(), m_count);
     }
 
     template <class Item, template <class> class Array>
@@ -134,7 +134,7 @@ namespace ma
         ArrayStackForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.item(), iter.index(), m_count);
+            func(iter.index(), iter.item(), m_count);
     }
 
     template <class Item, template <class> class Array>
@@ -177,7 +177,7 @@ namespace ma
     ArrayStack<Item, Array>::clear(Iter& iter, Func&& func)
     {
         while ( iter.next() )
-            func(iter.item(), iter.index(), m_count);
+            func(iter.index(), iter.item(), m_count);
 
         m_count = 0;
     }
@@ -190,7 +190,7 @@ namespace ma
         ArrayStackForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.item(), iter.index(), m_count);
+            func(iter.index(), iter.item(), m_count);
 
         m_count = 0;
     }
@@ -203,20 +203,20 @@ namespace ma
     }
 
     template <class Item, template <class> class Array>
-    Item*
-    ArrayStack<Item, Array>::search(u32 index) const
+    Item&
+    ArrayStack<Item, Array>::find(u32 index, Item& deflt) const
     {
         if ( index < m_count )
-            return &m_array[index];
+            return m_array[index];
 
-        return 0;
+        return deflt;
     }
 
     template <class Item, template <class> class Array>
     Item&
     ArrayStack<Item, Array>::find(u32 index) const
     {
-        return *search(index);
+        return find(index);
     }
 
     template <class Item, template <class> class Array>
@@ -230,7 +230,7 @@ namespace ma
     Item&
     ArrayStack<Item, Array>::operator[](u32 index) const
     {
-        return *search(index);
+        return find(index);
     }
 
     template <class Item, template <class> class Array>

@@ -59,12 +59,6 @@ namespace ma
         /**
          *
          */
-        virtual Item*
-        search(u32 index) const;
-
-        /**
-         *
-         */
         virtual Item&
         find(u32 index) const;
 
@@ -85,7 +79,6 @@ namespace ma
          */
         u32 m_size;
     };
-
 } // namespace ma
 
 #include <smal/Memory/inline/Buffer/FixedBuffer.inl>

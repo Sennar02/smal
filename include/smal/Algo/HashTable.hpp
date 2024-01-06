@@ -145,14 +145,14 @@ namespace ma
          *
          */
         template <class Func>
-        Item*
-        search(const Name& name, Func&& func) const;
+        Item&
+        find(const Name& name, Item& deflt, Func&& func) const;
 
         /**
          *
          */
-        Item*
-        search(const Name& name) const;
+        Item&
+        find(const Name& name, Item& deflt) const;
 
         /**
          *

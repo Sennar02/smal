@@ -126,7 +126,7 @@ namespace ma
     HashTable<Name, Item, Array>::forEach(Iter& iter, Func&& func) const
     {
         while ( iter.next() )
-            func(iter.name(), iter.item());
+            func(iter.name(), iter.item(), m_count);
     }
 
     template <class Name, class Item, template <class> class Array>
@@ -137,7 +137,7 @@ namespace ma
         HashTableForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.name(), iter.item());
+            func(iter.name(), iter.item(), m_count);
     }
 
     template <class Name, class Item, template <class> class Array>
@@ -245,7 +245,7 @@ namespace ma
     HashTable<Name, Item, Array>::clear(Iter& iter, Func&& func)
     {
         while ( iter.next() )
-            func(iter.name(), iter.item());
+            func(iter.name(), iter.item(), m_count);
 
         m_count = 0;
     }
@@ -258,7 +258,7 @@ namespace ma
         HashTableForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.name(), iter.item());
+            func(iter.name(), iter.item(), m_count);
 
         m_count = 0;
     }
@@ -272,27 +272,27 @@ namespace ma
 
     template <class Name, class Item, template <class> class Array>
     template <class Func>
-    Item*
-    HashTable<Name, Item, Array>::search(const Name& name, Func&& func) const
+    Item&
+    HashTable<Name, Item, Array>::find(const Name& name, Item& deflt, Func&& func) const
     {
         u32 index = indexOf(name, func);
         u32 count = size();
 
         if ( index < count )
-            return &m_array[index];
+            return m_array[index];
 
-        return 0;
+        return deflt;
     }
 
     template <class Name, class Item, template <class> class Array>
-    Item*
-    HashTable<Name, Item, Array>::search(const Name& name) const
+    Item&
+    HashTable<Name, Item, Array>::find(const Name& name, Item& deflt) const
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
         };
 
-        return search(name, func);
+        return find(name, deflt, func);
     }
 
     template <class Name, class Item, template <class> class Array>
@@ -300,14 +300,18 @@ namespace ma
     Item&
     HashTable<Name, Item, Array>::find(const Name& name, Func&& func) const
     {
-        return *search(name, func);
+        return m_array[indexOf(name, func)];
     }
 
     template <class Name, class Item, template <class> class Array>
     Item&
     HashTable<Name, Item, Array>::find(const Name& name) const
     {
-        return *search(name);
+        auto func = [](const Name& a, const Name& b) {
+            return a == b;
+        };
+
+        return find(name, func);
     }
 
     template <class Name, class Item, template <class> class Array>
@@ -328,7 +332,7 @@ namespace ma
     Item&
     HashTable<Name, Item, Array>::operator[](const Name& name) const
     {
-        return *search(name);
+        return find(name);
     }
 
     template <class Name, class Item, template <class> class Array>

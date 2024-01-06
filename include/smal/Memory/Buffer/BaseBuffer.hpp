@@ -29,12 +29,6 @@ namespace ma
         /**
          *
          */
-        virtual Item*
-        search(u32 index) const = 0;
-
-        /**
-         *
-         */
         virtual Item&
         find(u32 index) const = 0;
 
