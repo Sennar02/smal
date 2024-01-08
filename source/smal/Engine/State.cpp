@@ -21,7 +21,7 @@ namespace ma
     }
 
     bool
-    State::onAttach()
+    State::onAttach(AssetManager& assets)
     {
         return true;
     }

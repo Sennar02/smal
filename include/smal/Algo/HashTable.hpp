@@ -157,13 +157,6 @@ namespace ma
         /**
          *
          */
-        template <class Func>
-        Item&
-        find(const Name& name, Func&& func) const;
-
-        /**
-         *
-         */
         Item&
         find(const Name& name) const;
 

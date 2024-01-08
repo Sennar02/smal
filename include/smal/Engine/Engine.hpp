@@ -37,7 +37,7 @@ namespace ma
          *
          */
         void
-        update();
+        update(f32 delta);
 
         /**
          *

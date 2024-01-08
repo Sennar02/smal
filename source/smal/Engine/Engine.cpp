@@ -26,14 +26,14 @@ namespace ma
         if ( launch(code) == false ) return false;
 
         while ( true ) {
-            delta += g_clock.getElapsedTime();
-
-            for ( u32 i = 0; i < 1; i++ )
-                m_active &= handle();
+            delta += g_clock.restart();
+            m_active = handle();
 
             if ( m_active ) {
                 for ( ; slice < delta; delta -= slice )
-                    update();
+                    update(slice.asSeconds());
+
+                render();
             } else
                 break;
         }
@@ -49,13 +49,13 @@ namespace ma
         if ( state != 0 && state->onHandle() == false )
             return launch(state->next());
 
-        return false;
+        return state != 0;
     }
 
     void
-    Engine::update()
+    Engine::update(f32 delta)
     {
-        active()->onUpdate(0.5f /* placeholder */);
+        active()->onUpdate(delta);
     }
 
     void

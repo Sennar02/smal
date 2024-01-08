@@ -216,7 +216,7 @@ namespace ma
     Item&
     ArrayStack<Item, Array>::find(u32 index) const
     {
-        return find(index);
+        return m_array[index];
     }
 
     template <class Item, template <class> class Array>

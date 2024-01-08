@@ -1,14 +1,20 @@
-#include <smal/Engine/import.hpp>
+#include "TitleState.hpp"
+#include "PauseState.hpp"
 
 using namespace ma;
 
 int
 main(int argc, const char* argv[])
 {
-    Engine game;
+    Engine     game;
+    TitleState title;
+    PauseState pause;
+
+    printf("attach state = %u\n", game.attach<TitleState>(title));
+    printf("attach state = %u\n", game.attach<PauseState>(pause));
 
     if ( game.isActive() )
-        game.loop(0);
+        printf("loop = %u\n", game.loop(StateTag::get<TitleState>()));
 
     return 0;
 }

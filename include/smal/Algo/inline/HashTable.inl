@@ -296,14 +296,6 @@ namespace ma
     }
 
     template <class Name, class Item, template <class> class Array>
-    template <class Func>
-    Item&
-    HashTable<Name, Item, Array>::find(const Name& name, Func&& func) const
-    {
-        return m_array[indexOf(name, func)];
-    }
-
-    template <class Name, class Item, template <class> class Array>
     Item&
     HashTable<Name, Item, Array>::find(const Name& name) const
     {
@@ -311,7 +303,7 @@ namespace ma
             return a == b;
         };
 
-        return find(name, func);
+        return m_array[indexOf(name, func)];
     }
 
     template <class Name, class Item, template <class> class Array>

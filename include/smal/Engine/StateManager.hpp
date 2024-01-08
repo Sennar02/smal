@@ -5,7 +5,10 @@
 
 namespace ma
 {
+    struct StateTag;
+
     class StateManager
+        : public AssetManager
     {
     public:
         /**
@@ -16,20 +19,22 @@ namespace ma
         /**
          *
          */
+        template <class Type>
         bool
-        attach(u32 code, State& state);
+        attach(Type& state);
+
+        /**
+         *
+         */
+        template <class Type>
+        bool
+        detach();
 
         /**
          *
          */
         bool
-        detach(u32 code);
-
-        /**
-         *
-         */
-        bool
-        launch(u32 code);
+        launch(u32 index);
 
         /**
          *
@@ -68,5 +73,7 @@ namespace ma
         ArrayStack<State*> m_stack;
     };
 } // namespace ma
+
+#include <smal/Engine/inline/StateManager.inl>
 
 #endif // SMAL_ENGINE_SCREEN_MANAGER_HPP

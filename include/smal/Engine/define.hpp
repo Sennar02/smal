@@ -5,8 +5,10 @@
 
 namespace ma
 {
+    class AssetManager;
     class State;
     class StateManager;
+
     class Engine;
 } // namespace ma
 

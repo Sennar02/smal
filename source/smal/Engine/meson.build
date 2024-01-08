@@ -1,5 +1,6 @@
 smal_engine = static_library('smal-engine',
     sources: [
+        'AssetManager.cpp',
         'State.cpp',
         'StateManager.cpp',
         'Engine.cpp',
@@ -8,4 +9,6 @@ smal_engine = static_library('smal-engine',
 )
 
 smal_define = smal_define + smal_engine
-smal_depend = smal_depend + dependency('sfml-system')
+smal_depend = smal_depend + [
+    dependency('sfml-graphics'),
+]

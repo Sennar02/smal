@@ -1,7 +1,7 @@
 #ifndef SMAL_ENGINE_SCREEN_HPP
 #define SMAL_ENGINE_SCREEN_HPP
 
-#include <smal/Engine/define.hpp>
+#include <smal/Engine/AssetManager.hpp>
 
 namespace ma
 {
@@ -33,7 +33,7 @@ namespace ma
          *
          */
         virtual bool
-        onAttach();
+        onAttach(AssetManager& assets);
 
         /**
          *
