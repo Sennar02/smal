@@ -1,6 +1,5 @@
 smal_engine = static_library('smal-engine',
     sources: [
-        'AssetManager.cpp',
         'State.cpp',
         'StateManager.cpp',
         'Engine.cpp',

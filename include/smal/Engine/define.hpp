@@ -5,7 +5,6 @@
 
 namespace ma
 {
-    class AssetManager;
     class State;
     class StateManager;
 

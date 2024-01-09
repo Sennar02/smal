@@ -3,26 +3,56 @@
 namespace ma
 {
     StateManager::StateManager(u32 size)
-        : AssetManager(size)
-        , m_table {g_origin, size}
+        : m_table {g_origin, size}
         , m_stack {g_origin, size}
     { }
 
     bool
-    StateManager::launch(u32 index)
+    StateManager::attach(const String& name, State& state)
     {
-        State* state = 0;
+        if ( name.equals("") ) return false;
 
-        state = m_table.find(index, state);
+        if ( state.onAttach() )
+            return m_table.insert(name, &state);
 
-        leave();
+        return false;
+    }
 
-        if ( state != 0 )
-            m_stack.insert(state);
-        else
-            m_stack.remove();
+    bool
+    StateManager::detach(const String& name)
+    {
+        State* state  = 0;
+        bool   result = false;
 
-        return enter();
+        state = m_table.find(name, state);
+
+        if ( state != 0 ) {
+            result = state->onDetach();
+
+            if ( m_table.remove(name) )
+                return result;
+        }
+
+        return false;
+    }
+
+    State*
+    StateManager::launch(const String& name)
+    {
+        State* state = active();
+
+        if ( state != 0 ) state->onLeave();
+
+        if ( change(name) ) {
+            state = active();
+
+            if ( state != 0 )
+                state->onEnter();
+
+            return state;
+        }
+
+        return 0;
     }
 
     State*
@@ -50,24 +80,15 @@ namespace ma
     }
 
     bool
-    StateManager::enter()
+    StateManager::change(const String& name)
     {
-        State* state = active();
+        State* state = 0;
+
+        state = m_table.find(name, state);
 
         if ( state != 0 )
-            state->onEnter();
+            return m_stack.insert(state);
 
-        return state != 0;
-    }
-
-    bool
-    StateManager::leave()
-    {
-        State* state = active();
-
-        if ( state != 0 )
-            state->onLeave();
-
-        return state != 0;
+        return m_stack.remove();
     }
 } // namespace ma

@@ -1,7 +1,7 @@
 #ifndef SMAL_ENGINE_SCREEN_HPP
 #define SMAL_ENGINE_SCREEN_HPP
 
-#include <smal/Engine/AssetManager.hpp>
+#include <smal/Engine/define.hpp>
 
 namespace ma
 {
@@ -21,19 +21,19 @@ namespace ma
          *
          */
         bool
-        setNext(u32 next);
+        setNext(const String& next);
 
         /**
          *
          */
-        u32
+        String
         next();
 
         /**
          *
          */
         virtual bool
-        onAttach(AssetManager& assets);
+        onAttach();
 
         /**
          *
@@ -57,25 +57,25 @@ namespace ma
          *
          */
         virtual bool
-        onHandle() = 0;
+        onUpdate();
 
         /**
          *
          */
         virtual void
-        onUpdate(f32 delta) = 0;
+        onStep(f32 delta);
 
         /**
          *
          */
         virtual void
-        onRender() = 0;
+        onLast();
 
     private:
         /**
          *
          */
-        u32 m_next;
+        String m_next;
     };
 } // namespace ma
 

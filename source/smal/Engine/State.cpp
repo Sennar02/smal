@@ -3,25 +3,26 @@
 namespace ma
 {
     State::State()
-        : m_next {0}
+        : m_next {}
     { }
 
     bool
-    State::setNext(u32 next)
+    State::setNext(const String& next)
     {
-        m_next = next;
+        if ( next.equals("") == false )
+            m_next = next;
 
         return false;
     }
 
-    u32
+    String
     State::next()
     {
-        return exch(m_next, 0u);
+        return exch(m_next, {""});
     }
 
     bool
-    State::onAttach(AssetManager& assets)
+    State::onAttach()
     {
         return true;
     }
@@ -38,5 +39,19 @@ namespace ma
 
     void
     State::onLeave()
+    { }
+
+    bool
+    State::onUpdate()
+    {
+        return false;
+    }
+
+    void
+    State::onStep(f32 delta)
+    { }
+
+    void
+    State::onLast()
     { }
 } // namespace ma

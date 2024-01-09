@@ -18,38 +18,13 @@ namespace ma
          *
          */
         bool
-        isActive() const;
-
-        /**
-         *
-         */
-        bool
-        loop(u32 code, u32 frames = 60u);
+        loop(const String& name, u32 frames = 60u);
 
     private:
         /**
          *
          */
-        bool
-        handle();
-
-        /**
-         *
-         */
-        void
-        update(f32 delta);
-
-        /**
-         *
-         */
-        void
-        render();
-
-    private:
-        /**
-         *
-         */
-        bool m_active;
+        State* m_active;
     };
 } // namespace ma
 
