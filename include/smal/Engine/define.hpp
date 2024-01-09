@@ -5,6 +5,8 @@
 
 namespace ma
 {
+    class Actor;
+    class ActorManager;
     class State;
     class StateManager;
 

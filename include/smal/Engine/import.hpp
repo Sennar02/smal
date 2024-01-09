@@ -4,6 +4,8 @@
 #include <smal/Engine/depend.hpp>
 #include <smal/Engine/define.hpp>
 
+#include <smal/Engine/Actor.hpp>
+#include <smal/Engine/ActorManager.hpp>
 #include <smal/Engine/State.hpp>
 #include <smal/Engine/StateManager.hpp>
 #include <smal/Engine/Engine.hpp>

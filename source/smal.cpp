@@ -14,12 +14,11 @@ public:
 int
 main(int argc, const char* argv[])
 {
-    Engine     game;
-    TitleState title;
+    Engine     e;
+    TitleState t;
 
-    game.attach("Title", title);
+    if ( e.attach("Title", t) )
+        return e.loop("Title", 120u) == false;
 
-    printf("loop = %u\n", game.loop("Title"));
-
-    return 0;
+    return 1;
 }
