@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_BUFFER_BASE_BUFFER_HPP
 #define SMAL_MEMORY_BUFFER_BASE_BUFFER_HPP
 
-#include <smal/Memory/define.hpp>
+#include <smal/Memory/Origin/BaseOrigin.hpp>
 
 namespace ma
 {

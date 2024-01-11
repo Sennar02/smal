@@ -1,9 +1,16 @@
 #include <smal/Memory/Origin/SplitOrigin.hpp>
 
 #include <string.h> // memset
+#include <malloc.h> // calloc
 
 namespace ma
 {
+    SplitOrigin g_origin = {
+        calloc(1u, g_kib * 16u),
+        g_kib * 16u,
+        64u,
+    };
+
     struct Head
     {
         u32  size;

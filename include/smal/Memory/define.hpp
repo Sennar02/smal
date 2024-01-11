@@ -32,6 +32,8 @@ namespace ma
     static const u32 g_kb = 1000u;
     static const u32 g_mb = g_kb * g_kb;
     static const u32 g_gb = g_mb * g_kb;
+
+    extern SplitOrigin g_origin;
 } // namespace ma
 
 #endif // SMAL_MEMORY_DEFINE_HPP

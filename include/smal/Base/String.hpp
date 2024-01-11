@@ -3,6 +3,11 @@
 
 #include <smal/Base/math.hpp>
 
+#define MA_STRING(str)       \
+    {                        \
+        str, sizeof(str) - 1 \
+    }
+
 namespace ma
 {
     class String
@@ -11,13 +16,19 @@ namespace ma
         /**
          *
          */
-        String(const char* memory = 0, u32 size = g_max_u32);
+        String(const char* memory = 0, u32 count = g_max_u32);
 
         /**
          *
          */
         u32
-        size() const;
+        count() const;
+
+        /**
+         *
+         */
+        u32
+        hash() const;
 
         /**
          *
@@ -76,7 +87,12 @@ namespace ma
         /**
          *
          */
-        u32 m_size;
+        u32 m_hash;
+
+        /**
+         *
+         */
+        u32 m_count;
     };
 } // namespace ma
 

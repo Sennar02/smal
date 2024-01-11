@@ -22,7 +22,7 @@ namespace ma
     }
 
     bool
-    State::onAttach()
+    State::onAttach(ActorManager& actors)
     {
         return true;
     }
@@ -34,7 +34,15 @@ namespace ma
     }
 
     void
-    State::onEnter()
+    State::onStart()
+    { }
+
+    void
+    State::onClean()
+    { }
+
+    void
+    State::onEnter(ActorManager& actors)
     { }
 
     void

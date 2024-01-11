@@ -2,9 +2,10 @@
 
 namespace ma
 {
-    StateManager::StateManager(u32 size)
+    StateManager::StateManager(u32 size, ActorManager& actors)
         : m_table {g_origin, size}
         , m_stack {g_origin, size}
+        , m_actors {&actors}
     { }
 
     bool
@@ -12,7 +13,7 @@ namespace ma
     {
         if ( name.equals("") ) return false;
 
-        if ( state.onAttach() )
+        if ( state.onAttach(*m_actors) )
             return m_table.insert(name, &state);
 
         return false;
@@ -47,7 +48,7 @@ namespace ma
             state = active();
 
             if ( state != 0 )
-                state->onEnter();
+                state->onEnter(*m_actors);
 
             return state;
         }

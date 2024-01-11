@@ -43,8 +43,6 @@ namespace ma
         virtual bool
         release(void* memory);
     };
-
-    static DummyOrigin g_origin;
 } // namespace ma
 
 #endif // SMAL_MEMORY_ORIGIN_SYSTEM_ORIGIN_HPP

@@ -11,7 +11,7 @@ namespace ma
         /**
          *
          */
-        StateManager(u32 size);
+        StateManager(u32 size, ActorManager& actors);
 
         /**
          *
@@ -60,6 +60,11 @@ namespace ma
          *
          */
         ArrayStack<State*> m_stack;
+
+        /**
+         *
+         */
+        ActorManager* m_actors;
     };
 } // namespace ma
 

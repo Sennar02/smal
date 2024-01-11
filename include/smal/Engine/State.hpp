@@ -1,7 +1,7 @@
 #ifndef SMAL_ENGINE_SCREEN_HPP
 #define SMAL_ENGINE_SCREEN_HPP
 
-#include <smal/Engine/define.hpp>
+#include <smal/Engine/ActorManager.hpp>
 
 namespace ma
 {
@@ -33,7 +33,7 @@ namespace ma
          *
          */
         virtual bool
-        onAttach();
+        onAttach(ActorManager& actors);
 
         /**
          *
@@ -45,7 +45,19 @@ namespace ma
          *
          */
         virtual void
-        onEnter();
+        onStart();
+
+        /**
+         *
+         */
+        virtual void
+        onClean();
+
+        /**
+         *
+         */
+        virtual void
+        onEnter(ActorManager& actors);
 
         /**
          *

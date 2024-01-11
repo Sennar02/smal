@@ -15,6 +15,7 @@ namespace ma
 
         if ( actor.m_code == g_max_u32 ) {
             actor.m_code = m_list.count();
+            actor.m_vers = 0;
 
             if ( m_list.insert(actor) == false )
                 return {};

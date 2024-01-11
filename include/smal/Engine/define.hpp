@@ -7,9 +7,11 @@ namespace ma
 {
     class Actor;
     class ActorManager;
+
     class State;
     class StateManager;
 
+    class Action;
     class Engine;
 } // namespace ma
 

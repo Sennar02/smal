@@ -3,7 +3,6 @@
 
 #include <smal/Memory/Buffer/BaseBuffer.hpp>
 #include <smal/Memory/Origin/PoolOrigin.hpp>
-#include <smal/Memory/Origin/DummyOrigin.hpp>
 #include <smal/Memory/MemoryTable.hpp>
 
 namespace ma

@@ -18,7 +18,7 @@ main(int argc, const char* argv[])
     TitleState t;
 
     if ( e.attach("Title", t) )
-        return e.loop("Title", 120u) == false;
+        return e.execute("Title", 120u) == false;
 
     return 1;
 }

@@ -2,7 +2,6 @@
 #define SMAL_MEMORY_BUFFER_SIMPLE_BUFFER_HPP
 
 #include <smal/Memory/Buffer/BaseBuffer.hpp>
-#include <smal/Memory/Origin/DummyOrigin.hpp>
 
 namespace ma
 {

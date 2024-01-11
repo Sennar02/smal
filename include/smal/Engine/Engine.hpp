@@ -18,9 +18,33 @@ namespace ma
          *
          */
         bool
-        loop(const String& name, u32 frames = 60u);
+        execute(const String& name, u32 frames = 60u);
 
     private:
+        /**
+         *
+         */
+        bool
+        start(const String& name);
+
+        /**
+         *
+         */
+        bool
+        loop(u32 frames = 60u);
+
+        /**
+         *
+         */
+        bool
+        clean();
+
+    private:
+        /**
+         *
+         */
+        ActorManager m_actors;
+
         /**
          *
          */
