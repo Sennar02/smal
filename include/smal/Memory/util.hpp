@@ -8,9 +8,9 @@ namespace ma
     /**
      *
      */
-    template <class Type, class... Args>
+    template <class Type>
     Type*
-    acquire(BaseOrigin& origin, Args&&... args);
+    acquire(BaseOrigin& origin, u32 count = 1u);
 
     /**
      *

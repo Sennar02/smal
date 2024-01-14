@@ -1,10 +1,10 @@
-#include <smal/Memory/MemoryModule.hpp>
+#include <smal/Memory/OriginFactory.hpp>
 
 namespace ma
 {
     template <class Origin, class... Args>
     Origin
-    MemoryModule::request(u32 size, Args&&... args)
+    OriginFactory::request(u32 size, Args&&... args)
     {
         char* addr = 0;
 

@@ -10,7 +10,6 @@ smal_define = []
 
 subdir('source/smal/Base')
 subdir('source/smal/Memory')
-subdir('source/smal/Engine')
 
 executable('smal',
     sources: [

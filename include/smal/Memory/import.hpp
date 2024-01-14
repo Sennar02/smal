@@ -4,12 +4,8 @@
 #include <smal/Memory/depend.hpp>
 #include <smal/Memory/define.hpp>
 
-#include <smal/Memory/Buffer/BaseBuffer.hpp>
-#include <smal/Memory/Buffer/FixedBuffer.hpp>
-#include <smal/Memory/Buffer/PagedBuffer.hpp>
-
-#include <smal/Memory/MemoryTable.hpp>
-#include <smal/Memory/MemoryModule.hpp>
+#include <smal/Memory/PageTable.hpp>
+#include <smal/Memory/OriginFactory.hpp>
 
 #include <smal/Memory/Origin/BaseOrigin.hpp>
 #include <smal/Memory/Origin/NullOrigin.hpp>
@@ -18,6 +14,11 @@
 #include <smal/Memory/Origin/PoolOrigin.hpp>
 #include <smal/Memory/Origin/SplitOrigin.hpp>
 #include <smal/Memory/Origin/DummyOrigin.hpp>
+
+#include <smal/Memory/Layout/FixedLayout.hpp>
+#include <smal/Memory/Layout/PagedLayout.hpp>
+
+#include <smal/Memory/Array.hpp>
 
 #include <smal/Memory/util.hpp>
 

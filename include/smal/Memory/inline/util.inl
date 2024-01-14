@@ -2,18 +2,16 @@
 
 namespace ma
 {
-    template <class Type, class... Args>
+    template <class Type>
     Type*
-    acquire(BaseOrigin& origin, Args&&... args)
+    acquire(BaseOrigin& origin, u32 count)
     {
         static const u32 s_size = sizeof(Type);
 
-        Type* addr = (Type*) origin.acquire(s_size);
+        u32   size = s_size * count;
+        void* addr = origin.acquire(size);
 
-        if ( addr != 0 )
-            ctor(*addr, forw<Args>(args)...);
-
-        return addr;
+        return (Type*) addr;
     }
 
     template <class Type>

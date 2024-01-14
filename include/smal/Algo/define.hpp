@@ -9,13 +9,10 @@ namespace ma
     template <class... Type>
     class Tuple;
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     class ArrayList;
 
-    template <class Item, template <class> class Array>
-    class ArrayStack;
-
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     class HashTable;
 
 } // namespace ma

@@ -2,87 +2,73 @@
 
 namespace ma
 {
-    namespace impl
-    {
-        template <class Name>
-        struct Head
-        {
-            union
-            {
-                Name name;
-            };
-
-            u32 dist;
-        };
-    } // namespace impl
-
-    template <class Name, class Item, template <class> class Array>
-    HashTable<Name, Item, Array>::HashTable()
+    template <class Name, class Item, class Layout>
+    HashTable<Name, Item, Layout>::HashTable()
         : m_heads {}
         , m_array {}
         , m_count {0}
     { }
 
-    template <class Name, class Item, template <class> class Array>
-    HashTable<Name, Item, Array>::HashTable(Array<impl::Head<Name>>&& heads, Array<Item>&& array)
+    template <class Name, class Item, class Layout>
+    HashTable<Name, Item, Layout>::HashTable(const Layout& heads, const Layout& array)
         : m_heads {heads}
         , m_array {array}
         , m_count {0}
     { }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class... Args>
-    HashTable<Name, Item, Array>::HashTable(BaseOrigin& origin, u32 size, Args&&... args)
-        : m_heads {origin, size, forw<Args>(args)...}
-        , m_array {origin, size, forw<Args>(args)...}
+    HashTable<Name, Item, Layout>::HashTable(Args&&... args)
+        : m_heads {forw<Args>(args)...}
+        , m_array {forw<Args>(args)...}
         , m_count {0}
     { }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     u32
-    HashTable<Name, Item, Array>::size() const
+    HashTable<Name, Item, Layout>::size() const
     {
-        if constexpr ( sizeof(Head) < sizeof(Item) )
-            return m_array.size();
-        else
-            return m_heads.size();
+        return m_array.length();
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     u32
-    HashTable<Name, Item, Array>::count() const
+    HashTable<Name, Item, Layout>::count() const
     {
         return m_count;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTable<Name, Item, Array>::isEmpty() const
+    HashTable<Name, Item, Layout>::isEmpty() const
     {
         return m_count == 0;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTable<Name, Item, Array>::isFull() const
+    HashTable<Name, Item, Layout>::isFull() const
     {
-        return m_count == size();
+        return m_count == m_array.length();
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     u32
-    HashTable<Name, Item, Array>::indexOf(const Name& name, Func&& func) const
+    HashTable<Name, Item, Layout>::indexOf(const Name& name, Func&& func) const
     {
-        u32 hash = code(name);
+        u32   hash = 0;
+        Head* head = 0;
 
         if ( isEmpty() ) return g_max_u32;
 
-        for ( u32 i = hash; hash != next(i); i = next(i) ) {
-            if ( m_heads[i].dist == 0 ) break;
+        hash = code(name);
 
-            if ( code(m_heads[i].name) == hash ) {
-                if ( func(m_heads[i].name, name) == true )
+        for ( u32 i = hash; hash != next(i); i = next(i) ) {
+            head = &m_heads[i];
+
+            if ( head->dist != 0 && head->hash == hash ) {
+                if ( func(head->name, name) == true )
                     return i;
             }
         }
@@ -90,9 +76,9 @@ namespace ma
         return g_max_u32;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     u32
-    HashTable<Name, Item, Array>::indexOf(const Name& name) const
+    HashTable<Name, Item, Layout>::indexOf(const Name& name) const
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
@@ -101,48 +87,53 @@ namespace ma
         return indexOf(name, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     bool
-    HashTable<Name, Item, Array>::contains(const Name& name, Func&& func) const
+    HashTable<Name, Item, Layout>::contains(const Name& name, Func&& func) const
     {
-        return indexOf(name, func) < size();
+        u32 index = indexOf(name, func);
+
+        if ( index < m_array.length() )
+            return true;
+
+        return false;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTable<Name, Item, Array>::contains(const Name& name) const
+    HashTable<Name, Item, Layout>::contains(const Name& name) const
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
         };
 
-        return indexOf(name, func) < size();
+        return contains(name, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Iter, class Func>
     void
-    HashTable<Name, Item, Array>::forEach(Iter& iter, Func&& func) const
+    HashTable<Name, Item, Layout>::forEach(Iter& iter, Func&& func) const
     {
         while ( iter.next() )
-            func(iter.name(), iter.item(), m_count);
+            func(iter.item(), iter.name());
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     void
-    HashTable<Name, Item, Array>::forEach(Func&& func) const
+    HashTable<Name, Item, Layout>::forEach(Func&& func) const
     {
         HashTableForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.name(), iter.item(), m_count);
+            func(iter.item(), iter.name());
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTable<Name, Item, Array>::resize(u32 size)
+    HashTable<Name, Item, Layout>::resize(u32 size)
     {
         bool flag = m_heads.resize(size) &&
                     m_array.resize(size);
@@ -152,10 +143,10 @@ namespace ma
         for ( u32 i = 0; next(i) != 0; i = next(i) ) {
             if ( m_heads[i].dist == 0 ) continue;
 
-            if ( code(m_heads[i].name) != i ) {
-                m_heads[i].dist = 0;
+            if ( m_heads[i].hash != i ) {
+                m_heads[i].dist = m_heads[i].hash = 0;
 
-                if ( insert(m_heads[i].name, m_array[i]) == false )
+                if ( insert(m_heads[i].name, m_array[i].item) == false )
                     return false;
             }
         }
@@ -163,45 +154,52 @@ namespace ma
         return true;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     bool
-    HashTable<Name, Item, Array>::insert(const Name& name, const Item& item, Func&& func)
+    HashTable<Name, Item, Layout>::insert(const Name& name, const Item& item, Func&& func)
     {
-        Head head = {name, 1u};
-        u32  hash = code(name);
-        u32  dist = 0;
+        u32   hash = 0;
+        Head  iter = {name};
+        Body  elem = {item};
+        Head* head = 0;
 
         if ( isFull() ) return false;
 
-        for ( u32 i = hash; hash != next(i); i = next(i) ) {
-            dist = m_heads[i].dist;
+        hash      = code(name);
+        iter.hash = hash;
 
-            if ( dist != 0 && code(m_heads[i].name) == hash )
-                return func(m_heads[i].name, name) == true;
+        for ( u32 i = hash; true; i = next(i) ) {
+            head = &m_heads[i];
 
-            if ( dist < head.dist ) {
-                if ( dist == 0 ) {
-                    ctor(m_heads[i], head);
-                    ctor(m_array[i], item);
+            if ( head->dist != 0 && head->hash == hash ) {
+                if ( func(head->name, name) )
+                    return false;
+            }
+
+            if ( head->dist < iter.dist ) {
+                if ( head->dist == 0 ) {
+                    ctor(m_array[i], elem);
+                    ctor(m_heads[i], iter);
+
                     m_count += 1u;
 
                     return true;
                 }
 
-                swap(m_heads[i], head);
-                swap(m_array[i], (Item&) item);
+                swap(m_heads[i], iter);
+                swap(m_array[i], elem);
             }
 
-            head.dist += 1u;
+            iter.dist += 1u;
         }
 
         return false;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTable<Name, Item, Array>::insert(const Name& name, const Item& item)
+    HashTable<Name, Item, Layout>::insert(const Name& name, const Item& item)
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
@@ -210,27 +208,22 @@ namespace ma
         return insert(name, item, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     bool
-    HashTable<Name, Item, Array>::remove(const Name& name, Func&& func)
+    HashTable<Name, Item, Layout>::remove(const Name& name, Func&& func)
     {
         u32 index = indexOf(name, func);
-        u32 count = size();
 
-        if ( index < count ) {
-            m_count -= 1u;
+        if ( index < m_array.length() )
             m_heads[index].dist = 0;
 
-            return true;
-        }
-
-        return false;
+        return index < m_array.length();
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTable<Name, Item, Array>::remove(const Name& name)
+    HashTable<Name, Item, Layout>::remove(const Name& name)
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
@@ -239,54 +232,53 @@ namespace ma
         return remove(name, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Iter, class Func>
     void
-    HashTable<Name, Item, Array>::clear(Iter& iter, Func&& func)
+    HashTable<Name, Item, Layout>::clear(Iter& iter, Func&& func)
     {
         while ( iter.next() )
-            func(iter.name(), iter.item(), m_count);
+            func(iter.item(), iter.name());
 
         m_count = 0;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     void
-    HashTable<Name, Item, Array>::clear(Func&& func)
+    HashTable<Name, Item, Layout>::clear(Func&& func)
     {
         HashTableForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.name(), iter.item(), m_count);
+            func(iter.item(), iter.name());
 
         m_count = 0;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     void
-    HashTable<Name, Item, Array>::clear()
+    HashTable<Name, Item, Layout>::clear()
     {
         m_count = 0;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     template <class Func>
     Item&
-    HashTable<Name, Item, Array>::find(const Name& name, Item& deflt, Func&& func) const
+    HashTable<Name, Item, Layout>::find(const Name& name, Item& deflt, Func&& func) const
     {
         u32 index = indexOf(name, func);
-        u32 count = size();
 
-        if ( index < count )
-            return m_array[index];
+        if ( index < m_array.length() )
+            return m_array[index].item;
 
         return deflt;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     Item&
-    HashTable<Name, Item, Array>::find(const Name& name, Item& deflt) const
+    HashTable<Name, Item, Layout>::find(const Name& name, Item& deflt) const
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
@@ -295,97 +287,103 @@ namespace ma
         return find(name, deflt, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
+    template <class Func>
     Item&
-    HashTable<Name, Item, Array>::find(const Name& name) const
+    HashTable<Name, Item, Layout>::find(const Name& name, Func&& func) const
+    {
+        return m_array[indexOf(name, func)].item;
+    }
+
+    template <class Name, class Item, class Layout>
+    Item&
+    HashTable<Name, Item, Layout>::find(const Name& name) const
     {
         auto func = [](const Name& a, const Name& b) {
             return a == b;
         };
 
-        return m_array[indexOf(name, func)];
+        return find(name, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
-    const Array<impl::Head<Name>>&
-    HashTable<Name, Item, Array>::heads() const
+    template <class Name, class Item, class Layout>
+    const Array<HashHead<Name>, Layout>&
+    HashTable<Name, Item, Layout>::heads() const
     {
         return m_heads;
     }
 
-    template <class Name, class Item, template <class> class Array>
-    const Array<Item>&
-    HashTable<Name, Item, Array>::array() const
+    template <class Name, class Item, class Layout>
+    const Array<HashBody<Item>, Layout>&
+    HashTable<Name, Item, Layout>::array() const
     {
         return m_array;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     Item&
-    HashTable<Name, Item, Array>::operator[](const Name& name) const
+    HashTable<Name, Item, Layout>::operator[](const Name& name) const
     {
-        return find(name);
+        auto func = [](const Name& a, const Name& b) {
+            return a == b;
+        };
+
+        return find(name, func);
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     u32
-    HashTable<Name, Item, Array>::code(const Name& name) const
+    HashTable<Name, Item, Layout>::code(const Name& name) const
     {
-        u32 div = size();
+        return next(hash(name), 0);
+    }
+
+    template <class Name, class Item, class Layout>
+    u32
+    HashTable<Name, Item, Layout>::next(u32 code, u32 step) const
+    {
+        u32 div = m_array.length();
 
         if ( div != 0 )
-            return hash(name) % div;
+            return (code + step) % div;
 
         return 0;
     }
 
-    template <class Name, class Item, template <class> class Array>
-    u32
-    HashTable<Name, Item, Array>::next(u32 code) const
-    {
-        u32 div = size();
-
-        if ( div != 0 )
-            return (code + 1u) % div;
-
-        return 0;
-    }
-
-    template <class Name, class Item, template <class> class Array>
-    HashTableForwIter<Name, Item, Array>::HashTableForwIter(const Table& table)
+    template <class Name, class Item, class Layout>
+    HashTableForwIter<Name, Item, Layout>::HashTableForwIter(const Table& table)
         : m_table {table}
         , m_index {g_max_u32}
     { }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     const Name&
-    HashTableForwIter<Name, Item, Array>::name() const
+    HashTableForwIter<Name, Item, Layout>::name() const
     {
         return m_table.heads()[m_index].name;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     Item&
-    HashTableForwIter<Name, Item, Array>::item()
+    HashTableForwIter<Name, Item, Layout>::item()
     {
-        return m_table.array()[m_index];
+        return m_table.array()[m_index].item;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     const Item&
-    HashTableForwIter<Name, Item, Array>::item() const
+    HashTableForwIter<Name, Item, Layout>::item() const
     {
-        return m_table.array()[m_index];
+        return m_table.array()[m_index].item;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTableForwIter<Name, Item, Array>::hasNext() const
+    HashTableForwIter<Name, Item, Layout>::hasNext() const
     {
-        u32 size = m_table.size();
-        u32 next = m_index + 1u;
+        u32 i = m_index;
 
-        for ( u32 i = next; i < size; i++ ) {
+        while ( ++i < m_table.size() ) {
             if ( m_table.heads()[i].dist != 0 )
                 return true;
         }
@@ -393,13 +391,13 @@ namespace ma
         return false;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     bool
-    HashTableForwIter<Name, Item, Array>::next()
+    HashTableForwIter<Name, Item, Layout>::next()
     {
-        u32 size = m_table.size();
+        u32& i = m_index;
 
-        for ( u32& i = ++m_index; i < size; i++ ) {
+        while ( ++i < m_table.size() ) {
             if ( m_table.heads()[i].dist != 0 )
                 return true;
         }
@@ -407,9 +405,9 @@ namespace ma
         return false;
     }
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     void
-    HashTableForwIter<Name, Item, Array>::reset()
+    HashTableForwIter<Name, Item, Layout>::reset()
     {
         m_index = g_max_u32;
     }

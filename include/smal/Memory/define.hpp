@@ -5,6 +5,9 @@
 
 namespace ma
 {
+    class PageTable;
+    class OriginFactory;
+
     class BaseOrigin;
     class NullOrigin;
     class ArenaOrigin;
@@ -13,17 +16,11 @@ namespace ma
     class SplitOrigin;
     class DummyOrigin;
 
-    class MemoryTable;
-    class MemoryModule;
+    class FixedLayout;
+    class PagedLayout;
 
-    template <class Item>
-    class BaseBuffer;
-
-    template <class Item>
-    class FixedBuffer;
-
-    template <class Item>
-    class PagedBuffer;
+    template <class Item, class Layout>
+    class Array;
 
     static const u32 g_kib = 1024u;
     static const u32 g_mib = g_kib * g_kib;

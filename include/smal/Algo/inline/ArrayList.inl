@@ -2,57 +2,57 @@
 
 namespace ma
 {
-    template <class Item, template <class> class Array>
-    ArrayList<Item, Array>::ArrayList()
+    template <class Item, class Layout>
+    ArrayList<Item, Layout>::ArrayList()
         : m_array {}
         , m_count {0}
     { }
 
-    template <class Item, template <class> class Array>
-    ArrayList<Item, Array>::ArrayList(Array<Item>&& array)
-        : m_array {move(array)}
+    template <class Item, class Layout>
+    ArrayList<Item, Layout>::ArrayList(const Layout& array)
+        : m_array {array}
         , m_count {0}
     { }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class... Args>
-    ArrayList<Item, Array>::ArrayList(BaseOrigin& origin, u32 size, Args&&... args)
-        : m_array {origin, size, forw<Args>(args)...}
+    ArrayList<Item, Layout>::ArrayList(Args&&... args)
+        : m_array {forw<Args>(args)...}
         , m_count {0}
     { }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     u32
-    ArrayList<Item, Array>::size() const
+    ArrayList<Item, Layout>::size() const
     {
-        return m_array.size();
+        return m_array.length();
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     u32
-    ArrayList<Item, Array>::count() const
+    ArrayList<Item, Layout>::count() const
     {
         return m_count;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayList<Item, Array>::isEmpty() const
+    ArrayList<Item, Layout>::isEmpty() const
     {
         return m_count == 0;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayList<Item, Array>::isFull() const
+    ArrayList<Item, Layout>::isFull() const
     {
-        return m_count == size();
+        return m_count == m_array.length();
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Iter, class Func>
     u32
-    ArrayList<Item, Array>::indexOf(const Item& item, Iter& iter, Func&& func) const
+    ArrayList<Item, Layout>::indexOf(const Item& item, Iter& iter, Func&& func) const
     {
         while ( iter.next() ) {
             if ( func(iter.item(), item) == true )
@@ -62,10 +62,10 @@ namespace ma
         return g_max_u32;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Func>
     u32
-    ArrayList<Item, Array>::indexOf(const Item& item, Func&& func) const
+    ArrayList<Item, Layout>::indexOf(const Item& item, Func&& func) const
     {
         ArrayListForwIter iter = {*this};
 
@@ -77,9 +77,9 @@ namespace ma
         return g_max_u32;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     u32
-    ArrayList<Item, Array>::indexOf(const Item& item) const
+    ArrayList<Item, Layout>::indexOf(const Item& item) const
     {
         auto func = [](const Item& a, const Item& b) {
             return a == b;
@@ -88,27 +88,27 @@ namespace ma
         return indexOf(item, func);
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Iter, class Func>
     bool
-    ArrayList<Item, Array>::contains(const Item& item, Iter& iter, Func&& func) const
+    ArrayList<Item, Layout>::contains(const Item& item, Iter& iter, Func&& func) const
     {
         return indexOf(item, iter, func) < m_count;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Func>
     bool
-    ArrayList<Item, Array>::contains(const Item& item, Func&& func) const
+    ArrayList<Item, Layout>::contains(const Item& item, Func&& func) const
     {
         ArrayListForwIter iter = {*this};
 
         return indexOf(item, iter, func) < m_count;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayList<Item, Array>::contains(const Item& item) const
+    ArrayList<Item, Layout>::contains(const Item& item) const
     {
         auto func = [](const Item& a, const Item& b) {
             return a == b;
@@ -117,104 +117,101 @@ namespace ma
         return contains(item, func);
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Iter, class Func>
     void
-    ArrayList<Item, Array>::forEach(Iter& iter, Func&& func) const
+    ArrayList<Item, Layout>::forEach(Iter& iter, Func&& func) const
     {
         while ( iter.next() )
-            func(iter.index(), iter.item(), m_count);
+            func(iter.item(), iter.index());
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Func>
     void
-    ArrayList<Item, Array>::forEach(Func&& func) const
+    ArrayList<Item, Layout>::forEach(Func&& func) const
     {
         ArrayListForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.index(), iter.item(), m_count);
+            func(iter.item(), iter.index());
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayList<Item, Array>::resize(u32 size)
+    ArrayList<Item, Layout>::resize(u32 size)
     {
         return m_array.resize(size);
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayList<Item, Array>::insert(const Item& item, u32 index)
+    ArrayList<Item, Layout>::insert(const Item& item, u32 index)
     {
-        if ( isFull() == false ) {
-            if ( index > m_count ) index = m_count;
+        if ( isFull() ) return false;
 
-            for ( u32 i = m_count; i > index; i-- )
-                m_array[i] = move(m_array[i - 1u]);
+        if ( index > m_count ) index = m_count;
 
-            ctor(m_array[index], item);
-            m_count += 1u;
+        for ( u32 i = m_count; i > index; i-- )
+            m_array[i] = move(m_array[i - 1u]);
 
-            return true;
-        }
+        m_count += 1u;
 
-        return false;
+        ctor(m_array[index], item);
+
+        return true;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayList<Item, Array>::remove(u32 index)
+    ArrayList<Item, Layout>::remove(u32 index)
     {
-        if ( isEmpty() == false ) {
-            m_count -= 1u;
+        if ( isEmpty() ) return false;
 
-            if ( index > m_count ) index = m_count;
+        if ( index >= m_count ) index = m_count - 1u;
 
-            for ( u32 i = index; i < m_count; i++ )
-                m_array[i] = move(m_array[i + 1u]);
+        for ( u32 i = index; i < m_count - 1u; i++ )
+            m_array[i] = move(m_array[i + 1u]);
 
-            return true;
-        }
+        m_count -= 1u;
 
-        return false;
+        return true;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Iter, class Func>
     void
-    ArrayList<Item, Array>::clear(Iter& iter, Func&& func)
+    ArrayList<Item, Layout>::clear(Iter& iter, Func&& func)
     {
         while ( iter.next() )
-            func(iter.index(), iter.item(), m_count);
+            func(iter.item(), iter.index());
 
         m_count = 0;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     template <class Func>
     void
-    ArrayList<Item, Array>::clear(Func&& func)
+    ArrayList<Item, Layout>::clear(Func&& func)
     {
         ArrayListForwIter iter = {*this};
 
         while ( iter.next() )
-            func(iter.index(), iter.item(), m_count);
+            func(iter.item(), iter.index());
 
         m_count = 0;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     void
-    ArrayList<Item, Array>::clear()
+    ArrayList<Item, Layout>::clear()
     {
         m_count = 0;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     Item&
-    ArrayList<Item, Array>::find(u32 index, Item& deflt) const
+    ArrayList<Item, Layout>::find(u32 index, Item& deflt) const
     {
         if ( index < m_count )
             return m_array[index];
@@ -222,57 +219,57 @@ namespace ma
         return deflt;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     Item&
-    ArrayList<Item, Array>::find(u32 index) const
+    ArrayList<Item, Layout>::find(u32 index) const
     {
         return m_array[index];
     }
 
-    template <class Item, template <class> class Array>
-    const Array<Item>&
-    ArrayList<Item, Array>::array() const
+    template <class Item, class Layout>
+    const Array<Item, Layout>&
+    ArrayList<Item, Layout>::array() const
     {
         return m_array;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     Item&
-    ArrayList<Item, Array>::operator[](u32 index) const
+    ArrayList<Item, Layout>::operator[](u32 index) const
     {
-        return find(index);
+        return m_array[index];
     }
 
-    template <class Item, template <class> class Array>
-    ArrayListForwIter<Item, Array>::ArrayListForwIter(const List& list)
+    template <class Item, class Layout>
+    ArrayListForwIter<Item, Layout>::ArrayListForwIter(const List& list)
         : m_list {list}
         , m_index {g_max_u32}
     { }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     u32
-    ArrayListForwIter<Item, Array>::index() const
+    ArrayListForwIter<Item, Layout>::index() const
     {
         return m_index;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     Item&
-    ArrayListForwIter<Item, Array>::item()
+    ArrayListForwIter<Item, Layout>::item()
     {
-        return m_list.find(m_index);
+        return m_list.array()[m_index];
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     const Item&
-    ArrayListForwIter<Item, Array>::item() const
+    ArrayListForwIter<Item, Layout>::item() const
     {
-        return m_list.find(m_index);
+        return m_list.array()[m_index];
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayListForwIter<Item, Array>::hasNext() const
+    ArrayListForwIter<Item, Layout>::hasNext() const
     {
         u32 next = m_index + 1u;
 
@@ -282,9 +279,9 @@ namespace ma
         return false;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayListForwIter<Item, Array>::next()
+    ArrayListForwIter<Item, Layout>::next()
     {
         u32 next = m_index + 1u;
 
@@ -294,29 +291,29 @@ namespace ma
         return m_index == next;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     void
-    ArrayListForwIter<Item, Array>::reset()
+    ArrayListForwIter<Item, Layout>::reset()
     {
         m_index = g_max_u32;
     }
 
-    template <class Item, template <class> class Array>
-    ArrayListBackIter<Item, Array>::ArrayListBackIter(const List& list)
+    template <class Item, class Layout>
+    ArrayListBackIter<Item, Layout>::ArrayListBackIter(const List& list)
         : m_list {list}
         , m_index {g_max_u32}
     { }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     u32
-    ArrayListBackIter<Item, Array>::index() const
+    ArrayListBackIter<Item, Layout>::index() const
     {
         return m_index;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     Item&
-    ArrayListBackIter<Item, Array>::item()
+    ArrayListBackIter<Item, Layout>::item()
     {
         u32 index = m_list.count() -
                     m_index;
@@ -324,9 +321,9 @@ namespace ma
         return m_list.find(index - 1u);
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     const Item&
-    ArrayListBackIter<Item, Array>::item() const
+    ArrayListBackIter<Item, Layout>::item() const
     {
         u32 index = m_list.count() -
                     m_index;
@@ -334,9 +331,9 @@ namespace ma
         return m_list.find(index - 1u);
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayListBackIter<Item, Array>::hasNext() const
+    ArrayListBackIter<Item, Layout>::hasNext() const
     {
         u32 next = m_index + 1u;
 
@@ -346,9 +343,9 @@ namespace ma
         return false;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     bool
-    ArrayListBackIter<Item, Array>::next()
+    ArrayListBackIter<Item, Layout>::next()
     {
         u32 next = m_index + 1u;
 
@@ -358,9 +355,9 @@ namespace ma
         return m_index == next;
     }
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     void
-    ArrayListBackIter<Item, Array>::reset()
+    ArrayListBackIter<Item, Layout>::reset()
     {
         m_index = g_max_u32;
     }

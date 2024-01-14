@@ -1,28 +1,30 @@
-#ifndef SMAL_MEMORY_MEMORY_TABLE_HPP
-#define SMAL_MEMORY_MEMORY_TABLE_HPP
+#ifndef SMAL_MEMORY_PAGE_TABLE_HPP
+#define SMAL_MEMORY_PAGE_TABLE_HPP
 
 #include <smal/Memory/define.hpp>
 
 namespace ma
 {
-    class MemoryTable
+    class PageTable
     {
     public:
+        using Item = char*;
+
         /**
          *
          */
-        static const u32 s_node_size;
+        static const u32 s_size = sizeof(Item);
 
     public:
         /**
          *
          */
-        MemoryTable();
+        PageTable();
 
         /**
          *
          */
-        MemoryTable(void* memory, u32 size);
+        PageTable(void* memory, u32 length);
 
         /**
          *
@@ -34,7 +36,7 @@ namespace ma
          *
          */
         u32
-        size() const;
+        length() const;
 
         /**
          *
@@ -82,12 +84,12 @@ namespace ma
         /**
          *
          */
-        char** m_memory;
+        Item* m_memory;
 
         /**
          *
          */
-        u32 m_size;
+        u32 m_length;
 
         /**
          *
@@ -96,4 +98,4 @@ namespace ma
     };
 } // namespace ma
 
-#endif // SMAL_MEMORY_MEMORY_TABLE_HPP
+#endif // SMAL_MEMORY_PAGE_TABLE_HPP

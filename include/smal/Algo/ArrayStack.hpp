@@ -5,7 +5,7 @@
 
 namespace ma
 {
-    template <class Item, template <class> class Array = FixedBuffer>
+    template <class Item, class Layout = FixedLayout>
     class ArrayStack
     {
     public:
@@ -17,13 +17,13 @@ namespace ma
         /**
          *
          */
-        ArrayStack(Array<Item>&& array);
+        ArrayStack(const Layout& array);
 
         /**
          *
          */
         template <class... Args>
-        ArrayStack(BaseOrigin& origin, u32 size, Args&&... args);
+        ArrayStack(Args&&... args);
 
         /**
          *
@@ -161,7 +161,7 @@ namespace ma
         /**
          *
          */
-        const Array<Item>&
+        const Array<Item, Layout>&
         array() const;
 
         /**
@@ -174,7 +174,7 @@ namespace ma
         /**
          *
          */
-        Array<Item> m_array;
+        Array<Item, Layout> m_array;
 
         /**
          *
@@ -182,11 +182,11 @@ namespace ma
         u32 m_count;
     };
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     class ArrayStackForwIter
     {
     private:
-        using Stack = ArrayStack<Item, Array>;
+        using Stack = ArrayStack<Item, Layout>;
 
     public:
         /**
@@ -242,15 +242,11 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Item, template <class> class Array>
-    ArrayStackForwIter(const ArrayStack<Item, Array>&)
-        -> ArrayStackForwIter<Item, Array>;
-
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     class ArrayStackBackIter
     {
     private:
-        using Stack = ArrayStack<Item, Array>;
+        using Stack = ArrayStack<Item, Layout>;
 
     public:
         /**
@@ -306,9 +302,17 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Item, template <class> class Array>
-    ArrayStackBackIter(const ArrayStack<Item, Array>&)
-        -> ArrayStackBackIter<Item, Array>;
+    template <class Item, class Layout>
+    ArrayStack(const Layout&)
+        -> ArrayStack<Item, Layout>;
+
+    template <class Item, class Layout>
+    ArrayStackForwIter(const ArrayStack<Item, Layout>&)
+        -> ArrayStackForwIter<Item, Layout>;
+
+    template <class Item, class Layout>
+    ArrayStackBackIter(const ArrayStack<Item, Layout>&)
+        -> ArrayStackBackIter<Item, Layout>;
 } // namespace ma
 
 #include <smal/Algo/inline/ArrayStack.inl>

@@ -5,18 +5,28 @@
 
 namespace ma
 {
-    namespace impl
+    template <class Name>
+    struct HashHead
     {
-        template <class Name>
-        struct Head;
-    } // namespace impl
+        Name name;
+        u32  hash = 0;
+        u32  dist = 1u;
+    };
 
-    template <class Name, class Item, template <class> class Array = FixedBuffer>
+    template <class Item>
+    struct HashBody
+    {
+        Item item;
+    };
+
+    template <class Name, class Item, class Layout = FixedLayout>
     class HashTable
     {
     public:
-        using Head = impl::Head<Name>;
+        using Head = HashHead<Name>;
+        using Body = HashBody<Item>;
 
+    public:
         /**
          *
          */
@@ -25,13 +35,13 @@ namespace ma
         /**
          *
          */
-        HashTable(Array<Head>&& heads, Array<Item>&& array);
+        HashTable(const Layout& heads, const Layout& array);
 
         /**
          *
          */
         template <class... Args>
-        HashTable(BaseOrigin& origin, u32 size, Args&&... args);
+        HashTable(Args&&... args);
 
         /**
          *
@@ -157,19 +167,26 @@ namespace ma
         /**
          *
          */
+        template <class Func>
+        Item&
+        find(const Name& name, Func&& func) const;
+
+        /**
+         *
+         */
         Item&
         find(const Name& name) const;
 
         /**
          *
          */
-        const Array<Head>&
+        const Array<HashHead<Name>, Layout>&
         heads() const;
 
         /**
          *
          */
-        const Array<Item>&
+        const Array<HashBody<Item>, Layout>&
         array() const;
 
         /**
@@ -202,18 +219,18 @@ namespace ma
          *
          */
         u32
-        next(u32 code) const;
+        next(u32 code, u32 step = 1u) const;
 
     private:
         /**
          *
          */
-        Array<Head> m_heads;
+        Array<HashHead<Name>, Layout> m_heads;
 
         /**
          *
          */
-        Array<Item> m_array;
+        Array<HashBody<Item>, Layout> m_array;
 
         /**
          *
@@ -221,11 +238,11 @@ namespace ma
         u32 m_count;
     };
 
-    template <class Name, class Item, template <class> class Array>
+    template <class Name, class Item, class Layout>
     class HashTableForwIter
     {
     private:
-        using Table = HashTable<Name, Item, Array>;
+        using Table = HashTable<Name, Item, Layout>;
 
     public:
         /**
@@ -281,9 +298,13 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Name, class Item, template <class> class Array>
-    HashTableForwIter(HashTable<Name, Item, Array>&)
-        -> HashTableForwIter<Name, Item, Array>;
+    template <class Name, class Item, class Layout>
+    HashTable(const Layout&, const Layout&)
+        -> HashTable<Name, Item, Layout>;
+
+    template <class Name, class Item, class Layout>
+    HashTableForwIter(const HashTable<Name, Item, Layout>&)
+        -> HashTableForwIter<Name, Item, Layout>;
 } // namespace ma
 
 #include <smal/Algo/inline/HashTable.inl>

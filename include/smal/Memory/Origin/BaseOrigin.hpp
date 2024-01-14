@@ -1,7 +1,7 @@
 #ifndef SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 #define SMAL_MEMORY_ORIGIN_BASE_ORIGIN_HPP
 
-#include <smal/Memory/MemoryModule.hpp>
+#include <smal/Memory/OriginFactory.hpp>
 
 namespace ma
 {

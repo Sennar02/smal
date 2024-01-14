@@ -5,7 +5,7 @@
 
 namespace ma
 {
-    template <class Item, template <class> class Array = FixedBuffer>
+    template <class Item, class Layout = FixedLayout>
     class ArrayList
     {
     public:
@@ -17,13 +17,13 @@ namespace ma
         /**
          *
          */
-        ArrayList(Array<Item>&& array);
+        ArrayList(const Layout& array);
 
         /**
          *
          */
         template <class... Args>
-        ArrayList(BaseOrigin& origin, u32 size, Args&&... args);
+        ArrayList(Args&&... args);
 
         /**
          *
@@ -161,7 +161,7 @@ namespace ma
         /**
          *
          */
-        const Array<Item>&
+        const Array<Item, Layout>&
         array() const;
 
         /**
@@ -174,7 +174,7 @@ namespace ma
         /**
          *
          */
-        Array<Item> m_array;
+        Array<Item, Layout> m_array;
 
         /**
          *
@@ -182,11 +182,11 @@ namespace ma
         u32 m_count;
     };
 
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     class ArrayListForwIter
     {
     private:
-        using List = ArrayList<Item, Array>;
+        using List = ArrayList<Item, Layout>;
 
     public:
         /**
@@ -242,15 +242,11 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Item, template <class> class Array>
-    ArrayListForwIter(const ArrayList<Item, Array>&)
-        -> ArrayListForwIter<Item, Array>;
-
-    template <class Item, template <class> class Array>
+    template <class Item, class Layout>
     class ArrayListBackIter
     {
     private:
-        using List = ArrayList<Item, Array>;
+        using List = ArrayList<Item, Layout>;
 
     public:
         /**
@@ -306,9 +302,17 @@ namespace ma
         u32 m_index;
     };
 
-    template <class Item, template <class> class Array>
-    ArrayListBackIter(const ArrayList<Item, Array>&)
-        -> ArrayListBackIter<Item, Array>;
+    template <class Item, class Layout>
+    ArrayList(const Layout&)
+        -> ArrayList<Item, Layout>;
+
+    template <class Item, class Layout>
+    ArrayListForwIter(const ArrayList<Item, Layout>&)
+        -> ArrayListForwIter<Item, Layout>;
+
+    template <class Item, class Layout>
+    ArrayListBackIter(const ArrayList<Item, Layout>&)
+        -> ArrayListBackIter<Item, Layout>;
 } // namespace ma
 
 #include <smal/Algo/inline/ArrayList.inl>

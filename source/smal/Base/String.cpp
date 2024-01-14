@@ -1,24 +1,28 @@
 #include <smal/Base/String.hpp>
+#include <string.h>
 
 namespace ma
 {
-    String::String(const char* memory, u32 count)
+    String::String(const char* memory, u32 length)
         : m_memory {""}
+        , m_length {0}
         , m_hash {0}
-        , m_count {0}
     {
-        if ( memory != 0 && count != 0 ) {
+        if ( memory != 0 && length != 0 ) {
+            if ( length == g_max_u32 )
+                length = strlen(memory);
+
             m_memory = memory;
-            m_count  = count;
+            m_length = length;
         }
 
         m_hash = ma::hash(m_memory);
     }
 
     u32
-    String::count() const
+    String::length() const
     {
-        return m_count;
+        return m_length;
     }
 
     u32
@@ -39,7 +43,7 @@ namespace ma
         char l = 0;
         char r = 0;
 
-        count = max(count, m_count - first);
+        count = max(count, m_length - first);
 
         for ( u32 i = first; i < count; i++ ) {
             l = m_memory[i];
@@ -61,7 +65,7 @@ namespace ma
     bool
     String::contains(char byte, u32 count, u32 first) const
     {
-        count = max(count, m_count - first);
+        count = max(count, m_length - first);
 
         for ( u32 i = first; i < count; i++ ) {
             if ( m_memory[i] == byte )
@@ -80,7 +84,7 @@ namespace ma
     char
     String::operator[](u32 index)
     {
-        if ( index < m_count )
+        if ( index < m_length )
             return m_memory[index];
 
         return 0;
@@ -89,7 +93,7 @@ namespace ma
     char
     String::operator[](u32 index) const
     {
-        if ( index < m_count )
+        if ( index < m_length )
             return m_memory[index];
 
         return 0;

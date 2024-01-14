@@ -8,6 +8,8 @@
         str, sizeof(str) - 1 \
     }
 
+#define MA_TO_STRING(val) #val
+
 namespace ma
 {
     class String
@@ -16,13 +18,13 @@ namespace ma
         /**
          *
          */
-        String(const char* memory = 0, u32 count = g_max_u32);
+        String(const char* memory = 0, u32 length = g_max_u32);
 
         /**
          *
          */
         u32
-        count() const;
+        length() const;
 
         /**
          *
@@ -87,12 +89,12 @@ namespace ma
         /**
          *
          */
-        u32 m_hash;
+        u32 m_length;
 
         /**
          *
          */
-        u32 m_count;
+        u32 m_hash;
     };
 } // namespace ma
 
